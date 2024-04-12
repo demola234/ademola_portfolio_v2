@@ -67,17 +67,17 @@ const IconContainerForLearning = () => {
       </div>
       <div
         className="flex justify-center border py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
-        onMouseEnter={() => handleMouseEnter("Python")}
+        onMouseEnter={() => handleMouseEnter("Kotlin")}
         onMouseLeave={handleMouseLeave}
       >
-        <PythonIcon isHovered={hoveredTool.name === "Python"} />
+        <PythonIcon isHovered={hoveredTool.name === "Kotlin"} />
       </div>
       <div
         className="flex justify-center border py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
-        onMouseEnter={() => handleMouseEnter("Jetpack")}
+        onMouseEnter={() => handleMouseEnter("Kotlin")}
         onMouseLeave={handleMouseLeave}
       >
-        <JetpackIcon isHovered={hoveredTool.name === "Jetpack"} />
+        <JetpackIcon isHovered={hoveredTool.name === "Kotlin"} />
       </div>
     </div>
   );

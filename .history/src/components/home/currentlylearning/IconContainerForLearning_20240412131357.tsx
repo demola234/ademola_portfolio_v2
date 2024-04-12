@@ -77,7 +77,7 @@ const IconContainerForLearning = () => {
         onMouseEnter={() => handleMouseEnter("Jetpack")}
         onMouseLeave={handleMouseLeave}
       >
-        <JetpackIcon isHovered={hoveredTool.name === "Jetpack"} />
+        <JetpackIcon isHovered={hoveredTool.name === "Kotlin"} />
       </div>
     </div>
   );
