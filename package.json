@@ -30,5 +30,9 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/shefihu/ademola_portfolio.git",
+  "author": "demola234 <kolawoleoluwasegun567@gmail.com>",
+  "license": "MIT"
 }
