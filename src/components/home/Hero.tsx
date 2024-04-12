@@ -22,7 +22,7 @@ const Hero = () => {
   // Adjust the factor to control the speed of the movement.
   const translateY = scrollY * 0.1;
   return (
-    <div className="w-full bg-[#1E1E1E]/30 grid grid-cols-4 gap-x-[32px] border border-[#3D3D3D]/50 relative ">
+    <div className="w-full bg-[#1E1E1E]/30 grid lg:grid-cols-4 gap-x-[32px] border border-[#3D3D3D]/50 relative ">
       <div className="absolute -right-[8px] -top-[8px]">
         <PlusIcon />
       </div>
@@ -50,9 +50,11 @@ const Hero = () => {
           <StarAnimation />
         </div>
       </div>
-      <div className="lg:col-span-3  pr-[32px] h-full flex flex-col justify-center">
-        <h1 className="text-[23px] font-bold">Hi, I’m Ademola👋🏾</h1>
-        <p className="text-[18px]">
+      <div className="lg:col-span-3  lg:pr-[32px] lg:p-[0px] p-[10px] h-full flex flex-col justify-center">
+        <h1 className="lg:text-[23px] text-[16px] font-bold">
+          Hi, I’m Ademola👋🏾
+        </h1>
+        <p className="lg:text-[18px] text-[12px] lg:mt-[0px] mt-[8px]">
           A <span className="text-primaryDefault">Software Engineering</span>{" "}
           Passionate about passionate about building intuitive, high-performance
           applications for <span className="text-[#DEE3A4]">iOS</span> and{" "}
