@@ -51,14 +51,14 @@ export const IconsContainer: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-[#1E1E1E]/30 grid-cols-6  grid  border border-[#3D3D3D]/50 relative">
+    <div className="w-full bg-[#1E1E1E]/30 lg:grid-cols-6  grid-cols-5 grid  border border-[#3D3D3D]/50 relative">
       <div className="absolute -right-[8px] -top-[8px]">
         <PlusIcon />
       </div>
       <div className="absolute -left-[8px] -bottom-[8px]">
         <PlusIcon />
       </div>
-      <div className="lg:col-span-2  border flex items-center border-[#3D3D3D]/50 py-[26px] pl-[21px] pr-[40px]">
+      <div className="lg:col-span-2 col-span-5 border flex items-center border-[#3D3D3D]/50 py-[26px] pl-[21px] pr-[40px]">
         <h2 className="text-[20px] font-[600]">
           Building cool stuff with{" "}
           <span style={{ color: hoveredTool.color }}>{hoveredTool.name}</span>
@@ -66,7 +66,7 @@ export const IconsContainer: React.FC = () => {
       </div>
 
       <div
-        className="flex h-full border cursor-pointer border-[#3D3D3D]/50 justify-center items-center"
+        className="flex h-full border cursor-pointer border-[#3D3D3D]/50 lg:py-[66px] px-[21px] justify-center items-center"
         onMouseEnter={() => handleMouseEnter("Flutter")}
         onMouseLeave={handleMouseLeave}
       >
@@ -140,27 +140,6 @@ export const IconsContainer: React.FC = () => {
       >
         <SolidityIcon isHovered={hoveredTool.name === "Solidity"} />
       </div>
-      {/* <div
-          className="icon-item"
-          onMouseEnter={() => handleMouseEnter("GitHub")}
-          onMouseLeave={handleMouseLeave}
-        >
-          <GitHubIcon isHovered={hoveredTool.name === "GitHub"} />
-        </div> */}
-      {/* <div
-          className="icon-item"
-          onMouseEnter={() => handleMouseEnter("Plus")}
-          onMouseLeave={handleMouseLeave}
-        >
-          <PlusIcon isHovered={hoveredTool.name === "Plus"} />
-        </div> */}
-      {/* <div
-          className="icon-item"
-          onMouseEnter={() => handleMouseEnter("Next.js")}
-          onMouseLeave={handleMouseLeave}
-        >
-          <NextJsIcon isHovered={hoveredTool.name === "Next.js"} />
-        </div> */}
     </div>
   );
 };
