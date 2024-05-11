@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import SemiNavbar from "../components/home/SemiNavbar";
 import PostsMade from "../components/blog/sections/PostsMade";
 

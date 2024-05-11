@@ -1,44 +1,44 @@
-import { useState } from "react";
-import {
-  DartIcon,
-  DockerIcon,
-  FlutterIcon,
-  GitIcon,
-  GoIcon,
-  MongoIcon,
-  PlusIcon,
-  PostgresIcon,
-  SolidityIcon,
-  SwiftIcon,
-  TypescriptIcon,
-} from "../../assets/svg";
+// import { useState } from "react";
+// import {
+//   DartIcon,
+//   DockerIcon,
+//   FlutterIcon,
+//   GitIcon,
+//   GoIcon,
+//   MongoIcon,
+//   PlusIcon,
+//   PostgresIcon,
+//   SolidityIcon,
+//   SwiftIcon,
+//   TypescriptIcon,
+// } from "../../assets/svg";
 import { IconsContainer } from "./IconsContainer";
 
 const Tools = () => {
-  const [toolText, setToolText] = useState("Building Cool Stuff with Tools");
+  // const [toolText, setToolText] = useState("Building Cool Stuff with Tools");
 
   // CSS Animation
-  const crispyAnimation = `
-    @keyframes crispy {
-      0%, 100% { transform: scale(1); }
-      25% { transform: scale(1.05) rotate(-1deg); }
-      50% { transform: scale(1) rotate(1deg); }
-      75% { transform: scale(0.95) rotate(0deg); }
-    }
+  // const crispyAnimation = `
+  //   @keyframes crispy {
+  //     0%, 100% { transform: scale(1); }
+  //     25% { transform: scale(1.05) rotate(-1deg); }
+  //     50% { transform: scale(1) rotate(1deg); }
+  //     75% { transform: scale(0.95) rotate(0deg); }
+  //   }
 
-    .crispy:hover {
-      animation: crispy 0.5s infinite;
-    }
-  `;
+  //   .crispy:hover {
+  //     animation: crispy 0.5s infinite;
+  //   }
+  // `;
 
   // Update the toolText state to reflect the tool being hovered over
-  const handleMouseEnter = (toolName: string) => {
-    setToolText(`Building Cool Stuff with ${toolName}`);
-  };
+  // const handleMouseEnter = (toolName: string) => {
+  //   setToolText(`Building Cool Stuff with ${toolName}`);
+  // };
 
-  const handleMouseLeave = () => {
-    setToolText("Building Cool Stuff with Tools");
-  };
+  // const handleMouseLeave = () => {
+  //   setToolText("Building Cool Stuff with Tools");
+  // };
 
   return (
     <div className="mt-[43px] w-full">

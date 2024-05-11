@@ -1,4 +1,4 @@
-import { PlusIcon } from "../../assets/svg";
+// import { PlusIcon } from "../../assets/svg";
 import IconContainerForLearning from "./currentlylearning/IconContainerForLearning";
 
 const CurrentlyLearning = () => {

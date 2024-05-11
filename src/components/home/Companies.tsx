@@ -1,7 +1,7 @@
-import drugstore from "../../assets/drugstore.png";
-import polaris from "../../assets/polaris.png";
-import synergy from "../../assets/synergy.png";
-import techwave from "../../assets/techwave.png";
+// import drugstore from "../../assets/drugstore.png";
+// import polaris from "../../assets/polaris.png";
+// import synergy from "../../assets/synergy.png";
+// import techwave from "../../assets/techwave.png";
 const Companies = () => {
   return (
     <div className="mt-[63px]">
