@@ -73,14 +73,14 @@ export const IconsContainer: React.FC = () => {
         <FlutterIcon isHovered={hoveredTool.name === "Flutter"} />
       </div>
       <div
-        className="flex justify-center border py-[66px] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer lg:py-[66px] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Golang")}
         onMouseLeave={handleMouseLeave}
       >
         <GoIcon isHovered={hoveredTool.name === "Golang"} />
       </div>
       <div
-        className="flex justify-center border py-[26px] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[26px] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Swift")}
         onMouseLeave={handleMouseLeave}
       >
@@ -88,7 +88,7 @@ export const IconsContainer: React.FC = () => {
       </div>
 
       <div
-        className="flex justify-center border py-[26px] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[26px] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Dart")}
         onMouseLeave={handleMouseLeave}
       >
@@ -96,7 +96,7 @@ export const IconsContainer: React.FC = () => {
       </div>
 
       <div
-        className="flex justify-center border py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Postgres")}
         onMouseLeave={handleMouseLeave}
       >
@@ -104,14 +104,14 @@ export const IconsContainer: React.FC = () => {
       </div>
 
       <div
-        className="flex justify-center border py-[66px] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer lg:py-[66px] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("TypeScript")}
         onMouseLeave={handleMouseLeave}
       >
         <TypescriptIcon isHovered={hoveredTool.name === "TypeScript"} />
       </div>
       <div
-        className="flex justify-center border py-[26px] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[26px] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Git")}
         onMouseLeave={handleMouseLeave}
       >
@@ -119,14 +119,14 @@ export const IconsContainer: React.FC = () => {
       </div>
 
       <div
-        className="flex justify-center border py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Docker")}
         onMouseLeave={handleMouseLeave}
       >
         <DockerIcon isHovered={hoveredTool.name === "Docker"} />
       </div>
       <div
-        className="flex justify-center border py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("MongoDB")}
         onMouseLeave={handleMouseLeave}
       >
@@ -134,7 +134,7 @@ export const IconsContainer: React.FC = () => {
       </div>
 
       <div
-        className="flex justify-center border py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Solidity")}
         onMouseLeave={handleMouseLeave}
       >

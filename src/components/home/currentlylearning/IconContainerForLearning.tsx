@@ -38,42 +38,42 @@ const IconContainerForLearning = () => {
         <PlusIcon />
       </div>
       <div
-        className="flex justify-center border py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Kotlin")}
         onMouseLeave={handleMouseLeave}
       >
         <KotlinIcon isHovered={hoveredTool.name === "Kotlin"} />
       </div>
       <div
-        className="flex justify-center border py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Rust")}
         onMouseLeave={handleMouseLeave}
       >
         <RustIcon isHovered={hoveredTool.name === "Rust"} />
       </div>
       <div
-        className="flex justify-center border py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("NextJs")}
         onMouseLeave={handleMouseLeave}
       >
         <NextJsIcon isHovered={hoveredTool.name === "NextJs"} />
       </div>
       <div
-        className="flex justify-center border py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Kubernetes")}
         onMouseLeave={handleMouseLeave}
       >
         <KubernetesIcon isHovered={hoveredTool.name === "Kubernetes"} />
       </div>
       <div
-        className="flex justify-center border py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Python")}
         onMouseLeave={handleMouseLeave}
       >
         <PythonIcon isHovered={hoveredTool.name === "Python"} />
       </div>
       <div
-        className="flex justify-center border py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Jetpack")}
         onMouseLeave={handleMouseLeave}
       >

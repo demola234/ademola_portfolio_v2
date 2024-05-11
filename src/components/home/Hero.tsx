@@ -1,6 +1,7 @@
+/* eslint-disable no-irregular-whitespace */
 import { HeroImage, PlusIcon } from "../../assets/svg";
 import hero from "../../assets/hero.png";
-import heroshape from "../../assets/heroshape.png";
+// import heroshape from "../../assets/heroshape.png";
 import { useEffect, useState } from "react";
 import StarAnimation from "../../animations/StarAnimation";
 const Hero = () => {
@@ -55,18 +56,20 @@ const Hero = () => {
           Hi, I’m Ademola👋🏾
         </h1>
         <p className="lg:text-[18px] text-[12px] lg:mt-[0px] mt-[8px]">
-          A <span className="text-primaryDefault">Software Engineering</span>{" "}
-          Passionate about passionate about building intuitive, high-performance
-          applications for <span className="text-[#DEE3A4]">iOS</span> and{" "}
-          <span className="text-[#DEE3A4]">Android</span>. I enjoy 
-          <span className="text-primaryDefault">building</span> things that run
-          on computers and and exploring a lot (or a bit) of other tools,
-          languages etc while doing that.I 
-          <span className="text-primaryDefault">experiment</span> a lot and
-          build out my silly ideas and looking forward to building more tools
-          for the community moving forward. I also try to do a{" "}
-          <span className="text-primaryDefault">bit of writing</span> when I can
-          to help people learn from my experiences.
+          Highly motivated
+          <span className="text-primaryDefault"> Software Engineer</span> with a
+          passion for crafting intuitive and high-performing mobile applications
+          and diverse software solutions. I like creating computer-based
+          projects and learning about a variety of other tools and{" "}
+          <span className="text-primaryDefault">languages</span> in the process.
+          <br />I<span className="text-primaryDefault"> experiment</span> and
+          develop my ideas, and I'm looking forward to creating additional{" "}
+          <span className="text-primaryDefault">
+            tools for the developer community.{" "}
+          </span>
+          I also attempt to do some{" "}
+          <span className="text-primaryDefault">writing to assist others</span>{" "}
+          learn from my experiences.
         </p>
       </div>
     </div>

@@ -3,6 +3,8 @@ import { GuestGuard } from "../guards/GuestGuard";
 
 import GuestLayout from "../layout/rootLayout";
 import Home from "../pages/Home";
+import BlogPost from "../pages/BlogPost";
+import BlogPosts from "../pages/BlogPosts";
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +18,14 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/blog-posts",
+        element: <BlogPosts />,
+      },
+      {
+        path: "/blog-post",
+        element: <BlogPost />,
       },
     ],
   },

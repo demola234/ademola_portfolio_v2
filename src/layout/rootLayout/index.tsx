@@ -11,6 +11,7 @@ export default function GuestLayout({ children }: GuestLayoutProps) {
     <div className="text-white bg-black container mx-auto lg:px-[0px] px-[20px]">
       <Navbar />
       {children ? children : <Outlet />}
+
       {/* <Footer /> */}
     </div>
   );

@@ -36,25 +36,25 @@ const SemiNavbar = () => {
       >
         <nav>
           <a
-            href="/home"
+            href="/"
             className="block text-white hover:text-primaryDefault py-2"
           >
             ~home/
           </a>
           <a
-            href="/blogs"
+            href=""
             className="block text-white hover:text-primaryDefault py-2"
           >
             ~blogs/
           </a>
           <a
-            href="/tools"
+            href="#tools"
             className="block text-white hover:text-primaryDefault py-2"
           >
             ~tools/
           </a>
           <a
-            href="/projects"
+            href="#projects"
             className="block text-white hover:text-primaryDefault py-2"
           >
             ~projects/
