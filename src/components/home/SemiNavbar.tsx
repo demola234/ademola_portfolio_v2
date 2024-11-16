@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const SemiNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,27 +36,27 @@ const SemiNavbar = () => {
         style={{ maxHeight: "0" }}
       >
         <nav>
-          <a
-            href="/"
-            className="block text-white hover:text-primaryDefault py-2"
+          <Link
+            to="/"
+            className="block py-2 text-white hover:text-primaryDefault"
           >
             ~home/
-          </a>
-          <a
-            href=""
-            className="block text-white hover:text-primaryDefault py-2"
+          </Link>
+          <Link
+            to="/blog-posts"
+            className="block py-2 text-white hover:text-primaryDefault"
           >
             ~blogs/
-          </a>
+          </Link>
           <a
             href="#tools"
-            className="block text-white hover:text-primaryDefault py-2"
+            className="block py-2 text-white hover:text-primaryDefault"
           >
             ~tools/
           </a>
           <a
             href="#projects"
-            className="block text-white hover:text-primaryDefault py-2"
+            className="block py-2 text-white hover:text-primaryDefault"
           >
             ~projects/
           </a>

@@ -18,6 +18,57 @@ export const Github = () => {
     </svg>
   );
 };
+
+export const WeirdImage = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={115}
+      height={104}
+      viewBox="0 0 115 104"
+      fill="none"
+    >
+      <circle
+        cx="32.2887"
+        cy="23.2887"
+        r="26.1649"
+        stroke="url(#paint0_linear_799_1561)"
+        strokeOpacity="0.3"
+        strokeWidth="12.2474"
+      />
+      <path
+        d="M10.0215 97.3307C71.6498 97.3307 81.6888 55.7541 104.834 41.6337C127.98 27.5133 162.001 51.6893 162.001 51.6893"
+        stroke="url(#paint1_linear_799_1561)"
+        strokeOpacity="0.3"
+        strokeWidth="12.2474"
+      />
+      <defs>
+        <linearGradient
+          id="paint0_linear_799_1561"
+          x1="49.766"
+          y1="-2.56027"
+          x2="-0.90187"
+          y2="13.9774"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#8CC5E7" />
+          <stop offset={1} stopColor="white" stopOpacity={0} />
+        </linearGradient>
+        <linearGradient
+          id="paint1_linear_799_1561"
+          x1="127.143"
+          y1="43.2026"
+          x2="48.6359"
+          y2="107.975"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#8CC5E7" />
+          <stop offset={1} stopColor="white" stopOpacity={0} />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+};
 export const Resume = () => {
   return (
     <svg

@@ -8,11 +8,9 @@ interface GuestLayoutProps {
 }
 export default function GuestLayout({ children }: GuestLayoutProps) {
   return (
-    <div className="text-white bg-black container mx-auto lg:px-[0px] px-[20px]">
+    <div className="text-white bg-black container mx-auto xl:px-[0px] px-[20px]">
       <Navbar />
       {children ? children : <Outlet />}
-
-      {/* <Footer /> */}
     </div>
   );
 }
