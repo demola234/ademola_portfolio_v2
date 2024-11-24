@@ -7,6 +7,7 @@ import SemiNavbar from "../components/home/SemiNavbar";
 import Tools from "../components/home/Tools";
 import Footer from "../layout/rootLayout/Footer";
 
+
 const Home = () => {
   useEffect(() => {
     window.scrollTo({

@@ -29,7 +29,7 @@ const IconContainerForLearning: React.FC<IconContainerProps> = ({
     NextJs: "#0070F3",
     Kubernetes: "#326CE5",
     Python: "#FFE873",
-    Jetpack: "#2E7D32",
+    JetpackCompose: "#2E7D32",
   };
 
   const handleMouseEnter = (toolName: string) => {
@@ -42,19 +42,19 @@ const IconContainerForLearning: React.FC<IconContainerProps> = ({
 
   return (
     <div className="w-full mt-[19px] bg-[#1E1E1E]/30 grid grid-cols-6 border border-[#3D3D3D]/50 relative">
-      <div className="absolute -right-[8px] -top-[8px]">
-        <PlusIcon />
-      </div>
-      <div className="absolute -left-[8px] -bottom-[8px]">
-        <PlusIcon />
-      </div>
-      {Object.keys(toolColors).map((tool) => (
-        <div
-          key={tool}
-          className="flex justify-center border cursor-pointer py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
-          onMouseEnter={() => handleMouseEnter(tool)}
-          onMouseLeave={handleMouseLeave}
-        >
+    <div className="absolute -right-[8px] -top-[8px]">
+      <PlusIcon />
+    </div>
+    <div className="absolute -left-[8px] -bottom-[8px]">
+      <PlusIcon />
+    </div>
+    {Object.keys(toolColors).map((tool) => (
+      <div
+        key={tool}
+        className="flex justify-center border cursor-pointer py-[10px] lg:py-[66px] px-[18px] border-[#3D3D3D]/50 items-center"
+        onMouseEnter={() => handleMouseEnter(tool)}
+        onMouseLeave={handleMouseLeave}
+      >
           {tool === "Kotlin" && (
             <KotlinIcon isHovered={hoveredTool.name === tool} />
           )}
@@ -70,7 +70,7 @@ const IconContainerForLearning: React.FC<IconContainerProps> = ({
           {tool === "Python" && (
             <PythonIcon isHovered={hoveredTool.name === tool} />
           )}
-          {tool === "Jetpack" && (
+          {tool === "JetpackCompose" && (
             <JetpackIcon isHovered={hoveredTool.name === tool} />
           )}
         </div>
