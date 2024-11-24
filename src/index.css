@@ -68,7 +68,7 @@ body {
     transform: translate(-50%, 50%) scale(0.95);
   }
 }
-/* blogs */
+/* blog */
 
 .markdown-container {
   font-family: "IBM Plex Mono", monospace;
@@ -161,7 +161,6 @@ body {
 
 /* Updated code block styling */
 .markdown-container pre {
-  background-color: #1e1e1e; /* Updated code block background color */
   color: #e8e8e8; /* Light text color for contrast */
   padding: 1.2rem;
   border-radius: 8px;
@@ -216,33 +215,4 @@ body {
   color: #84a6e8;
 }
 
-/* Parent container for the animated text */
-.text-container {
-  position: relative;
-  height: 40px; /* Ensure this matches the height of your text */
-  overflow: hidden; /* Prevent content outside the bounds from showing */
-}
 
-/* Text layers */
-.text-slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  transition: transform 0.5s ease-in-out; /* Smooth slide effect */
-  font-size: 20px; /* Match your font size */
-  font-weight: 600; /* Match your font weight */
-}
-
-/* Transform classes */
-.translate-y-0 {
-  transform: translateY(0);
-}
-
-.translate-y-40 {
-  transform: translateY(40px);
-}
-
-.translate-y--40 {
-  transform: translateY(-40px);
-}
