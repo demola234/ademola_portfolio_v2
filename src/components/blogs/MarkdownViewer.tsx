@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import remarkGfm from "remark-gfm";
 
 interface MarkdownViewerProps {
   filePath: string;
@@ -10,6 +10,8 @@ interface MarkdownViewerProps {
 
 const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
   const [markdownContent, setMarkdownContent] = useState<string>("");
+
+  console.log("filePath:", filePath);
 
   useEffect(() => {
     fetch(filePath)
