@@ -11,7 +11,7 @@ interface MarkdownViewerProps {
 const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
   const [markdownContent, setMarkdownContent] = useState<string>("");
 
-  console.log("filePath:", filePath);
+  // console.log("filePath:", filePath);
 
   useEffect(() => {
     fetch(filePath)
