@@ -4,11 +4,15 @@ import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   assetsInclude: ["**/*.md"],
+  optimizeDeps: {
+    include: ["react-markdown"],
+  },
+  base: "/",
   plugins: [
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["**/*.md"], // Include Markdown files in the service worker cache
+      includeAssets: ["**/*.md"],
       manifest: {
         name: "Ademola Kolawole Portfolio",
         short_name: "Ademola Kolawole",
