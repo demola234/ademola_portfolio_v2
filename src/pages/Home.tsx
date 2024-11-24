@@ -5,6 +5,7 @@ import Hero from "../components/home/Hero";
 // import Projects from "../components/home/Projects";
 import SemiNavbar from "../components/home/SemiNavbar";
 import Tools from "../components/home/Tools";
+import Footer from "../layout/rootLayout/Footer";
 
 const Home = () => {
   useEffect(() => {
@@ -19,6 +20,7 @@ const Home = () => {
       <SemiNavbar />
       <Tools />
       <CurrentlyLearning />
+      <Footer />
       {/* <Projects />
       <Companies /> */}
     </div>

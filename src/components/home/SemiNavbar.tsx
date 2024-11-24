@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 const SemiNavbar = () => {
@@ -43,7 +43,7 @@ const SemiNavbar = () => {
             ~home/
           </Link>
           <Link
-            to="/blog-posts"
+            to="/blogs"
             className="block py-2 text-white hover:text-primaryDefault"
           >
             ~blogs/

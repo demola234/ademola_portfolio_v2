@@ -2,9 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import { GuestGuard } from "../guards/GuestGuard";
 
 import GuestLayout from "../layout/rootLayout";
+import BlogsPost from "../pages/BlogPost";
+import BlogsPosts from "../pages/BlogPosts";
 import Home from "../pages/Home";
-import BlogPost from "../pages/BlogPost";
-import BlogPosts from "../pages/BlogPosts";
 
 export const router = createBrowserRouter([
   {
@@ -20,12 +20,12 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/blog-posts",
-        element: <BlogPosts />,
+        path: "/blogs",
+        element: <BlogsPosts />,
       },
       {
-        path: "/blog-posts/:title",
-        element: <BlogPost />,
+        path: "/blogs/:title",
+        element: <BlogsPost />,
       },
     ],
   },

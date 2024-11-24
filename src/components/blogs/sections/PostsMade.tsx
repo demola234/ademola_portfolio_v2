@@ -5,11 +5,10 @@ const PostsMade = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <h1 className="mt-5 mb-4 text-xl font-bold">Blog</h1>
+      <h1 className="mt-5 mb-4 text-xl font-bold">Blogs</h1>
       <p className="mb-8 text-sm text-white md:text-base">
         A portal into my thoughts, experiences, ideas, visions, interests, and
-        more. What's the point of this? Well, I'm not sure, but here you go
-        anyhow.
+        more
       </p>
       <div className="space-y-6">
         {posts.map((post, index) => {
@@ -19,7 +18,7 @@ const PostsMade = () => {
           const year = publishDate.getFullYear();
           return (
             <div
-              onClick={() => navigate(`/blog-posts/${post.title}`)}
+              onClick={() => navigate(`/blogs/${post.title}`)}
               key={index}
               className="flex flex-col w-full cursor-pointer md:flex-row group"
             >
