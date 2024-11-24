@@ -14,11 +14,15 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
   // console.log("filePath:", filePath);
 
   useEffect(() => {
-    fetch(filePath)
+    fetch(
+      "https://github.com/shefihu/ademola_portfolio/blob/ffaf6f95b0624e45d7afb517edcb42fe0d37ded8/src/components/blogs/contents/article.md"
+    )
       .then((response) => response.text())
       .then((text) => setMarkdownContent(text))
       .catch((error) => console.error("Error loading Markdown file:", error));
-  }, [filePath]);
+  }, [
+    "https://github.com/shefihu/ademola_portfolio/blob/ffaf6f95b0624e45d7afb517edcb42fe0d37ded8/src/components/blogs/contents/article.md",
+  ]);
 
   return (
     <div className="markdown-container">
