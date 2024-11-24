@@ -21,7 +21,7 @@ export const posts = [
     tags: ["gRPC", "Speed", "Flutter", "Tutorial"],
     image_url:
       "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*2xRyPiQg5uQmueVoY6E7Xg.png",
-    markdown_path: "public/markdown/connectivity.md",
+    markdown_path: "/markdown/connectivity.md",
     medium_blog_link:
       "https://medium.com/stackademic/exploring-grpc-and-flutter-for-modern-app-development-ad2d890bfe95",
     created_at: "2024-11-16T12:00:00Z",
@@ -35,7 +35,7 @@ export const posts = [
     tags: ["Unit Test", "Best Practices", "Scalability", "Modular Code"],
     image_url:
       "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*6uV-X6ZsEJsdue4yRwwFtQ.jpeg",
-    markdown_path: "public/markdown/riverpod_unit_text.md",
+    markdown_path: "/markdown/riverpod_unit_text.md",
     medium_blog_link:
       "https://medium.com/@ademolakolawole/implementing-unit-tests-for-riverpod-9e73613db384",
     created_at: "2024-11-16T12:00:00Z",
