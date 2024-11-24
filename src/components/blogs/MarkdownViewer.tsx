@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import remarkGfm from "remark-gfm";
 
 interface MarkdownViewerProps {
   filePath: string;
@@ -12,8 +12,13 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
   const [markdownContent, setMarkdownContent] = useState<string>("");
 
   useEffect(() => {
-    fetch(filePath)
-      .then((response) => response.text())
+    fetch(`${process.env.PUBLIC_URL || ""}${filePath}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+      })
       .then((text) => setMarkdownContent(text))
       .catch((error) => console.error("Error loading Markdown file:", error));
   }, [filePath]);
