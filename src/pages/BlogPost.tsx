@@ -11,7 +11,7 @@ const BlogsPost = () => {
   // Find the specific post based on the title
   const post = posts?.find((post) => post.title === title);
 
-  console.log("filePath:", post?.markdown_path);
+  console.log("filePath:", post);
   console.log(post?.markdown_path);
 
   useEffect(() => {
