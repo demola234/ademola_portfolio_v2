@@ -1,15 +1,13 @@
-# Empowering Seamless Connectivity: Exploring gRPC and Flutter for Modern App Development
-
 In mobile development the need for more powerful and distributed tools working among multiple distributed has arise. gRPC tools are powerful when working across many teams or in distributed teams. This is because, in addition to server-side Golang, the gRPC tools can generate code for Dart, Swift, Objective-C, Java, Kotlin and many other languages.
 
 Working with gRPC allows you to define an API and generate networking and object model code for use on your server and any client.
 
 In this tutorial you’ll learn how to define an API based on gRPC and how to leverage its tools to generate code for Server Side Golang and client flutter apps. You’ll learn how to:
 
-- Read and change a ***.proto*** file that describes an API.
-- Exercise a gRPC API with ***Evans***.
+- Read and change a **_.proto_** file that describes an API.
+- Exercise a gRPC API with **_Evans_**.
 - Explore gRPC Web UI
-- Use the ***protoc*** command line tool to generate Dart code for your Flutter Application.
+- Use the **_protoc_** command line tool to generate Dart code for your Flutter Application.
 - Communite with gRPC directly in your Flutter Application
 
 NB: The server side code used in this tutorial was built with golang
@@ -18,16 +16,16 @@ NB: The server side code used in this tutorial was built with golang
 
 ### Installing Evans
 
-[Evans](https://github.com/ktr0731/evans) is the gRPC version of something like [cURL](https://curl.se/) or [Insomnia](https://insomnia.rest/) which allows you to make calls to a server that uses gRPC without having to write an entire client app first. Evans is also a quick way to check a ***.proto*** file for errors.
+[Evans](https://github.com/ktr0731/evans) is the gRPC version of something like [cURL](https://curl.se/) or [Insomnia](https://insomnia.rest/) which allows you to make calls to a server that uses gRPC without having to write an entire client app first. Evans is also a quick way to check a **_.proto_** file for errors.
 
-On ***macOS***, Evans is available via ***Homebrew***. To install it, type the following in Terminal:
+On **_macOS_**, Evans is available via **_Homebrew_**. To install it, type the following in Terminal:
 
 ```bash
 brew tap ktr0731/evans && brew install evans
 
 ```
 
-On ***Linux*** the builds are available on [GitHub](https://github.com/ktr0731/evans/releases).
+On **_Linux_** the builds are available on [GitHub](https://github.com/ktr0731/evans/releases).
 
 After you install Evans, confirm it’s working by checking the output of this command in the Terminal:
 
@@ -39,10 +37,10 @@ evans --version
 
 To generate the Swift code from a gRPC spec file you need:
 
-- ***The `protoc` executable***.
-- ***The plug-ins for Dart***: one for generating Swift code for `Message` items and one for generating `Service` items.
+- **_The `protoc` executable_**.
+- **_The plug-ins for Dart_**: one for generating Swift code for `Message` items and one for generating `Service` items.
 
-Make sure you have dart install then run: 
+Make sure you have dart install then run:
 
 ```bash
 dart pub global activate protoc_plugin
@@ -52,9 +50,9 @@ dart pub global activate protoc_plugin
 
 gRPC is a technology developed at Google to help you define and maintain an app interface. It has tools and plugins that generate native networking and object models code for the server and client to use with the interface.
 
-![Untitled](Empowering%20Seamless%20Connectivity%20Exploring%20gRPC%20an%204316ef5fd3894a489a5b81c46e4c55b5/Untitled.png)
+![Untitled]("markdown/Empowering%20Seamless%20Connectivity%20Exploring%20gRPC%20an%204316ef5fd3894a489a5b81c46e4c55b5/Untitled.png")
 
-gRPC generates server and client code from the same spec, encoded in a ***.proto*** file, regardless of the programming language used.
+gRPC generates server and client code from the same spec, encoded in a **_.proto_** file, regardless of the programming language used.
 
 This helps ensure that the code is less prone to errors caused by typos in a URL or field name. Since gRPC handles the network transport, developers don’t have to write specific code to support network calls.
 
@@ -68,19 +66,19 @@ gRPC sets out to make the calls to a remote server look and act like calls to ot
 
 ### Learning the Difference Between gRPC and JSON?
 
-For encoding and decoding data objects, gRPC uses ***Protocol Buffers***.
+For encoding and decoding data objects, gRPC uses **_Protocol Buffers_**.
 
 Unlike the plain text files used by JSON, Protocol Buffers are a binary file type, not human readable. They enable the exchange of smaller payloads, which are more efficient and suitable for low bandwidth use cases.
 
-To get started, you must define gRPC messages and data models in a ***.proto*** file.
+To get started, you must define gRPC messages and data models in a **_.proto_** file.
 
-## Working with a ***.proto*** File
+## Working with a **_.proto_** File
 
-A ***.proto*** file is a text file containing definitions for all your APIs. In this tutorial the domain revolves around ***Messages*** and ***Services***. Messages are the data objects that get sent between the client and server. Services define how messages get transported. A ***.proto*** file can also have some metadata to help the various code generators.
+A **_.proto_** file is a text file containing definitions for all your APIs. In this tutorial the domain revolves around **_Messages_** and **_Services_**. Messages are the data objects that get sent between the client and server. Services define how messages get transported. A **_.proto_** file can also have some metadata to help the various code generators.
 
-Most exciting to anyone who has ever struggled with comments in JSON: a ***.proto*** file can have comments! It supports both `//` style and `/* ... */` style comments!
+Most exciting to anyone who has ever struggled with comments in JSON: a **_.proto_** file can have comments! It supports both `//` style and `/* ... */` style comments!
 
-Open the ***todo.proto*** file in the root directory of the project to explore it a bit. The first line of the file specifies the version of gRPC to use. It looks like this:
+Open the **_todo.proto_** file in the root directory of the project to explore it a bit. The first line of the file specifies the version of gRPC to use. It looks like this:
 
 ```
 syntax = "proto3";
@@ -136,7 +134,7 @@ message CreateTaskResponse {
 }
 
 message EmptyGetRequest {
-    
+
 }
 
 message GetAllTaskResponse {
@@ -148,7 +146,7 @@ message DeleteTaskRequest {
 }
 
 message EmptyTaskRequest {
-   
+
 }
 
 message UpdateTaskRequest {
@@ -192,9 +190,9 @@ The `repeated` keyword means that the code will generate an array of `Todo`s.
 
 Google provides many well-known types including: `Empty`, `Timestamp`, `BoolValue` and many more. You can [read the documentation](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf) to learn about them. Since the `homebrew` version of `protoc` isn’t bundled with them, this tutorial uses a custom one. Both strategies, using Google’s or making your own, are common.
 
-## Exercising a ***.proto*** File With Evans
+## Exercising a **_.proto_** File With Evans
 
-In a Terminal window, navigate to the root directory of the project. This is the directory that contains the ***todo.proto*** file. Launch Evans in REPL mode using this command:
+In a Terminal window, navigate to the root directory of the project. This is the directory that contains the **_todo.proto_** file. Launch Evans in REPL mode using this command:
 
 ```
 evans repl --host localhost --port 1234 --proto ./todo.proto
@@ -217,9 +215,9 @@ todos.TodoService@localhost:1234>
 
 ```
 
-Even though you don’t have a running gRPC server yet and haven’t generated the gRPC Swift code, Evans uses the ***todo.proto*** file to provide information about the services.
+Even though you don’t have a running gRPC server yet and haven’t generated the gRPC Swift code, Evans uses the **_todo.proto_** file to provide information about the services.
 
-Recall from the ***todo.proto*** file that you have four messages: v
+Recall from the **_todo.proto_** file that you have four messages: v
 
 Now type the following command in the Evans prompt:
 
@@ -259,9 +257,9 @@ To close Evans and return to Terminal type: `exit`.
 
 You are on the right track. The next step is to generate some Swift code.
 
-## Generating Dart Code From a ***.proto*** file
+## Generating Dart Code From a **_.proto_** file
 
-Make sure Terminal is in the directory with the ***task.proto*** file and type the following:
+Make sure Terminal is in the directory with the **_task.proto_** file and type the following:
 
 ```bash
  protoc --dart_out=grpc:lib/core/proto/generate \
@@ -273,15 +271,15 @@ Make sure Terminal is in the directory with the ***task.proto*** file and type
 Create a new file in your service folder named grpcHandler, this is meant to handle your grpc request:
 
 ```yaml
- dependencies:
+dependencies:
   protobuf: ^latest
   get_it: ^latest
   grpc: ^latest
   dartz: ^latest
   flutter_riverpod: ^latest
   freezed: ^latest
-  
- dev_dependencies:
+
+dev_dependencies:
   freezed: ^latest
 ```
 
@@ -330,7 +328,7 @@ class GrpcHandlerService {
 
 ```
 
-late TodoGrpcClient client 
+late TodoGrpcClient client
 
 ```dart
 import 'package:dartz/dartz.dart';
@@ -613,8 +611,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
 ## Where to Go from Here?
 
-The completed project is in the demo project’s ***final*** folder. You can download the project file if you haven’t already by clicking the ***Download Materials*** button at the top or bottom of this tutorial.
+The completed project is in the demo project’s **_final_** folder. You can download the project file if you haven’t already by clicking the **_Download Materials_** button at the top or bottom of this tutorial.
 
-In this tutorial, you learned the basics of working with a ***.proto*** file to describe a gRPC API. You also learned how to generate Swift code using ***protoc*** and how to modify a Vapor app to use gRPC instead of HTTP.
+In this tutorial, you learned the basics of working with a **_.proto_** file to describe a gRPC API. You also learned how to generate Swift code using **_protoc_** and how to modify a Vapor app to use gRPC instead of HTTP.
 
-The GitHub projects for ***protobuf***, ***grpc-swift*** and ***protoc*** all contain more documentation and tutorials:
+The GitHub projects for **_protobuf_**, **_grpc-swift_** and **_protoc_** all contain more documentation and tutorials:
