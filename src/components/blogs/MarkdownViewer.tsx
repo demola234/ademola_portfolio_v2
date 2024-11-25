@@ -10,13 +10,13 @@ interface MarkdownViewerProps {
 
 const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
   const [markdownContent, setMarkdownContent] = useState<string>("");
-  const [fileType, setFileType] = useState<string>("Unknown");
+  const [_, setFileType] = useState<string>("Unknown");
   const [showDialog, setShowDialog] = useState<boolean>(false);
 
   const copyToClipboard = (code: string) => {
     navigator.clipboard.writeText(code).then(() => {
       setShowDialog(true);
-      setTimeout(() => setShowDialog(false), 5000); // Auto-hide after 3 seconds
+      setTimeout(() => setShowDialog(false), 5000);
     });
   };
 
