@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Medium, WeirdImage } from "../assets/svg";
 import MarkdownViewer from "../components/blogs/MarkdownViewer";
@@ -8,18 +8,40 @@ import Footer from "../layout/rootLayout/Footer";
 const BlogsPost = () => {
   const { title } = useParams<{ title: string }>();
 
+  // State to track scroll position
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
   // Find the specific post based on the title
   const post = posts?.find((post) => post.title === title);
 
   console.log("filePath:", post);
   console.log(post?.markdown_path);
 
+  // Scroll to top on page load
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
+
+    const handleScroll = () => {
+      // Show the button if scrolled down 300px
+      setShowBackToTop(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   if (!post) {
     return <p className="mt-10 text-xl text-center">Post not found.</p>;
@@ -54,7 +76,6 @@ const BlogsPost = () => {
           <WeirdImage />
         </div>
       </div>
-      {/* Check if image exists, otherwise display "Coming Soon" */}
       <div className="w-full">
         {post.image_url ? (
           <img
@@ -68,8 +89,6 @@ const BlogsPost = () => {
           </div>
         )}
       </div>
-      {/* Check if Markdown file exists, otherwise display "Coming Soon" */}
-
       {post.markdown_path ? (
         <MarkdownViewer filePath={post.markdown_path} />
       ) : (
@@ -78,6 +97,14 @@ const BlogsPost = () => {
         </p>
       )}
       <Footer />
+      {showBackToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-5 right-5 p-3 bg-primaryDefault text-white rounded-full shadow-lg hover:bg-primaryHover transition-all duration-300"
+        >
+          ↑ Back to Top
+        </button>
+      )}
     </div>
   );
 };
