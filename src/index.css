@@ -142,21 +142,83 @@ body {
 /* Code block container */
 .code-block {
   position: relative;
-  margin: 2rem 0; /* Add extra space above and below code blocks */
+  margin-bottom: 16px;
 }
 
-/* Language label styling */
-.code-language {
-  position: absolute;
-  top: -1.2rem;
-  left: 0;
-  background-color: #333333;
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2d2d2d;
   color: #f8f8f2;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.9em;
-  font-family: "IBM Plex Mono", monospace;
+  padding: 8px 12px;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+}
+
+.code-language {
+  font-size: 14px;
+  font-weight: bold;
+  color: #a6e22e;
+}
+
+.copy-button {
+  background: #44475a;
+  color: #f8f8f2;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s;
+}
+
+.copy-button:hover {
+  background: #6272a4;
+}
+
+.code-header + pre {
+  margin-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* Code block styles remain unchanged */
+
+.sliding-dialog {
+  position: fixed;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #000000;
+  color: #ffffff;
+  padding: 12px 12px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  animation: slide-up 0.5s ease-out, slide-down 0.5s ease-in 2.5s;
+  z-index: 1000;
+}
+
+@keyframes slide-up {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+  }
+  100% {
+    bottom: 20px; /* Final position */
+    opacity: 1;
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    bottom: 20px;
+    opacity: 1;
+  }
+  100% {
+    bottom: -100px;
+    opacity: 0;
+  }
 }
 
 /* Updated code block styling */
@@ -231,16 +293,50 @@ body {
   border-radius: 4px;
 }
 
+.shimmer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.shimmer-line {
+  height: 20px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(240, 240, 240, 0.5) 25%,
+    rgba(224, 224, 224, 0.8) 50%,
+    rgba(240, 240, 240, 0.5) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
 .shimmer-line.short {
   width: 50%;
 }
 
 @keyframes shimmer {
   0% {
-    background-position: 200% 0;
+    background-position: -200% 0;
   }
   100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-line.short {
+  width: 50%;
+}
+
+@keyframes shimmer {
+  0% {
     background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
 

@@ -10,12 +10,20 @@ interface MarkdownViewerProps {
 
 const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
   const [markdownContent, setMarkdownContent] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [fileType, setFileType] = useState<string>("Unknown");
+  const [showDialog, setShowDialog] = useState<boolean>(false);
 
-  console.log("filePath:", filePath);
+  const copyToClipboard = (code: string) => {
+    navigator.clipboard.writeText(code).then(() => {
+      setShowDialog(true);
+      setTimeout(() => setShowDialog(false), 5000); // Auto-hide after 3 seconds
+    });
+  };
 
   useEffect(() => {
-    setIsLoading(true); // Start loading
+    const extension = filePath.split(".").pop()?.toLowerCase();
+    setFileType(extension === "md" ? "Markdown" : "Unknown");
+
     fetch(filePath)
       .then((response) => {
         if (!response.ok) {
@@ -23,72 +31,54 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
         }
         return response.text();
       })
-      .then((text) => {
-        setMarkdownContent(text);
-        setIsLoading(false); // Stop loading
-      })
-      .catch((error) => {
-        console.error("Error loading Markdown file:", error);
-        setIsLoading(false); // Stop loading in case of error
-      });
+      .then((text) => setMarkdownContent(text))
+      .catch((error) => console.error("Error loading Markdown file:", error));
   }, [filePath]);
 
   return (
     <div className="markdown-container">
-      <style>
-        {`
-          @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-          }
-        `}
-      </style>
-      {isLoading ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "12px",
-            padding: "16px",
-            backgroundColor: "#f5f5f5",
-          }}
-        >
-          <div
-            style={{
-              height: "20px",
-              background:
-                "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
-              backgroundSize: "200% 100%",
-              animation: "shimmer 1.5s infinite",
-              borderRadius: "4px",
-            }}
-          ></div>
-        </div>
-      ) : (
-        <ReactMarkdown
-          children={markdownContent}
-          remarkPlugins={[remarkGfm]}
-          components={{
-            code({ node, inline, className, children, ...props }: any) {
-              const match = /language-(\w+)/.exec(className || "");
-              const language = match ? match[1] : null;
-              return !inline && language ? (
+      <div className="file-type">File Type: {fileType}</div>
+      <ReactMarkdown
+        children={markdownContent}
+        remarkPlugins={[remarkGfm]}
+        components={{
+          code({ node, inline, className, children, ...props }: any) {
+            const match = /language-(\w+)/.exec(className || "");
+            const language = match ? match[1] : null;
+            const code = String(children).replace(/\n$/, "");
+            return !inline && language ? (
+              <div className="code-block">
+                <div className="code-header">
+                  <span className="code-language">{language}</span>
+                  <button
+                    className="copy-button"
+                    onClick={() => copyToClipboard(code)}
+                  >
+                    Copy Code
+                  </button>
+                </div>
                 <SyntaxHighlighter
                   style={a11yDark}
                   language={language}
                   PreTag="div"
                   {...props}
                 >
-                  {String(children).replace(/\n$/, "")}
+                  {code}
                 </SyntaxHighlighter>
-              ) : (
-                <code className={className} {...props}>
-                  {children}
-                </code>
-              );
-            },
-          }}
-        />
+              </div>
+            ) : (
+              <code className={`inline-code ${className}`} {...props}>
+                {children}
+              </code>
+            );
+          },
+        }}
+      />
+      {/* Sliding dialog */}
+      {showDialog && (
+        <div className="sliding-dialog">
+          <p>Code copied to clipboard!</p>
+        </div>
       )}
     </div>
   );
