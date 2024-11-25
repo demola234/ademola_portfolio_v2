@@ -37,7 +37,6 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
 
   return (
     <div className="markdown-container">
-      <div className="file-type">File Type: {fileType}</div>
       <ReactMarkdown
         children={markdownContent}
         remarkPlugins={[remarkGfm]}
