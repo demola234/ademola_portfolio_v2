@@ -14,8 +14,6 @@ import {
 } from "../../assets/svg";
 
 // Define interfaces for the icon props
-
-// Define the interface for the hovered tool state
 interface HoveredTool {
   name: string;
   color: string;
@@ -26,7 +24,7 @@ export const IconsContainer: React.FC = () => {
     name: "Tools",
     color: "#fff",
   });
-  //color of texts
+
   const toolColors: { [key: string]: string } = {
     Flutter: "#41D0FD",
     GitHub: "#181717",
@@ -51,7 +49,7 @@ export const IconsContainer: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-[#1E1E1E]/30 lg:grid-cols-6  grid-cols-5 grid  border border-[#3D3D3D]/50 relative">
+    <div className="w-full bg-[#1E1E1E]/30 lg:grid-cols-6 grid-cols-5 grid border border-[#3D3D3D]/50 relative">
       <div className="absolute -right-[8px] -top-[8px]">
         <PlusIcon />
       </div>
@@ -61,10 +59,18 @@ export const IconsContainer: React.FC = () => {
       <div className="lg:col-span-2 col-span-5 border flex items-center border-[#3D3D3D]/50 py-[26px] pl-[21px] pr-[40px]">
         <h2 className="text-[20px] font-[600]">
           Building cool stuff with{" "}
-          <span style={{ color: hoveredTool.color }}>{hoveredTool.name}</span>
+          <span
+            className={`${
+              hoveredTool.name === "Tools" ? "animate-fade-in-out" : ""
+            }`}
+            style={{ color: hoveredTool.color }}
+          >
+            {hoveredTool.name}
+          </span>
         </h2>
       </div>
 
+      {/* Tool icons */}
       <div
         className="flex h-full border cursor-pointer border-[#3D3D3D]/50 lg:py-[66px] px-[21px] justify-center items-center"
         onMouseEnter={() => handleMouseEnter("Flutter")}
@@ -96,7 +102,7 @@ export const IconsContainer: React.FC = () => {
       </div>
 
       <div
-        className="flex justify-center border cursor-pointer py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[26px] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Postgres")}
         onMouseLeave={handleMouseLeave}
       >
@@ -119,14 +125,14 @@ export const IconsContainer: React.FC = () => {
       </div>
 
       <div
-        className="flex justify-center border cursor-pointer py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[26px] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Docker")}
         onMouseLeave={handleMouseLeave}
       >
         <DockerIcon isHovered={hoveredTool.name === "Docker"} />
       </div>
       <div
-        className="flex justify-center border cursor-pointer py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[26px] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("MongoDB")}
         onMouseLeave={handleMouseLeave}
       >
@@ -134,7 +140,7 @@ export const IconsContainer: React.FC = () => {
       </div>
 
       <div
-        className="flex justify-center border cursor-pointer py-[26] px-[21px] border-[#3D3D3D]/50 items-center"
+        className="flex justify-center border cursor-pointer py-[26px] px-[21px] border-[#3D3D3D]/50 items-center"
         onMouseEnter={() => handleMouseEnter("Solidity")}
         onMouseLeave={handleMouseLeave}
       >

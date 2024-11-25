@@ -243,3 +243,18 @@ body {
     background-position: -200% 0;
   }
 }
+
+@keyframes fade-in-out {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-out {
+  animation: fade-in-out 1.5s infinite;
+  transition: color 0.3s ease;
+}

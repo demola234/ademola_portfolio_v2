@@ -12,10 +12,17 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
   const [markdownContent, setMarkdownContent] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  console.log("filePath:", filePath);
+
   useEffect(() => {
     setIsLoading(true); // Start loading
     fetch(filePath)
-      .then((response) => response.text())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+      })
       .then((text) => {
         setMarkdownContent(text);
         setIsLoading(false); // Stop loading
@@ -28,12 +35,34 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
 
   return (
     <div className="markdown-container">
+      <style>
+        {`
+          @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+          }
+        `}
+      </style>
       {isLoading ? (
-        <div className="shimmer-container">
-          <div className="shimmer-line"></div>
-          <div className="shimmer-line"></div>
-          <div className="shimmer-line"></div>
-          <div className="shimmer-line short"></div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "12px",
+            padding: "16px",
+            backgroundColor: "#f5f5f5",
+          }}
+        >
+          <div
+            style={{
+              height: "20px",
+              background:
+                "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
+              backgroundSize: "200% 100%",
+              animation: "shimmer 1.5s infinite",
+              borderRadius: "4px",
+            }}
+          ></div>
         </div>
       ) : (
         <ReactMarkdown
@@ -44,19 +73,16 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
               const match = /language-(\w+)/.exec(className || "");
               const language = match ? match[1] : null;
               return !inline && language ? (
-                <div className="code-block">
-                  <div className="code-language">{language}</div>
-                  <SyntaxHighlighter
-                    style={a11yDark}
-                    language={language}
-                    PreTag="div"
-                    {...props}
-                  >
-                    {String(children).replace(/\n$/, "")}
-                  </SyntaxHighlighter>
-                </div>
+                <SyntaxHighlighter
+                  style={a11yDark}
+                  language={language}
+                  PreTag="div"
+                  {...props}
+                >
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
               ) : (
-                <code className={`inline-code ${className}`} {...props}>
+                <code className={className} {...props}>
                   {children}
                 </code>
               );
