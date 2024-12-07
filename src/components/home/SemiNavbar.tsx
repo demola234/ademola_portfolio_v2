@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const SemiNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [currentLocation, setCurrentLocation] = useState<String>();
+  const location = useLocation();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
@@ -19,6 +20,9 @@ const SemiNavbar = () => {
       }
     }
   }, [isMenuOpen]);
+  useEffect(() => {
+    setCurrentLocation(location.pathname);
+  }, [location.pathname]);
 
   return (
     <div className="w-full border border-[#3D3D3D]/50 px-4 py-3 mt-10 relative">
@@ -26,7 +30,8 @@ const SemiNavbar = () => {
         className="text-primaryDefault focus:outline-none"
         onClick={toggleMenu}
       >
-        {"> "}Menu
+        {"> "}
+        {currentLocation === "/" ? "home" : currentLocation?.slice(1)}
       </button>
       <div
         ref={containerRef}
@@ -48,18 +53,24 @@ const SemiNavbar = () => {
           >
             ~blogs/
           </Link>
-          <a
+          {/* <a
             href="#tools"
             className="block py-2 text-white hover:text-primaryDefault"
           >
             ~tools/
-          </a>
-          <a
-            href="#projects"
+          </a> */}
+          <Link
+            to="/projects"
             className="block py-2 text-white hover:text-primaryDefault"
           >
             ~projects/
-          </a>
+          </Link>
+          <Link
+            to="/about"
+            className="block py-2 text-white hover:text-primaryDefault"
+          >
+            ~about/
+          </Link>
         </nav>
       </div>
     </div>

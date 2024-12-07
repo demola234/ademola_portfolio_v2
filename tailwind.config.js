@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      backgroundImage: {
+        heroshape: "url('./src/assets/heroshape.png')",
+      },
       colors: {
         neutralWhite: "ffffff",
         neutralLight: "#B7B8BA",
