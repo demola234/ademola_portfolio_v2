@@ -97,7 +97,7 @@ body {
 
 .markdown-container h2 {
   font-size: 1.5em;
-  color: #ffffff;
+  color: #e5e7eb;
 }
 
 @media (max-width: 768px) {
@@ -108,7 +108,7 @@ body {
 
 .markdown-container h3 {
   font-size: 1.3em;
-  color: #ffffff;
+  color: #e5e7eb;
 }
 
 @media (max-width: 768px) {
@@ -119,7 +119,7 @@ body {
 
 /* Paragraph styling with extra space */
 .markdown-container p {
-  color: #ffffff;
+  color: #e5e7eb;
   margin: 1.5rem 0;
 }
 
