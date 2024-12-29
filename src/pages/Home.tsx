@@ -1,4 +1,3 @@
-import Companies from "../components/home/Companies";
 import { useEffect } from "react";
 import CurrentlyLearning from "../components/home/CurrentlyLearning";
 import Hero from "../components/home/Hero";

@@ -12,7 +12,6 @@ const Employer: FC<EmployerProps> = ({
   title,
   date_started,
   date_end,
-  logo,
   responsibilities,
 }) => {
   return (
