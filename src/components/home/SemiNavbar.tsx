@@ -53,7 +53,7 @@ const SemiNavbar = () => {
           <Link
             to="/blogs"
             className={`block py-2 text-white hover:text-primaryDefault ${
-              currentLocation === "/blogs" && "text-primaryDefault capitalize"
+              currentLocation === "/blogs" && "text-primaryDefault"
             }`}
           >
             ~blogs/
@@ -61,8 +61,7 @@ const SemiNavbar = () => {
           <Link
             to="/projects"
             className={`block py-2 text-white hover:text-primaryDefault ${
-              currentLocation === "/projects" &&
-              "text-primaryDefault capitalize"
+              currentLocation === "/projects" && "text-primaryDefault"
             }`}
           >
             ~projects/
