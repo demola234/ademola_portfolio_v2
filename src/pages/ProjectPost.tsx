@@ -1,22 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { projects } from "../data/project";
 import { useEffect, useState } from "react";
-import playstore_logo from "../assets/palystore_logo.png";
+import { useNavigate, useParams } from "react-router-dom";
 import appstore_logo from "../assets/appstore_logo.png";
+import playstore_logo from "../assets/palystore_logo.png";
 import web_logo from "../assets/website.png";
-import banner from "../assets/DefiFundr_Banner 1.png";
-import active_donations from "../assets/ActiveDonations.png";
+import MarkdownViewer from "../components/blogs/MarkdownViewer";
+import { projects } from "../data/project";
 import Footer from "../layout/rootLayout/Footer";
-interface Project {
-  project_name: string;
-  description: string;
-  image_url: string;
-  technologies_used: string[];
-  category: string;
-  github_link: string;
-  play_store_link: string;
-  app_store_link: string;
-}
 
 const ProjectPost = () => {
   const { title } = useParams<{ title: string }>();
@@ -92,9 +81,16 @@ const ProjectPost = () => {
               </div>
             </div>
             <div className="flex items-center justify-center w-full mt-5 ">
-              <img src={banner} alt="" className="w-full h-full" />
+              <img src={project.image_url} alt="" className="w-full h-full" />
             </div>
-            <div className="flex flex-col gap-3 pt-[59px] pb-[30px]">
+            {project.markdown_path ? (
+              <MarkdownViewer filePath={project.markdown_path} />
+            ) : (
+              <p className="mt-5 text-center text-gray-700 text-lg">
+                Content Coming Soon
+              </p>
+            )}
+            {/* <div className="flex flex-col gap-3 pt-[59px] pb-[30px]">
               <h3 className="font-semibold capitalize text-[1.5rem]">about</h3>
               <p className="text-[1.1rem] fon-medium">
                 DefiFundr is a decentralized crowdfunding platform built on the
@@ -106,8 +102,8 @@ const ProjectPost = () => {
                 the deadline, the campaign is unsuccessful and the funds are
                 returned to the contributors.
               </p>
-            </div>
-            <div>
+            </div> */}
+            {/* <div>
               <h3 className="text-[18px] font-semibold">Prerequisites</h3>
               <ul className="pt-3 pl-5 ">
                 <li className="list-disc text-[1.1rem] fon-semibold">
@@ -129,9 +125,9 @@ const ProjectPost = () => {
                   Solidity (for writing smart contracts)
                 </li>
               </ul>
-            </div>
+            </div> */}
 
-            <div className="flex flex-col gap-4 pt-8">
+            {/* <div className="flex flex-col gap-4 pt-8">
               <h3 className="text-[18px] font-semibold">Screenshots</h3>
               <div className="flex flex-wrap gap-3">
                 <img src={active_donations} alt="" />
@@ -143,7 +139,7 @@ const ProjectPost = () => {
                 <img src={active_donations} alt="" />
                 <img src={active_donations} alt="" />
               </div>
-            </div>
+            </div> */}
           </div>
         ) : (
           <p>Project not found</p>

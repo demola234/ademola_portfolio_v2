@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const SemiNavbar = () => {
@@ -20,6 +20,7 @@ const SemiNavbar = () => {
       }
     }
   }, [isMenuOpen]);
+
   useEffect(() => {
     setCurrentLocation(location.pathname);
   }, [location.pathname]);
@@ -27,11 +28,11 @@ const SemiNavbar = () => {
   return (
     <div className="w-full border border-[#3D3D3D]/50 px-4 py-3 mt-10 relative">
       <button
-        className="text-primaryDefault focus:outline-none"
+        className="text-primaryDefault focus:outline-none capitalize"
         onClick={toggleMenu}
       >
         {"> "}
-        {currentLocation === "/" ? "home" : currentLocation?.slice(1)}
+        {currentLocation === "/" ? "Home" : currentLocation?.slice(1)}
       </button>
       <div
         ref={containerRef}
@@ -43,33 +44,28 @@ const SemiNavbar = () => {
         <nav>
           <Link
             to="/"
-            className="block py-2 text-white hover:text-primaryDefault"
+            className={`block py-2 text-white hover:text-primaryDefault ${
+              currentLocation === "/" && "text-primaryDefault"
+            }`}
           >
             ~home/
           </Link>
           <Link
             to="/blogs"
-            className="block py-2 text-white hover:text-primaryDefault"
+            className={`block py-2 text-white hover:text-primaryDefault ${
+              currentLocation === "/blogs" && "text-primaryDefault capitalize"
+            }`}
           >
             ~blogs/
           </Link>
-          {/* <a
-            href="#tools"
-            className="block py-2 text-white hover:text-primaryDefault"
-          >
-            ~tools/
-          </a> */}
           <Link
             to="/projects"
-            className="block py-2 text-white hover:text-primaryDefault"
+            className={`block py-2 text-white hover:text-primaryDefault ${
+              currentLocation === "/projects" &&
+              "text-primaryDefault capitalize"
+            }`}
           >
             ~projects/
-          </Link>
-          <Link
-            to="/about"
-            className="block py-2 text-white hover:text-primaryDefault"
-          >
-            ~about/
           </Link>
         </nav>
       </div>

@@ -11,9 +11,9 @@ const CurrentlyLearning = () => {
   });
 
   return (
-    <div className="w-full flex flex-col mt-[63px]">
+    <div className="w-full flex flex-col mt-[70px]">
       {/* Animated Title Container */}
-      <div className="relative h-[40px] overflow-hidden">
+      <div className="relative h-[30px] overflow-hidden">
         {/* Tool Name Animation */}
         <h1
           className={`absolute w-full text-[20px] font-[600] transition-transform duration-500 ease-in-out ${
@@ -35,12 +35,6 @@ const CurrentlyLearning = () => {
           {hoveredTool.name}
         </h1>
       </div>
-
-      {/* Description */}
-      <p className="text-[#D3D3D3] text-[13px] mt-[14px]">
-        I'm currently learning these tools and technologies, to help me build
-        better and more efficient software.
-      </p>
 
       {/* Icon Container */}
       <IconContainerForLearning

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 
 interface MarkdownViewerProps {
@@ -38,6 +39,7 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
   return (
     <div className="markdown-container">
       <ReactMarkdown
+        rehypePlugins={[rehypeRaw]}
         children={markdownContent}
         remarkPlugins={[remarkGfm]}
         components={{
