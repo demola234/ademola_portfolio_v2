@@ -72,6 +72,24 @@ const BlogsPost = () => {
         <p className="text-xs font-semibold">
           {new Date(post.publish_date).toDateString()}
         </p>
+        <div className="flex flex-col gap-3 pt-2">
+          <div className="flex flex-wrap gap-2">
+            {post.tags &&
+              post.tags.map((tech: string, i: number) => (
+                <div
+                  className="text-xs font-medium p-[10px_24px] bg-[rgb(255,255,255,0.10)] rounded-[11px]"
+                  key={i}
+                >
+                  {tech}
+                </div>
+              ))}
+          </div>
+          {/* Time read */}
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-500"></div>
+            <p className="text-xs font-medium">{post.reading_time} min read</p>
+          </div>
+        </div>
         <div className="absolute top-0 right-0">
           <WeirdImage />
         </div>

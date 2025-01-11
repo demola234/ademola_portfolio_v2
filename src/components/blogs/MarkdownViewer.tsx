@@ -55,7 +55,7 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
                     className="copy-button"
                     onClick={() => copyToClipboard(code)}
                   >
-                    Copy Code
+                    Copy
                   </button>
                 </div>
                 <SyntaxHighlighter
