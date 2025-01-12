@@ -20,7 +20,7 @@ export const posts = [
     short_description:
       "Asynq is a reliable and efficient distributed task queue in Go designed to handle asynchronous task processing elegantly. Asynq, which uses Redis for storage and job management, combines simplicity and scalability, making it an effective tool for distributed systems and high-concurrent applications.",
     author: "Ademola Kolawole",
-    publish_date: "2025-01-8",
+    publish_date: "2025-01-08",
     reading_time: "7",
     tags: ["Go", "Asynq", "Messaging Queue"],
     image_url:
