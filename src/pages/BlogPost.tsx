@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import slugify from "slugify";
 import { Medium, WeirdImage } from "../assets/svg";
 import MarkdownViewer from "../components/blogs/MarkdownViewer";
 import { posts } from "../data/posts";
@@ -7,44 +8,44 @@ import Footer from "../layout/rootLayout/Footer";
 
 const BlogsPost = () => {
   const { title } = useParams<{ title: string }>();
+  const decodedTitle = decodeURIComponent(title || "");
 
-  // State to track scroll position
   const [showBackToTop, setShowBackToTop] = useState(false);
 
-  // Find the specific post based on the title
-  const post = posts?.find((post) => post.title === title);
-
-  console.log("filePath:", post);
-  console.log(post?.markdown_path);
-
-  // Scroll to top on page load
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
+  // Find the post by comparing the slugified title
+  const post = posts.find((post) => {
+    const slug = slugify(post.title, {
+      lower: true,
+      strict: true,
     });
+    return slug === decodedTitle;
+  });
+
+  // Scroll to top on page load and track scroll position for the back-to-top button
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     const handleScroll = () => {
-      // Show the button if scrolled down 300px
       setShowBackToTop(window.scrollY > 300);
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (!post) {
-    return <p className="mt-10 text-xl text-center">Post not found.</p>;
+    return (
+      <div className="mt-10 text-center">
+        <p className="text-xl">Post not found.</p>
+        <Link to="/blogs" className="text-primaryDefault hover:underline">
+          Back to Blogs
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -53,8 +54,7 @@ const BlogsPost = () => {
         to="/blogs"
         className="block py-2 text-primaryDefault hover:text-white flex items-center self-start"
       >
-        <span>&lt;</span>
-        Back to Blog
+        <span>&lt;</span> Back to Blog
       </Link>
       {post.medium_blog_link && (
         <a
@@ -84,7 +84,6 @@ const BlogsPost = () => {
                 </div>
               ))}
           </div>
-          {/* Time read */}
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500"></div>
             <p className="text-xs font-medium">{post.reading_time} min read</p>
@@ -118,9 +117,9 @@ const BlogsPost = () => {
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 p-3 bg-primaryDefault text-white rounded-full shadow-lg hover:bg-primaryHover transition-all duration-300"
+          className="fixed bottom-5 right-10 p-3 bg-primaryDefault text-white rounded-full shadow-lg hover:bg-primaryHover transition-all duration-300"
         >
-          ↑ Back to Top
+          ↑
         </button>
       )}
     </div>

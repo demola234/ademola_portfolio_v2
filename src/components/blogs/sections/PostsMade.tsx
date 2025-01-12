@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import slugify from "slugify";
 import { posts } from "../../../data/posts";
 
 const PostsMade = () => {
@@ -16,9 +17,13 @@ const PostsMade = () => {
           const day = publishDate.getDate();
           const month = publishDate.toLocaleString("en-US", { month: "short" });
           const year = publishDate.getFullYear();
+          const slug = slugify(post.title, {
+            lower: true,
+            strict: true,
+          });
           return (
             <div
-              onClick={() => navigate(`/blogs/${post.title}`)}
+              onClick={() => navigate(`/blogs/${slug}`)}
               key={index}
               className="flex flex-col w-full cursor-pointer md:flex-row group"
             >
