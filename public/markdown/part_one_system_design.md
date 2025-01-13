@@ -1,6 +1,6 @@
 ## **Introduction**
 
-> 💡 I started learning Go three years ago as a second programming language, seeking a scalable, efficient, and versatile technology with great potential. Since then, I’ve been captivated by its power and simplicity. Realio reflects my passion for creating feature-rich applications that not only simulate real-world use cases but also serve as learning experiences for myself and others.
+> 💡I started learning Go three years ago as a second programming language, seeking a scalable, efficient, and versatile technology with great potential. Since then, I’ve been captivated by its power and simplicity. Realio reflects my passion for creating feature-rich applications that not only simulate real-world use cases but also serve as learning experiences for myself and others.
 
 ### What is Realio?
 
@@ -16,6 +16,8 @@ Golang, or Go, is an open-source programming language developed and supported by
 
 ### Why Microservices?
 
+![Frame_1618869751.gif](https://res.cloudinary.com/dcnuiaskr/image/upload/v1736781357/Frame_1618869751_kwumex.gif)
+
 Microservices architecture divides a complex application into smaller, autonomous services, each focusing on specific functionalities. This approach offers:
 
 1. **Scalability:** Services can scale independently to handle varying loads.
@@ -23,7 +25,7 @@ Microservices architecture divides a complex application into smaller, autonomou
 3. **Flexibility:** Teams can choose the most suitable technologies for individual services.
 4. **Faster Development:** Independent services allow parallel development, accelerating delivery cycles.
 
-## **System Overview**
+## Requirements
 
 ### Objective
 
@@ -56,13 +58,67 @@ To deliver a scalable, user-friendly property management solution that caters to
 
 ## **Architectural Principles**
 
-### Clean Architecture
+### **Clean Architecture**
 
-Realio adopts clean architecture principles to enhance modularity, testability, and scalability. Key principles include:
+Clean Architecture is a design approach that emphasizes the separation of concerns, making software more maintainable, testable, and scalable. It organizes code into distinct layers, each with specific responsibilities, ensuring that the business logic remains independent of frameworks, databases, and external systems.
 
-1. **Separation of Concerns:** Isolate business logic from external dependencies.
-2. **Layered Design:** Distinct layers for presentation, application, domain, and data.
-3. **Testability:** Simplified testing through well-defined interfaces.
+![image 19.png](https://res.cloudinary.com/dcnuiaskr/image/upload/v1736781362/image_19_riyg6d.png)
+
+### **Core Principles:**
+
+1. **Separation of Concerns:**
+   - Each layer focuses on a specific aspect of the application, avoiding overlap and reducing dependencies between them.
+2. **Dependency Inversion:**
+   - High-level modules (e.g., business rules) do not depend on low-level modules (e.g., frameworks). Instead, both depend on abstractions, which are implemented in the outer layers.
+3. **Testability:**
+   - By isolating business logic and abstracting external dependencies, the core functionality can be easily tested without requiring access to databases, APIs, or frameworks.
+4. **Independence:**
+   - **Framework Independence:** The architecture does not depend on specific frameworks. Frameworks are treated as tools, not the foundation.
+   - **UI Independence:** The user interface can change without affecting the core business logic.
+   - **Database Independence:** The core application logic is not tied to a specific database or storage system.
+
+### **Layered Design:**
+
+Clean Architecture organizes the application into concentric circles, with each layer encapsulating a different level of responsibility:
+
+1. **Entities (Core Business Rules):**
+   - These are the most abstract and stable parts of the application.
+   - Define business rules, policies, and domain objects (e.g., `Property`, `User`, `Booking`).
+   - Example: A `Property` entity might have attributes like `name`, `price`, `location`, and methods for domain-specific logic such as `calculateTax()`.
+2. **Use Cases (Application Logic):**
+   - Contain application-specific business rules.
+   - Coordinate between entities and orchestrate workflows.
+   - Example: A `ScheduleViewing` use case might validate user permissions, check property availability, and notify the agent.
+3. **Interface Adapters:**
+   - Convert data between the use case and the external systems (e.g., APIs, databases, UI).
+   - Example: A `PropertyRepository` adapter transforms database rows into `Property` domain objects.
+4. **Frameworks and Drivers:**
+   - The outermost layer includes frameworks, libraries, and tools.
+   - Example: A REST controller or gRPC handler interacts with use cases but does not contain business logic.
+
+### **Realio Application of Clean Architecture:**
+
+- **Entities:** Represent domain models like `Property` and `User` with core business logic (e.g., validation, computation).
+- **Use Cases:** Manage workflows like `GetPersonalizedRecommendations` and `BookPropertyViewing`.
+- **Interface Adapters:** Handle communication between the use cases and external systems like `PostgreSQL` or `Kafka`.
+- **Frameworks and Drivers:** Incorporate tools such as Gin for HTTP handling, Kafka for messaging, and gRPC for inter-service communication.
+
+### **Key Benefits for Realio:**
+
+1. **Flexibility:** Easy to switch frameworks or databases without impacting the core logic.
+2. **Scalability:** Allows independent scaling of services or components.
+3. **Maintainability:** Well-defined layers make it easier to understand and modify specific parts of the system.
+4. **Testing:** Clear boundaries make unit testing the core logic straightforward.
+
+### **Example: Booking a Property**
+
+- **Entities Layer:** Define a `Booking` entity with fields like `propertyID`, `userID`, `status`, and methods for validation.
+- **Use Case Layer:** Implement a `BookProperty` use case that:
+  - Check if the property is available.
+  - Updates the booking status.
+  - Triggers an event in Kafka for notifications.
+- **Interface Adapters Layer:** Create a repository for `Booking` that interacts with PostgreSQL.
+- **Frameworks Layer:** Use a Gin HTTP handler to expose the `BookProperty` use case via a REST API.
 
 ### Microservices Communication
 
@@ -95,64 +151,16 @@ Realio adopts clean architecture principles to enhance modularity, testability, 
 - **Prometheus & Grafana:** Real-time monitoring and visualization.
 - **Open-Telemetry:** Directly measure performance and behavior of your software and send this data to observability platforms.
 
-## **Detailed Service Breakdown**
+## High-Level Design
 
-### 1. User Service
-
-Manages user authentication, profiles, and roles. Features include:
-
-- **JWT Authentication:** Ensures secure user sessions.
-- **Role Management:** Differentiates between customers and agents.
-- **Profile Updates:** Handles user preferences and settings.
-
-### 2. Property Service
-
-Enables CRUD operations for property listings, with geospatial data integration for location-based searches.
-
-### 3. Search Service
-
-Provides advanced filtering options using Elasticsearch for:
-
-- Price range, property type, and location filters.
-- Keyword-based search.
-
-### 4. Recommendation Service
-
-Uses machine learning to:
-
-- Analyze user interactions for personalized suggestions.
-- Train real-time models using Kafka-streamed data.
-
-### 5. Booking and Scheduling Service
-
-Handles:
-
-- Property viewing appointments.
-- Conflict-free scheduling algorithms.
-
-### 6. Messaging and Notification Services
-
-**Messaging Service:**
-
-- **Real-Time Communication:** WebSockets enable instant messaging between customers and agents.
-- **Database:** MongoDB stores chat histories and message metadata.
-
-**Notification Service:**
-
-- **Multi-Channel Notifications:** Sends alerts via email, SMS, and push notifications.
-- **Delivery Tracking:** Tracks notification statuses.
-- **Tools:** Utilizes Firebase Cloud Messaging (FCM) for push notifications and email.
-
-## **System Design**
-
-### High-Level Design
+![Frame 1618869748 (4).png](https://res.cloudinary.com/dcnuiaskr/image/upload/v1736781357/Frame_1618869748__4_jykeo3.png)
 
 1. **API Gateway:** Single entry point for routing, authentication, and rate limiting.
 2. **Service Communication:** Combines gRPC for synchronous calls and Kafka for event-driven processes.
 3. **Database Layer:** Distributed PostgreSQL and Redis for fast, reliable data storage and retrieval.
 4. **Event Streaming:** Kafka streams enable real-time updates and notifications.
 
-### Low-Level Design
+## Low-Level Design
 
 1. **Caching Strategy:** Redis caches frequently accessed data.
 2. **Service Discovery:** API Gateway dynamically routes requests to available service instances.
@@ -200,4 +208,4 @@ Handles:
 
 ## **Future Enhancements**
 
-In the next article, we will explore how to set up clean architecture with Golang, Setting up our Authentication Service.
+In the Next part of this article, We will explore how to set up Clean architecture with Golang, Setting up our Authentication Service.
