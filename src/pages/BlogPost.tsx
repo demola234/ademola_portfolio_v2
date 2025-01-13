@@ -75,6 +75,8 @@ const BlogsPost = () => {
           property="og:image"
           content={post.image_url || "/default-image.png"}
         />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:url" content={window.location.href} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
