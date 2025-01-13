@@ -4,7 +4,7 @@
 
 ### What is Realio?
 
-Realio is an innovative property management and investment platform designed to transform the real estate industry. Inspired by leading solutions like Zillow, it enables seamless property exploration, personalized recommendations, and efficient appointment scheduling. Built with a robust microservices architecture, Realio ensures unparalleled scalability, maintainability, and performance, making it the go-to platform for both users and agents.
+Realio is an innovative property management and investment platform designed to transform the real estate industry. Inspired by leading solutions like Zillow and Airbnb. It enables seamless property exploration, personalized recommendations, and efficient appointment scheduling. Built with a robust microservices architecture, Realio ensures unparalleled scalability, maintainability, and performance, making it the go-to platform for both users and agents.
 
 ### Why Golang for Realio?
 

@@ -6,12 +6,13 @@ export const posts = [
       "Golang, or Go, is an open-source programming language developed and supported by Google. It is designed for simplicity, scalability, and high performance, making it an excellent choice for building modern, distributed systems like Realio.",
     author: "Ademola Kolawole",
     publish_date: "2025-01-13",
-    reading_time: "8",
+    reading_time: "6",
     tags: ["Go", "System Design", "Python", "Microservice", "Kafka"],
     image_url:
       "https://res.cloudinary.com/dcnuiaskr/image/upload/v1736673129/Frame_1618869740_4_gg99vd.png",
     markdown_path: "/markdown/part_one_system_design.md",
-    medium_blog_link: "https://medium.com/@ademolakolawole/30c03c821a96?source=friends_link&sk=56a507cc0557f1f58bc4e4a4272990b3",
+    medium_blog_link:
+      "https://medium.com/@ademolakolawole/30c03c821a96?source=friends_link&sk=56a507cc0557f1f58bc4e4a4272990b3",
     created_at: "2025-11-16T12:00:00Z",
   },
   {
