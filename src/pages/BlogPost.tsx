@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { Link, useParams } from "react-router-dom";
 import slugify from "slugify";
 import { Medium, WeirdImage } from "../assets/svg";
@@ -40,6 +41,13 @@ const BlogsPost = () => {
   if (!post) {
     return (
       <div className="mt-10 text-center">
+        <Helmet>
+          <title>Blog Not Found - My Blog</title>
+          <meta
+            name="description"
+            content="The blog post you are looking for was not found."
+          />
+        </Helmet>
         <p className="text-xl">Post not found.</p>
         <Link to="/blogs" className="text-primaryDefault hover:underline">
           Back to Blogs
@@ -50,6 +58,35 @@ const BlogsPost = () => {
 
   return (
     <div className="flex flex-col">
+      <Helmet>
+        <title>{post.title} - My Blog</title>
+        <meta
+          name="description"
+          content={
+            post.short_description || "Read more about this topic on our blog."
+          }
+        />
+        <meta property="og:title" content={post.title} />
+        <meta
+          property="og:description"
+          content={post.short_description || "Discover insightful content."}
+        />
+        <meta
+          property="og:image"
+          content={post.image_url || "/default-image.png"}
+        />
+        <meta property="og:url" content={window.location.href} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta
+          name="twitter:description"
+          content={post.short_description || "Explore this post on our blog."}
+        />
+        <meta
+          name="twitter:image"
+          content={post.image_url || "/default-image.png"}
+        />
+      </Helmet>
       <Link
         to="/blogs"
         className="block py-2 text-primaryDefault hover:text-white flex items-center self-start"

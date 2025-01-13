@@ -1,5 +1,3 @@
-# Part One: Designing and Building a Microservice with Golang, Python, and Clean Architecture
-
 ## **Introduction**
 
 > 💡 I started learning Go three years ago as a second programming language, seeking a scalable, efficient, and versatile technology with great potential. Since then, I’ve been captivated by its power and simplicity. Realio reflects my passion for creating feature-rich applications that not only simulate real-world use cases but also serve as learning experiences for myself and others.
