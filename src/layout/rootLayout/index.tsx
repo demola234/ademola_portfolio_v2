@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 interface GuestLayoutProps {
   children?: React.ReactNode;
 }
+
 export default function GuestLayout({ children }: GuestLayoutProps) {
   return (
     <div className="text-white bg-black container mx-auto xl:px-[0px] px-[20px]">

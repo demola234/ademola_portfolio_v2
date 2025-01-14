@@ -16,7 +16,9 @@ Golang, or Go, is an open-source programming language developed and supported by
 
 ### Why Microservices?
 
-![Frame_1618869751.gif](https://res.cloudinary.com/dcnuiaskr/image/upload/v1736781357/Frame_1618869751_kwumex.gif)
+<!-- ![Frame_1618869751.gif](https://res.cloudinary.com/dcnuiaskr/image/upload/v1736781357/Frame_1618869751_kwumex.gif) -->
+
+<img src="https://res.cloudinary.com/dcnuiaskr/image/upload/v1736781357/Frame_1618869751_kwumex.gif" alt="Looping GIF">
 
 Microservices architecture divides a complex application into smaller, autonomous services, each focusing on specific functionalities. This approach offers:
 
