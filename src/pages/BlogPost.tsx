@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Link, useParams } from "react-router-dom";
 import slugify from "slugify";
@@ -11,8 +11,6 @@ const BlogsPost = () => {
   const { title } = useParams<{ title: string }>();
   const decodedTitle = decodeURIComponent(title || "");
 
-  const [showBackToTop, setShowBackToTop] = useState(false);
-
   // Find the post by comparing the slugified title
   const post = posts.find((post) => {
     const slug = slugify(post.title, {
@@ -22,21 +20,10 @@ const BlogsPost = () => {
     return slug === decodedTitle;
   });
 
-  // Scroll to top on page load and track scroll position for the back-to-top button
+  // Scroll to top on page load
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 300);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   if (!post) {
     return (
@@ -153,14 +140,6 @@ const BlogsPost = () => {
         </p>
       )}
       <Footer />
-      {showBackToTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-5 right-10 p-3 bg-primaryDefault text-white rounded-full shadow-lg hover:bg-primaryHover transition-all duration-300"
-        >
-          ↑
-        </button>
-      )}
     </div>
   );
 };

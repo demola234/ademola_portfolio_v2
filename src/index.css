@@ -2,9 +2,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Clash Display", sans-serif;
-  background-color: black;
+  background-color: #000000;
+  color: #ffffff;
 }
 .eating-image {
   object-fit: contain;
