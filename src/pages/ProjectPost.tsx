@@ -6,6 +6,7 @@ import web_logo from "../assets/website.png";
 import MarkdownViewer from "../components/blogs/MarkdownViewer";
 import { projects } from "../data/project";
 import Footer from "../layout/rootLayout/Footer";
+import { umami } from "../utils/umami";
 
 const ProjectPost = () => {
   const { title } = useParams<{ title: string }>();
@@ -15,6 +16,11 @@ const ProjectPost = () => {
   useEffect(() => {
     const foundProject = projects.find((proj) => proj.project_name === title);
     setProject(foundProject);
+
+    // Track project view with Umami
+    if (foundProject) {
+      umami.trackProjectView(foundProject.project_name, title || "");
+    }
   }, [title]);
 
   return (
@@ -34,6 +40,7 @@ const ProjectPost = () => {
                   <a
                     className="font-medium  text-[0.676rem] flex items-center gap-2 cursor-pointer"
                     href={project.play_store_link}
+                    onClick={() => umami.trackExternalLink(project.play_store_link, "Play Store")}
                   >
                     <img src={playstore_logo} alt="Playstore" />
                     <p> View on Playstore</p>{" "}
@@ -43,6 +50,7 @@ const ProjectPost = () => {
                 <a
                   className="font-medium text-[0.676rem] flex items-center gap-2 cursor-pointer"
                   href={project.app_store_link}
+                  onClick={() => umami.trackExternalLink(project.app_store_link, "App Store")}
                 >
                   <img src={appstore_logo} alt="Appstore" />
                   <p> View on Appstore</p>
@@ -52,6 +60,7 @@ const ProjectPost = () => {
                 <a
                   className="font-medium text-[0.676rem] flex items-center gap-2 cursor-pointer"
                   href={project.github_link}
+                  onClick={() => umami.trackExternalLink(project.github_link, "GitHub/Web")}
                 >
                   <img src={web_logo} alt="Appstore" />
                   <p> View on web</p>

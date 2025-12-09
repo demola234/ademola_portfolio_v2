@@ -1,15 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link, useParams } from "react-router-dom";
 import slugify from "slugify";
 import { Medium, WeirdImage } from "../assets/svg";
 import MarkdownViewer from "../components/blogs/MarkdownViewer";
+import TableOfContents from "../components/blogs/TableOfContents";
 import { posts } from "../data/posts";
 import Footer from "../layout/rootLayout/Footer";
+import { umami } from "../utils/umami";
+import { calculateReadingTime } from "../utils/readingTime";
 
 const BlogsPost = () => {
   const { title } = useParams<{ title: string }>();
   const decodedTitle = decodeURIComponent(title || "");
+  const [readingTime, setReadingTime] = useState<number>(0);
+  const [markdownContent, setMarkdownContent] = useState<string>("");
 
   // Find the post by comparing the slugified title
   const post = posts.find((post) => {
@@ -20,10 +25,38 @@ const BlogsPost = () => {
     return slug === decodedTitle;
   });
 
-  // Scroll to top on page load
+  // Fetch markdown content and calculate reading time
+  useEffect(() => {
+    if (post?.markdown_path) {
+      fetch(post.markdown_path)
+        .then((response) => response.text())
+        .then((text) => {
+          setMarkdownContent(text);
+          const calculatedTime = calculateReadingTime(text);
+          setReadingTime(calculatedTime);
+        })
+        .catch((error) => {
+          console.error("Error calculating reading time:", error);
+          // Fallback to static reading time if fetch fails
+          setReadingTime(Number(post.reading_time) || 5);
+        });
+    }
+  }, [post]);
+
+  // Scroll to top on page load and track blog view
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+
+    // Track blog view with Umami (no API required, just client-side tracking)
+    if (post && readingTime > 0) {
+      umami.trackBlogView(
+        post.title,
+        decodedTitle,
+        String(readingTime),
+        post.tags
+      );
+    }
+  }, [post, decodedTitle, readingTime]);
 
   if (!post) {
     return (
@@ -88,6 +121,7 @@ const BlogsPost = () => {
           target="_blank"
           rel="noopener noreferrer"
           className="flex gap-x-[12px] w-auto self-start rounded-full bg-white/5 items-center px-[19px] py-[10px]"
+          onClick={() => umami.trackMediumClick(post.title)}
         >
           <Medium />
           <p className="text-[12px]">Read on Medium</p>
@@ -112,33 +146,44 @@ const BlogsPost = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500"></div>
-            <p className="text-xs font-medium">{post.reading_time} min read</p>
+            <p className="text-xs font-medium">
+              {readingTime > 0 ? readingTime : post.reading_time} min read
+            </p>
           </div>
         </div>
         <div className="absolute top-0 right-0">
           <WeirdImage />
         </div>
       </div>
-      <div className="w-full">
-        {post.image_url ? (
-          <img
-            src={post.image_url}
-            alt={post.title || "Blogs post image"}
-            className="object-cover object-top w-full h-full aspect-video"
-          />
-        ) : (
-          <div className="flex items-center justify-center w-full h-60 bg-gray-200 text-gray-700 text-lg">
-            Coming Soon
+      <div className="blog-content-wrapper">
+        <div className="blog-main-content">
+          <div className="w-full mb-8">
+            {post.image_url ? (
+              <img
+                src={post.image_url}
+                alt={post.title || "Blogs post image"}
+                className="object-cover object-top w-full h-full aspect-video rounded-lg"
+              />
+            ) : (
+              <div className="flex items-center justify-center w-full h-60 bg-gray-200 text-gray-700 text-lg rounded-lg">
+                Coming Soon
+              </div>
+            )}
           </div>
+          {post.markdown_path ? (
+            <MarkdownViewer filePath={post.markdown_path} />
+          ) : (
+            <p className="mt-5 text-center text-gray-700 text-lg">
+              Content Coming Soon
+            </p>
+          )}
+        </div>
+        {markdownContent && (
+          <aside className="blog-sidebar">
+            <TableOfContents content={markdownContent} />
+          </aside>
         )}
       </div>
-      {post.markdown_path ? (
-        <MarkdownViewer filePath={post.markdown_path} />
-      ) : (
-        <p className="mt-5 text-center text-gray-700 text-lg">
-          Content Coming Soon
-        </p>
-      )}
       <Footer />
     </div>
   );
