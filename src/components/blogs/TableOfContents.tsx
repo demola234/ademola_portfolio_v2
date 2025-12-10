@@ -8,9 +8,11 @@ interface Heading {
 
 interface TableOfContentsProps {
   content: string;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-const TableOfContents: React.FC<TableOfContentsProps> = ({ content }) => {
+const TableOfContents: React.FC<TableOfContentsProps> = ({ content, isOpen = true, onClose }) => {
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [activeId, setActiveId] = useState<string>("");
 
@@ -95,6 +97,10 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content }) => {
       const yOffset = -80;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: "smooth" });
+      // Close mobile overlay after clicking
+      if (onClose) {
+        onClose();
+      }
     }
   };
 
@@ -111,34 +117,68 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content }) => {
     }
   }, [activeId]);
 
+  // Prevent body scroll when mobile TOC is open
+  useEffect(() => {
+    if (onClose && isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, onClose]);
+
   if (headings.length === 0) return null;
 
   return (
-    <div className="table-of-contents">
-      <div className="toc-header">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path
-            d="M2 4h12M2 8h12M2 12h12"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
-        <h4>Table of Contents</h4>
+    <>
+      {/* Mobile Overlay Backdrop */}
+      {isOpen && onClose && (
+        <div className="toc-overlay-backdrop" onClick={onClose} />
+      )}
+
+      <div className={`table-of-contents ${isOpen ? 'toc-open' : 'toc-closed'}`}>
+        <div className="toc-header">
+          <div className="toc-header-content">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M2 4h12M2 8h12M2 12h12"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+            <h4>Table of Contents</h4>
+          </div>
+          {onClose && (
+            <button onClick={onClose} className="toc-close-button">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M15 5L5 15M5 5l10 10"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
+        <nav className="toc-nav">
+          {headings.map((heading) => (
+            <button
+              key={heading.id}
+              data-toc-id={heading.id}
+              onClick={() => scrollToHeading(heading.id)}
+              className={`toc-link ${activeId === heading.id ? "active" : ""} toc-level-${heading.level}`}
+            >
+              {heading.text}
+            </button>
+          ))}
+        </nav>
       </div>
-      <nav className="toc-nav">
-        {headings.map((heading) => (
-          <button
-            key={heading.id}
-            data-toc-id={heading.id}
-            onClick={() => scrollToHeading(heading.id)}
-            className={`toc-link ${activeId === heading.id ? "active" : ""} toc-level-${heading.level}`}
-          >
-            {heading.text}
-          </button>
-        ))}
-      </nav>
-    </div>
+    </>
   );
 };
 

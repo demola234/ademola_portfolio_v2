@@ -15,6 +15,7 @@ const BlogsPost = () => {
   const decodedTitle = decodeURIComponent(title || "");
   const [readingTime, setReadingTime] = useState<number>(0);
   const [markdownContent, setMarkdownContent] = useState<string>("");
+  const [isTocOpen, setIsTocOpen] = useState<boolean>(false);
 
   // Find the post by comparing the slugified title
   const post = posts.find((post) => {
@@ -155,6 +156,25 @@ const BlogsPost = () => {
           <WeirdImage />
         </div>
       </div>
+      {/* Mobile TOC Toggle Button */}
+      {markdownContent && (
+        <button
+          onClick={() => setIsTocOpen(true)}
+          className="toc-mobile-toggle"
+          aria-label="Open Table of Contents"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M3 5h14M3 10h14M3 15h14"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+          <span>Contents</span>
+        </button>
+      )}
+
       <div className="blog-content-wrapper">
         <div className="blog-main-content">
           <div className="blog-image-container">
@@ -182,7 +202,11 @@ const BlogsPost = () => {
         </div>
         {markdownContent && (
           <aside className="blog-sidebar">
-            <TableOfContents content={markdownContent} />
+            <TableOfContents
+              content={markdownContent}
+              isOpen={isTocOpen}
+              onClose={() => setIsTocOpen(false)}
+            />
           </aside>
         )}
       </div>
