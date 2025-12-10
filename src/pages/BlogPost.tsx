@@ -200,7 +200,7 @@ const BlogsPost = () => {
               Content Coming Soon
             </p>
           )}
-          <Comments postTitle={post.title} />
+          <Comments />
         </div>
         {markdownContent && (
           <aside className="blog-sidebar">

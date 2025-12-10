@@ -1,11 +1,7 @@
 import React from "react";
 import Giscus from "@giscus/react";
 
-interface CommentsProps {
-  postTitle: string;
-}
-
-const Comments: React.FC<CommentsProps> = ({ postTitle }) => {
+const Comments: React.FC = () => {
   return (
     <div className="comments-section">
       <div className="comments-header">
@@ -20,12 +16,11 @@ const Comments: React.FC<CommentsProps> = ({ postTitle }) => {
         repoId={import.meta.env.VITE_GISCUS_REPO_ID || ""}
         category={import.meta.env.VITE_GISCUS_CATEGORY || ""}
         categoryId={import.meta.env.VITE_GISCUS_CATEGORY_ID || ""}
-        mapping="specific"
-        term={postTitle}
+        mapping="pathname"
         strict="0"
         reactionsEnabled="1"
         emitMetadata="0"
-        inputPosition="top"
+        inputPosition="bottom"
         theme="dark"
         lang="en"
         loading="lazy"
