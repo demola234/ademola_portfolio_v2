@@ -23,7 +23,18 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, isOpen = tru
 
     const extractedHeadings = matches.map((match, index) => {
       const level = match[1].length;
-      const text = match[2].trim();
+      let text = match[2].trim();
+
+      // Strip markdown formatting from heading text
+      text = text
+        .replace(/\*\*(.+?)\*\*/g, '$1')  // Remove bold **text**
+        .replace(/\*(.+?)\*/g, '$1')      // Remove italic *text*
+        .replace(/__(.+?)__/g, '$1')      // Remove bold __text__
+        .replace(/_(.+?)_/g, '$1')        // Remove italic _text_
+        .replace(/`(.+?)`/g, '$1')        // Remove inline code `text`
+        .replace(/\[(.+?)\]\(.+?\)/g, '$1') // Remove links [text](url)
+        .replace(/~~(.+?)~~/g, '$1');     // Remove strikethrough ~~text~~
+
       const id = `heading-${index}`;
 
       return { id, text, level };
