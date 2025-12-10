@@ -55,6 +55,7 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
                 {...props}
                 loading="lazy"
                 decoding="async"
+                className="markdown-image"
                 style={{ maxWidth: "100%", height: "auto", display: "block", margin: "1.5rem auto" }}
               />
             );
