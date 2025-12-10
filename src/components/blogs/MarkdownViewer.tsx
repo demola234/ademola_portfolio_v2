@@ -49,6 +49,16 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath }) => {
         children={markdownContent}
         remarkPlugins={[remarkGfm]}
         components={{
+          img({ node, ...props }: any) {
+            return (
+              <img
+                {...props}
+                loading="lazy"
+                decoding="async"
+                style={{ maxWidth: "100%", height: "auto", display: "block", margin: "1.5rem auto" }}
+              />
+            );
+          },
           code({ node, inline, className, children, ...props }: any) {
             const match = /language-(\w+)/.exec(className || "");
             const language = match ? match[1] : null;

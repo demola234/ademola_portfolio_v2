@@ -77,7 +77,7 @@ const BlogsPost = () => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="blog-post-container">
       <Helmet>
         <title>{post.title} - My Blog</title>
         <meta
@@ -157,15 +157,17 @@ const BlogsPost = () => {
       </div>
       <div className="blog-content-wrapper">
         <div className="blog-main-content">
-          <div className="w-full mb-8">
+          <div className="blog-image-container">
             {post.image_url ? (
               <img
                 src={post.image_url}
                 alt={post.title || "Blogs post image"}
-                className="object-cover object-top w-full h-full aspect-video rounded-lg"
+                className="blog-featured-image"
+                loading="lazy"
+                decoding="async"
               />
             ) : (
-              <div className="flex items-center justify-center w-full h-60 bg-gray-200 text-gray-700 text-lg rounded-lg">
+              <div className="blog-image-placeholder">
                 Coming Soon
               </div>
             )}
