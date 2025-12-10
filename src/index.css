@@ -876,3 +876,55 @@ body {
   animation: fade-in-out 1.5s infinite;
   transition: color 0.3s ease;
 }
+
+/* Comments Section */
+.comments-section {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .comments-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+  }
+}
+
+.comments-header {
+  margin-bottom: 2rem;
+}
+
+.comments-header h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .comments-header h3 {
+    font-size: 1.5rem;
+  }
+}
+
+.comments-subtitle {
+  font-size: 0.95rem;
+  color: #9ca3af;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Giscus theme overrides for dark mode */
+.giscus,
+.giscus-frame {
+  width: 100%;
+  max-width: 100%;
+}
+
+.giscus-frame {
+  border: none;
+  background: transparent;
+}

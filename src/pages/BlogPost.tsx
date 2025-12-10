@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { Link, useParams } from "react-router-dom";
 import slugify from "slugify";
 import { Medium, WeirdImage } from "../assets/svg";
+import Comments from "../components/blogs/Comments";
 import MarkdownViewer from "../components/blogs/MarkdownViewer";
 import TableOfContents from "../components/blogs/TableOfContents";
 import { posts } from "../data/posts";
@@ -199,6 +200,7 @@ const BlogsPost = () => {
               Content Coming Soon
             </p>
           )}
+          <Comments postTitle={post.title} />
         </div>
         {markdownContent && (
           <aside className="blog-sidebar">
