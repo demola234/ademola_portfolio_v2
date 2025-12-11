@@ -22,7 +22,6 @@ const Projects = () => {
   return (
     <div>
       <div className="flex flex-col gap-4">
-        <SemiNavbar />
         <h1 className="px-3 font-semibold text-xl/8">Projects</h1>
         {/* Pass selectedCategory and setSelectedCategory to ProjectTypeBar */}
         <ProjectTypeBar

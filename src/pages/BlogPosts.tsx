@@ -13,7 +13,6 @@ const BlogsPosts = () => {
   });
   return (
     <div>
-      <SemiNavbar />
       <PostsMade />
       <Footer />
     </div>

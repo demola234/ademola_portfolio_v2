@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import CurrentlyLearning from "../components/home/CurrentlyLearning";
 import Hero from "../components/home/Hero";
 import Projects from "../components/home/Projects";
-import SemiNavbar from "../components/home/SemiNavbar";
 import Tools from "../components/home/Tools";
 import Footer from "../layout/rootLayout/Footer";
 
@@ -16,7 +15,6 @@ const Home = () => {
   return (
     <div>
       <Hero />
-      <SemiNavbar />
       <Tools />
       <CurrentlyLearning />
       <Projects />
