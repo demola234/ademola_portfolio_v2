@@ -5,7 +5,6 @@ const About = () => {
   return (
     <>
       <div className="flex flex-col gap-4">
-        <SemiNavbar />
         <h1 className="px-3 font-semibold text-xl/8">
           Professional Experience
         </h1>
