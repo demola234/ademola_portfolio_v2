@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { Github, LinkedIn, Medium, Resume, XTwitter } from "../../assets/svg";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+
+  // Check if we're on home page
+  const isHomePage = location.pathname === "/";
+  // Check if we're on a blog post page
+  const isBlogPostPage = location.pathname.startsWith("/blogs/") && location.pathname !== "/blogs";
+  // Check if we're on a project post page
+  const isProjectPostPage = location.pathname.startsWith("/projects/") && location.pathname !== "/projects";
 
   useEffect(() => {
     let ticking = false;
@@ -27,45 +35,74 @@ const Navbar = () => {
     <div className="navbar-sticky">
       <div className="navbar-content">
         <div className="nav-links-row">
-          {/* Page Navigation */}
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              `flex gap-x-[12px] items-center px-[19px] py-[10px] rounded-full transition-colors duration-300 ${
-                isActive ? "bg-white/10 text-white" : "bg-white/5 hover:bg-white/10 text-gray-400"
-              }`
-            }
-          >
-            <p className="text-[12px] font-medium">Home</p>
-          </NavLink>
-          <NavLink
-            to="/projects"
-            className={({ isActive }) =>
-              `flex gap-x-[12px] items-center px-[19px] py-[10px] rounded-full transition-colors duration-300 ${
-                isActive ? "bg-white/10 text-white" : "bg-white/5 hover:bg-white/10 text-gray-400"
-              }`
-            }
-          >
-            <p className="text-[12px] font-medium">Projects</p>
-          </NavLink>
-          <NavLink
-            to="/blogs"
-            className={({ isActive }) =>
-              `flex gap-x-[12px] items-center px-[19px] py-[10px] rounded-full transition-colors duration-300 ${
-                isActive ? "bg-white/10 text-white" : "bg-white/5 hover:bg-white/10 text-gray-400"
-              }`
-            }
-          >
-            <p className="text-[12px] font-medium">Blogs</p>
-          </NavLink>
+          {/* Back to Blogs - Only on Blog Post Pages */}
+          {isBlogPostPage && (
+            <NavLink
+              to="/blogs"
+              className="flex gap-x-[12px] items-center px-[19px] py-[10px] rounded-full transition-colors duration-300 bg-white/5 hover:bg-white/10 text-gray-400"
+            >
+              <span>&lt;</span>
+              <p className="text-[12px] font-medium">Back to Blogs</p>
+            </NavLink>
+          )}
 
-          {/* Divider - Desktop Only */}
-          <div className="h-[24px] w-[1px] bg-white/10 mx-[4px] hidden md:block"></div>
+          {/* Back to Projects - Only on Project Post Pages */}
+          {isProjectPostPage && (
+            <NavLink
+              to="/projects"
+              className="flex gap-x-[12px] items-center px-[19px] py-[10px] rounded-full transition-colors duration-300 bg-white/5 hover:bg-white/10 text-gray-400"
+            >
+              <span>&lt;</span>
+              <p className="text-[12px] font-medium">Back to Projects</p>
+            </NavLink>
+          )}
+
+          {/* Page Navigation - Hidden on Blog/Project Post Pages */}
+          {!isBlogPostPage && !isProjectPostPage && (
+            <>
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) =>
+                  `flex gap-x-[12px] items-center px-[19px] py-[10px] rounded-full transition-colors duration-300 ${
+                    isActive ? "bg-white/10 text-white" : "bg-white/5 hover:bg-white/10 text-gray-400"
+                  }`
+                }
+              >
+                <p className="text-[12px] font-medium">Home</p>
+              </NavLink>
+              <NavLink
+                to="/projects"
+                className={({ isActive }) =>
+                  `flex gap-x-[12px] items-center px-[19px] py-[10px] rounded-full transition-colors duration-300 ${
+                    isActive ? "bg-white/10 text-white" : "bg-white/5 hover:bg-white/10 text-gray-400"
+                  }`
+                }
+              >
+                <p className="text-[12px] font-medium">Projects</p>
+              </NavLink>
+              <NavLink
+                to="/blogs"
+                className={({ isActive }) =>
+                  `flex gap-x-[12px] items-center px-[19px] py-[10px] rounded-full transition-colors duration-300 ${
+                    isActive ? "bg-white/10 text-white" : "bg-white/5 hover:bg-white/10 text-gray-400"
+                  }`
+                }
+              >
+                <p className="text-[12px] font-medium">Blogs</p>
+              </NavLink>
+            </>
+          )}
+
+          {/* Divider - Desktop Only, Only Show on Home Page */}
+          {isHomePage && !isScrolled && (
+            <div className="h-[24px] w-[1px] bg-white/10 mx-[4px] hidden md:block"></div>
+          )}
         </div>
 
-        {/* Social Links - Hidden on Scroll, Separate Row on Mobile */}
-        <div className={`social-links-row ${isScrolled ? "social-hidden" : ""}`}>
+        {/* Social Links - Only on Home Page, Hidden on Scroll */}
+        {isHomePage && (
+          <div className={`social-links-row ${isScrolled ? "social-hidden" : ""}`}>
 
           {/* Social Links */}
           <a
@@ -105,7 +142,8 @@ const Navbar = () => {
           >
             <Medium />
           </a>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

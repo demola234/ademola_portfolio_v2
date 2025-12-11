@@ -118,12 +118,6 @@ const BlogsPost = () => {
           content={post.image_url ? (post.image_url.startsWith('http') ? post.image_url : `${window.location.origin}${post.image_url}`) : `${window.location.origin}/default-image.png`}
         />
       </Helmet>
-      <Link
-        to="/blogs"
-        className="block py-2 text-primaryDefault hover:text-white flex items-center self-start"
-      >
-        <span>&lt;</span> Back to Blog
-      </Link>
       <div className="blog-header-actions">
         {post.medium_blog_link && (
           <>

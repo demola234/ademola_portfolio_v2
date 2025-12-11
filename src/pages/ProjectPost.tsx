@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import appstore_logo from "../assets/appstore_logo.png";
 import playstore_logo from "../assets/palystore_logo.png";
 import web_logo from "../assets/website.png";
@@ -11,7 +11,6 @@ import { umami } from "../utils/umami";
 const ProjectPost = () => {
   const { title } = useParams<{ title: string }>();
   const [project, setProject] = useState<any>();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const foundProject = projects.find((proj) => proj.project_name === title);
@@ -25,12 +24,6 @@ const ProjectPost = () => {
 
   return (
     <div className="md:px-[43px] flex flex-col gap-5">
-      <button
-        onClick={() => navigate(-1)}
-        className="text-[0.83rem]  flex w-fit text-[#8CC5E7] font-medium capitalize"
-      >
-        {"<"} back
-      </button>
       <div>
         {project ? (
           <div>
