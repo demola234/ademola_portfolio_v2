@@ -5,6 +5,7 @@ import slugify from "slugify";
 import { Medium, WeirdImage } from "../assets/svg";
 import Comments from "../components/blogs/Comments";
 import MarkdownViewer from "../components/blogs/MarkdownViewer";
+import SocialShare from "../components/SocialShare";
 import TableOfContents from "../components/blogs/TableOfContents";
 import { posts } from "../data/posts";
 import Footer from "../layout/rootLayout/Footer";
@@ -88,6 +89,10 @@ const BlogsPost = () => {
             post.short_description || "Read more about this topic on our blog."
           }
         />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="Ademola's Portfolio" />
         <meta property="og:title" content={post.title} />
         <meta
           property="og:description"
@@ -95,11 +100,13 @@ const BlogsPost = () => {
         />
         <meta
           property="og:image"
-          content={post.image_url || "/default-image.png"}
+          content={post.image_url ? (post.image_url.startsWith('http') ? post.image_url : `${window.location.origin}${post.image_url}`) : `${window.location.origin}/default-image.png`}
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:url" content={window.location.href} />
+
+        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta
@@ -108,7 +115,7 @@ const BlogsPost = () => {
         />
         <meta
           name="twitter:image"
-          content={post.image_url || "/default-image.png"}
+          content={post.image_url ? (post.image_url.startsWith('http') ? post.image_url : `${window.location.origin}${post.image_url}`) : `${window.location.origin}/default-image.png`}
         />
       </Helmet>
       <Link
@@ -117,18 +124,30 @@ const BlogsPost = () => {
       >
         <span>&lt;</span> Back to Blog
       </Link>
-      {post.medium_blog_link && (
-        <a
-          href={post.medium_blog_link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex gap-x-[12px] w-auto self-start rounded-full bg-white/5 items-center px-[19px] py-[10px]"
-          onClick={() => umami.trackMediumClick(post.title)}
-        >
-          <Medium />
-          <p className="text-[12px]">Read on Medium</p>
-        </a>
-      )}
+      <div className="blog-header-actions">
+        {post.medium_blog_link && (
+          <>
+            <a
+              href={post.medium_blog_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex gap-x-[12px] w-auto rounded-full bg-white/5 items-center px-[19px] py-[10px]"
+              onClick={() => umami.trackMediumClick(post.title)}
+            >
+              <Medium />
+              <p className="text-[12px]">Read on Medium</p>
+            </a>
+            <span className="blog-separator">|</span>
+          </>
+        )}
+        <div className="blog-social-share-inline">
+          <SocialShare
+            url={window.location.href}
+            title={post.title}
+            description={post.short_description}
+          />
+        </div>
+      </div>
       <div className="relative bg-[#090909] px-7 mt-3 py-9">
         <h2 className="text-xl font-bold sm:text-3xl">{post.title}</h2>
         <p className="text-xs font-semibold">
