@@ -1,5 +1,4 @@
 import Employer from "../components/about/Employer";
-import SemiNavbar from "../components/home/SemiNavbar";
 import Footer from "../layout/rootLayout/Footer";
 import { experience } from "../data/Experience";
 const About = () => {

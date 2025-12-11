@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import SemiNavbar from "../components/home/SemiNavbar";
 import ProjectCard from "../components/projects/ProjectCard";
 import ProjectTypeBar from "../components/projects/ProjectTypeBar";
 import { projects } from "../data/project";
