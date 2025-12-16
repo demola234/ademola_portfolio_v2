@@ -120,20 +120,18 @@ const BlogsPost = () => {
       </Helmet>
       <div className="blog-header-actions">
         {post.medium_blog_link && (
-          <>
-            <a
-              href={post.medium_blog_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex gap-x-[12px] w-auto rounded-full bg-white/5 items-center px-[19px] py-[10px]"
-              onClick={() => umami.trackMediumClick(post.title)}
-            >
-              <Medium />
-              <p className="text-[12px]">Read on Medium</p>
-            </a>
-            <span className="blog-separator">|</span>
-          </>
+          <a
+            href={post.medium_blog_link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex gap-x-2 sm:gap-x-3 w-auto rounded-full bg-white/5 hover:bg-white/10 items-center px-4 py-2.5 sm:px-5 sm:py-2.5 transition-colors"
+            onClick={() => umami.trackMediumClick(post.title)}
+          >
+            <Medium />
+            <p className="text-sm font-medium">Read on Medium</p>
+          </a>
         )}
+        {post.medium_blog_link && <span className="blog-separator">|</span>}
         <div className="blog-social-share-inline">
           <SocialShare
             url={window.location.href}
@@ -142,9 +140,9 @@ const BlogsPost = () => {
           />
         </div>
       </div>
-      <div className="relative bg-[#090909] px-7 mt-3 py-9">
+      <div className="relative bg-[#090909] px-3 sm:px-5 md:px-6 mt-3 py-6 sm:py-9">
         <h2 className="text-xl font-bold sm:text-3xl">{post.title}</h2>
-        <p className="text-xs font-semibold">
+        <p className="text-sm font-semibold">
           {new Date(post.publish_date).toDateString()}
         </p>
         <div className="flex flex-col gap-3 pt-2">
@@ -152,7 +150,7 @@ const BlogsPost = () => {
             {post.tags &&
               post.tags.map((tech: string, i: number) => (
                 <div
-                  className="text-xs font-medium p-[10px_24px] bg-[rgb(255,255,255,0.10)] rounded-[11px]"
+                  className="text-sm font-medium px-4 py-2 bg-[rgb(255,255,255,0.10)] rounded-[11px]"
                   key={i}
                 >
                   {tech}
@@ -161,7 +159,7 @@ const BlogsPost = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500"></div>
-            <p className="text-xs font-medium">
+            <p className="text-sm font-medium">
               {readingTime > 0 ? readingTime : post.reading_time} min read
             </p>
           </div>
