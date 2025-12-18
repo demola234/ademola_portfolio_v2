@@ -102,12 +102,22 @@ const BlogsPost = () => {
           property="og:image"
           content={post.image_url ? (post.image_url.startsWith('http') ? post.image_url : `${window.location.origin}${post.image_url}`) : `${window.location.origin}/default-image.png`}
         />
+        <meta
+          property="og:image:secure_url"
+          content={post.image_url ? (post.image_url.startsWith('http') ? post.image_url : `${window.location.origin}${post.image_url}`) : `${window.location.origin}/default-image.png`}
+        />
+        <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={`${post.title} - Featured Image`} />
         <meta property="og:url" content={window.location.href} />
+        <meta property="article:published_time" content={post.publish_date} />
+        <meta property="article:author" content={post.author} />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@ademolaDi" />
+        <meta name="twitter:creator" content="@ademolaDi" />
         <meta name="twitter:title" content={post.title} />
         <meta
           name="twitter:description"
@@ -117,6 +127,7 @@ const BlogsPost = () => {
           name="twitter:image"
           content={post.image_url ? (post.image_url.startsWith('http') ? post.image_url : `${window.location.origin}${post.image_url}`) : `${window.location.origin}/default-image.png`}
         />
+        <meta name="twitter:image:alt" content={`${post.title} - Featured Image`} />
       </Helmet>
       <div className="blog-header-actions">
         {post.medium_blog_link && (
