@@ -1,32 +1,45 @@
 ---
 title: "Flutter Bunny CLI"
-subtitle: "Project scaffolding for Flutter developers"
-description: "A robust command-line tool that enhances Flutter developer productivity by streamlining project setup and automating repetitive tasks. Generate features, screens, BLoC classes, and repository layers with a single command."
+subtitle: "Production-ready Flutter project scaffolding from the terminal"
+description: "A Dart CLI tool that eliminates Flutter project boilerplate — guided project creation, code generation for models, screens, widgets, and tests, with built-in support for Clean Architecture, MVVM, MVC, and all major state management solutions. Available on pub.dev and Homebrew."
 tags: ["Dart", "CLI", "Flutter", "Dev Tools", "Open Source"]
 image_url: "https://res.cloudinary.com/dcnuiaskr/image/upload/v1735473593/Flutter_Bunny_Cli_4_1_qf9ksb.png"
-category: "Dev Tools, Open Source"
-github: "https://github.com/demola234/flutter_bunny_cli"
+category: "tool"
+github: "https://github.com/FlutterBunnyCLI/flutter_bunny_cli"
 ---
-
-Flutter Bunny CLI is a productivity tool for Flutter developers. It generates opinionated project scaffolding — feature folders, BLoC classes, repositories, use-cases — following clean architecture conventions.
 
 ## What It Does
 
-```bash
-# Create a new Flutter project with full clean architecture structure
-bunny create my_app
+Flutter Bunny CLI removes the repetitive setup work from starting and scaling Flutter projects. Rather than manually creating folder structures, writing boilerplate files, and wiring up architecture layers by hand, you answer a few prompts and the CLI scaffolds everything correctly — with the right architecture, state management, and test structure from day one.
 
-# Generate a new feature with BLoC + Repository + Use-cases
-bunny feature auth
+## Architecture Support
 
-# Generate a screen with boilerplate
-bunny screen login --feature auth
-```
+The CLI generates opinionated scaffolding for three architecture patterns:
+
+- **Clean Architecture** — `data / domain / presentation` vertical slices per feature, repository interfaces, use-case classes
+- **MVVM** — ViewModels, repositories, service layer
+- **MVC** — controllers, models, views
+
+Each pattern wires up dependency injection automatically based on the chosen state management solution.
+
+## State Management Integration
+
+Full support for Provider, Riverpod, Bloc, GetX, MobX, and Redux. The CLI generates the correct boilerplate for each — not just empty files, but working patterns with the right imports, class structures, and wiring.
+
+## Code Generation
+
+Beyond project creation, the CLI generates individual components on demand:
+
+- **Models** — with JSON parsing and multiple serialization options: Freezed, `json_serializable`, manual, or Equatable
+- **Screens** — with the correct ViewModel/controller boilerplate for the chosen architecture
+- **Widgets** — reusable component stubs
+- **Tests** — unit, widget, and integration test templates pre-wired for the generated class
 
 ## Technical Highlights
 
-- Built entirely in Dart using the `args` package
-- Published to pub.dev with 50+ weekly downloads
-- Supports clean architecture, feature-first, and layered project templates
-- Interactive prompts for project configuration
-- Fully open source — contributions welcome
+- Built with Dart's `CommandRunner` pattern — each subcommand (`create`, `generate`, `analyze`) is an isolated `Command` class
+- Interactive prompts via `interact` package — arrow-key navigation, multi-select, confirmation steps
+- File templating engine handles variable substitution for project name, package ID, architecture tokens
+- `analyze` subcommand runs project health checks — unused imports, missing test coverage, architecture violations
+- 11 releases shipped, published to pub.dev and installable via Homebrew on macOS
+- Fully open source — MIT license, active contributions welcome
