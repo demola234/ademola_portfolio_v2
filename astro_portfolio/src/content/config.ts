@@ -40,6 +40,7 @@ const projectsCollection = defineCollection({
     play_store: z.string().optional(),
     app_store: z.string().optional(),
     category: z.string().optional(),
+    order: z.number().optional(),
   }),
 });
 

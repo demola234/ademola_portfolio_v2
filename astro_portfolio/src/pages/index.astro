@@ -5,12 +5,15 @@ import Nav from '../components/layout/Nav.astro';
 import Footer from '../components/layout/Footer.astro';
 import LiveClock from '../components/LiveClock.tsx';
 
-const allProjects = await getCollection('projects');
-const selectedWork = [
-  { num: '01', title: 'Librario',               sub: 'AI-powered reading platform — PDF, summarisation & TTS',         stack: 'Rust · Kafka · SwiftUI',  slug: 'librario' },
-  { num: '02', title: 'Flutter Bunny CLI',       sub: 'Opinionated Flutter scaffolder — adopted by hundreds of devs',    stack: 'Dart · CLI',              slug: 'flutter-bunny-cli' },
-  { num: '03', title: 'Smart Liveness Detection',sub: 'Face-liveness SDK — challenges & anti-spoofing',                 stack: 'Dart · ML Kit',           slug: 'flutter-bunny-cli' },
-];
+const allProjects = (await getCollection('projects'))
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+const selectedWork = allProjects.slice(0, 3).map((p, i) => ({
+  num: String(i + 1).padStart(2, '0'),
+  title: p.data.title,
+  sub: p.data.subtitle,
+  stack: p.data.tags.slice(0, 3).join(' · '),
+  slug: p.slug,
+}));
 
 const posts = (await getCollection('writing'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())

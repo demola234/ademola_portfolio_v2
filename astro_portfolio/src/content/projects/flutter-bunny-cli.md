@@ -5,6 +5,7 @@ description: "A Dart CLI tool that eliminates Flutter project boilerplate — gu
 tags: ["Dart", "CLI", "Flutter", "Dev Tools", "Open Source"]
 image_url: "https://res.cloudinary.com/dcnuiaskr/image/upload/v1735473593/Flutter_Bunny_Cli_4_1_qf9ksb.png"
 category: "tool"
+order: 3
 github: "https://github.com/FlutterBunnyCLI/flutter_bunny_cli"
 ---
 

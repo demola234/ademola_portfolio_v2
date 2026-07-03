@@ -4,6 +4,7 @@ subtitle: "Rust-powered performance profiling SDK for Flutter"
 description: "A Flutter SDK that embeds a Rust native engine via FFI to capture frame timing, memory pressure, network latency, and structured logs — all correlated and exportable as OpenTelemetry metrics. Targets Flutter teams who need deep performance insight without leaving their ecosystem."
 tags: ["Flutter", "Rust", "FFI", "OpenTelemetry", "Dart", "Open Source"]
 category: "sdk"
+order: 1
 ---
 
 ## The Problem
