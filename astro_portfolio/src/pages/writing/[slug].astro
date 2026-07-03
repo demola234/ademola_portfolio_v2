@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/layout/Nav.astro';
+import Comments from '../../components/blogs/Comments';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('writing'))
@@ -113,6 +114,28 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
         </nav>
       </aside>
     )}
+  </div>
+
+  <!-- reply CTA -->
+  <div class="reply-cta">
+    <div class="reply-cta__inner">
+      <span class="status-pulse" aria-hidden="true" />
+      <div>
+        <p class="reply-cta__label mono">thoughts on this?</p>
+        <p class="reply-cta__sub">Hit reply — I read every email.</p>
+      </div>
+      <a
+        href={`mailto:hello@demola.dev?subject=Re: ${encodeURIComponent(post.data.title)}&body=Hi Ademola,%0A%0A`}
+        class="reply-btn mono"
+      >
+        hello@demola.dev →
+      </a>
+    </div>
+  </div>
+
+  <!-- comments -->
+  <div class="comments-wrap">
+    <Comments client:only="react" />
   </div>
 
   <!-- prev / next -->
@@ -350,6 +373,80 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
   }
 
   /* Prev / Next */
+  /* Comments */
+  .comments-wrap {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,.1);
+  }
+
+  /* Reply CTA */
+  .reply-cta {
+    margin: 48px 0 0;
+    padding: 28px 32px;
+    border: 1px solid rgba(90,252,254,.2);
+    border-radius: 14px;
+    background: rgba(90,252,254,.04);
+  }
+
+  .reply-cta__inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .status-pulse {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--accent); }
+    50% { opacity: .5; box-shadow: 0 0 4px var(--accent); }
+  }
+
+  .reply-cta__label {
+    font-size: 13px;
+    color: var(--accent);
+    margin: 0 0 4px;
+    letter-spacing: .06em;
+  }
+
+  .reply-cta__sub {
+    font-size: 15px;
+    color: rgba(255,255,255,.75);
+    margin: 0;
+  }
+
+  .reply-btn {
+    margin-left: auto;
+    padding: 10px 20px;
+    border: 1px solid rgba(90,252,254,.4);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 13px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .2s ease, border-color .2s ease;
+  }
+
+  .reply-btn:hover {
+    background: rgba(90,252,254,.1);
+    border-color: var(--accent);
+  }
+
+  @media (max-width: 600px) {
+    .reply-cta { padding: 20px; }
+    .reply-btn { margin-left: 0; width: 100%; text-align: center; }
+  }
+
   .art-prevnext {
     display: flex;
     justify-content: space-between;
