@@ -1,3 +1,5 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "buildCommand": "cd astro_portfolio && npm install && npm run build",
+  "outputDirectory": "astro_portfolio/dist",
+  "framework": null
 }
