@@ -9,7 +9,7 @@ const ContactSection = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const mailtoLink = `mailto:kolawoleoluwasegun567@gmail.com?subject=Message from ${encodeURIComponent(
+    const mailtoLink = `mailto:hello@demola.dev?subject=Message from ${encodeURIComponent(
       formData.name
     )}&body=${encodeURIComponent(formData.message)}%0D%0A%0D%0AFrom: ${encodeURIComponent(
       formData.email
