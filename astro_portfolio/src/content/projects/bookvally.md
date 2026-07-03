@@ -1,8 +1,8 @@
 ---
 title: "BookVally"
 subtitle: "Cross-platform reading app — native Android & iOS"
-description: "A cross-platform reading app built natively for Android (Kotlin + Jetpack Compose) and iOS (Swift + SwiftUI), backed by a Go REST API with 76 endpoints. Features Readium-powered EPUB rendering, offline-first sync with outbox pattern, on-device AI recap, OAuth social login, in-app purchases, TTS with background playback, and a Focus Lock mode that blocks other apps until a reading goal is met."
-tags: ["Kotlin", "Jetpack Compose", "Swift", "SwiftUI", "Go", "Android", "iOS"]
+description: "A cross-platform reading app built natively for Android (Kotlin + Jetpack Compose) and iOS (Swift + SwiftUI), backed by a Rust/Axum REST API with 76 endpoints. Features Readium-powered EPUB rendering, offline-first sync with outbox pattern, on-device AI recap, OAuth social login, in-app purchases, TTS with background playback, and a Focus Lock mode that blocks other apps until a reading goal is met."
+tags: ["Kotlin", "Jetpack Compose", "Swift", "SwiftUI", "Rust", "Android", "iOS"]
 category: "app"
 order: 2
 ---
@@ -15,7 +15,7 @@ Both platforms share the same domain contract — identical entities, repository
 
 **iOS** — Mirrors Android decision-for-decision in Swift idioms. `@Observable` ViewModels, `NavigationStack` with type-safe value routes, `URLSession` + `Codable`, SwiftData for local persistence. Cross-feature messaging via `AsyncStream`-based event bus.
 
-**Backend (BookVault)** — Go REST API, 76 endpoints across Auth, Catalog, Library, Reader, Stats, Social, and Search. OAuth (Google / Apple / Twitter PKCE), JWT + refresh token rotation, server-validates every IAP transaction.
+**Backend (BookVault)** — Rust/Axum REST API, 76 endpoints across Auth, Catalog, Library, Reader, Stats, Social, and Search. Async runtime via Tokio, SQLx + PostgreSQL, Redis for caching, Kafka for event streaming, AWS S3 for asset storage. OAuth (Google / Apple / Twitter PKCE), JWT + refresh token rotation, Argon2 password hashing, OpenTelemetry tracing. Server-validates every IAP transaction.
 
 ## Key Technical Decisions
 
