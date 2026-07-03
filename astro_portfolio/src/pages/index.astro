@@ -846,17 +846,26 @@ const youtube = [
     .stackicon__box img { width: 26px; height: 26px; }
     .stackicon__label { font-size: 10px; }
 
-    .yt-modal { padding: 0; align-items: flex-end; }
+    .yt-modal { padding: 0; }
     .yt-modal__window {
-      max-width: 100%;
       width: 100%;
-      border-radius: 16px 16px 0 0;
-      border-left: none;
-      border-right: none;
-      border-bottom: none;
-      max-height: 100dvh;
+      max-width: 100%;
+      height: 100dvh;
+      border-radius: 0;
+      border: none;
+      display: flex;
+      flex-direction: column;
     }
-    .yt-modal__player { padding-bottom: 56.25%; }
+    .yt-modal__player {
+      flex: 1;
+      padding-bottom: 0;
+      height: auto;
+    }
+    .yt-modal__player iframe {
+      position: static;
+      width: 100%;
+      height: 100%;
+    }
   }
 
   @media (max-width: 400px) {
