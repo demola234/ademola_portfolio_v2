@@ -1,0 +1,854 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/layout/Nav.astro';
+import Footer from '../components/layout/Footer.astro';
+import LiveClock from '../components/LiveClock.tsx';
+
+const allProjects = await getCollection('projects');
+const selectedWork = [
+  { num: '01', title: 'Librario',               sub: 'AI-powered reading platform — PDF, summarisation & TTS',         stack: 'Rust · Kafka · SwiftUI',  slug: 'librario' },
+  { num: '02', title: 'Flutter Bunny CLI',       sub: 'Opinionated Flutter scaffolder — adopted by hundreds of devs',    stack: 'Dart · CLI',              slug: 'flutter-bunny-cli' },
+  { num: '03', title: 'Smart Liveness Detection',sub: 'Face-liveness SDK — challenges & anti-spoofing',                 stack: 'Dart · ML Kit',           slug: 'flutter-bunny-cli' },
+];
+
+const posts = (await getCollection('writing'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const stack = [
+  { name: 'Flutter',  src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg' },
+  { name: 'Dart',     src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg' },
+  { name: 'Swift',    src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg' },
+  { name: 'Kotlin',   src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg' },
+  { name: 'Go',       src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg' },
+  { name: 'Rust',     src: 'https://cdn.simpleicons.org/rust/ffffff', mono: true },
+  { name: 'Android',  src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg' },
+  { name: 'iOS',      src: 'https://cdn.simpleicons.org/apple/ffffff', mono: true },
+  { name: 'Firebase', src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-original.svg' },
+  { name: 'Postgres', src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
+  { name: 'Redis',    src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg' },
+  { name: 'MongoDB',  src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
+  { name: 'Kafka',    src: 'https://cdn.simpleicons.org/apachekafka/ffffff', mono: true },
+  { name: 'Docker',   src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg' },
+  { name: 'Actions',  src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg' },
+  { name: 'Grafana',  src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg' },
+];
+
+const allNotes = (await getCollection('notes'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const notes = allNotes.slice(0, 4);
+
+const youtube = [
+  { title: 'Flutter Bunny: Generate Flutter Models from JSON in Seconds', views: '31 views', ago: '10 months ago', duration: '1:05',
+    videoId: '8gB2kwDhWxo',
+    preview: '~ flutter_bunny\nFlutter Bunny CLI — set up your Flutter project\n\nUsage: flutter_bunny <command> [arguments]\n\nAvailable commands:\n  create    Create a new Flutter app\n  generate  Generate components from JSON' },
+  { title: 'Flutter Bunny CLI: Create Production-Ready Flutter Apps in 30 Seconds', views: '248 views', ago: '10 months ago', duration: '2:33',
+   videoId: 'jLXJmlkI3nw',
+    preview: '~ flutter_bunny\nFlutter Bunny CLI — Let\'s set up your project\n\n$ flutter_bunny create\n\n? App name › my_app\n? Architecture › Clean Architecture\n? State mgmt › Riverpod\n✓ Production-ready app in 30s' },
+];
+---
+
+<BaseLayout title="Ademola Kolawole — Software Engineer">
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span class="status-bar__left">
+      <span class="status-dot" aria-hidden="true" />
+      <span class="mono" style="font-size:12px;color:rgba(255,255,255,.55)">ademola.dev</span>
+    </span>
+    <span class="status-bar__right mono" style="font-size:12px;color:rgba(255,255,255,.55);display:flex;gap:22px">
+      <span>ABUJA, NG</span>
+      <LiveClock client:only="react" className="text-accent" />
+    </span>
+  </div>
+
+  <Nav />
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__text">
+      <div class="hero__label mono">SOFTWARE ENGINEER · MOBILE & BACKEND</div>
+      <h1 class="hero__h1">Ademola<br><span class="hero__h1-dim">Kolawole</span></h1>
+      <p class="hero__body mono">
+        <span class="text-secondary">// mobile-first, 5+ yrs, fintech &amp; identity</span><br />
+        I ship <span class="text-accent">Flutter, Android &amp; iOS</span> from architecture to production — with backend depth in <span class="text-accent">Go, Kotlin &amp; Rust</span>. Built features serving <span class="text-accent">50M+ users</span> across payments, KYC, analytics &amp; engagement.<span class="cursor" aria-hidden="true" />
+      </p>
+    </div>
+    <div class="hero__img-col" aria-hidden="true">
+      <div class="hero__img-card">
+        <img src="/memoji.png" alt="Ademola Kolawole memoji" class="hero__img" width="300" height="300" loading="eager" decoding="async" />
+      </div>
+      <div class="hero__corner hero__corner--tl" />
+      <div class="hero__corner hero__corner--br" />
+    </div>
+  </section>
+
+  <!-- Stack -->
+  <section class="section" style="padding-top:30px">
+    <div class="section-row" style="margin-bottom:22px">
+      <span class="path-label mono">~/stack</span>
+      <span class="mono" style="font-size:11px;color:rgba(255,255,255,.35)">the tools I build with</span>
+    </div>
+    <div class="stack-row">
+      {stack.map(({ name, src, mono }) => (
+        <div class={`stackicon ${mono ? 'stackicon--mono' : ''}`} title={name}>
+          <div class="stackicon__box">
+            <img src={src} alt={name} width="32" height="32" loading="lazy" decoding="async" />
+          </div>
+          <span class="stackicon__label">{name}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Writing preview -->
+  <section class="section">
+    <div class="section-row">
+      <span class="path-label mono">~/writing</span>
+      <a href="/writing" class="accent-link mono">all posts →</a>
+    </div>
+    <div class="row-list">
+      {posts.map((p) => (
+        <a href={`/writing/${p.slug}`} class="rowa" style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:18px 12px;border-bottom:1px solid rgba(255,255,255,.1)">
+          <span style="font-size:17px;color:#fff">{p.data.title}</span>
+          <span class="mono text-secondary" style="font-size:12px;white-space:nowrap">
+            {p.data.date.toLocaleDateString('en-US',{month:'short',year:'numeric'}).toUpperCase()} · {p.data.readMins} min
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Selected work -->
+  <section class="section">
+    <div class="section-row">
+      <span class="path-label mono">~/selected-work</span>
+      <a href="/projects" class="accent-link mono">all projects →</a>
+    </div>
+    <div class="row-list">
+      {selectedWork.map(({ num, title, sub, stack: st, slug }) => (
+        <a href={`/projects/${slug}`} class="rowa work-row">
+          <span class="work-row__num mono text-accent">{num}</span>
+          <span class="work-row__info">
+            <span class="work-row__title">{title}</span>
+            <br />
+            <span class="text-secondary" style="font-size:14px">{sub}</span>
+          </span>
+          <span class="mono text-secondary work-row__stack">{st}</span>
+          <span class="arw text-secondary" style="font-size:22px">→</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Notes -->
+  <section class="section">
+    <div class="section-row" style="margin-bottom:14px">
+      <span class="path-label mono">~/notes</span>
+      <a href="/notes" class="accent-link mono">all notes →</a>
+    </div>
+    <div class="notes-grid">
+      {notes.map((note) => {
+        const dateLabel = note.data.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
+        // Use excerpt if set, otherwise strip markdown and truncate
+        const raw = note.body.split('\n').filter(l => !l.startsWith('#') && !l.startsWith('`') && l.trim()).join(' ');
+        const preview = note.data.excerpt ?? (raw.slice(0, 160) + '…');
+        return (
+          <a href="/notes" class="note-card tcard" style="text-decoration:none;display:block">
+            <div class="note-card__date mono text-accent">{dateLabel}</div>
+            <p class="note-card__body">{preview}</p>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- YouTube -->
+  <section class="section">
+    <div class="section-row" style="margin-bottom:14px">
+      <span class="path-label mono">~/youtube</span>
+      <a href="https://youtube.com/@CodeWithDemola" target="_blank" rel="noopener noreferrer" class="accent-link mono">@CodeWithDemola →</a>
+    </div>
+    <div class="yt-grid">
+      {youtube.map(({ title, views, ago, duration, preview, videoId }) => (
+        <button class="yt-card tcard" data-video-id={videoId} data-title={title} aria-label={`Play ${title}`}>
+          <div class="yt-card__thumb">
+            <img
+              src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+              alt={title}
+              class="yt-card__thumb-img"
+              loading="lazy"
+              decoding="async"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+            />
+            <pre class="yt-card__preview mono" style="display:none">{preview}</pre>
+            <div class="yt-play">
+              <div class="yt-play__btn">
+                <span class="yt-play__arrow" aria-hidden="true" />
+              </div>
+            </div>
+            <span class="yt-duration mono">{duration}</span>
+          </div>
+          <div class="yt-card__body">
+            <h3 class="yt-card__title">{title}</h3>
+            <span class="mono" style="font-size:11px;color:rgba(255,255,255,.4)">{views} · {ago}</span>
+          </div>
+        </button>
+      ))}
+    </div>
+
+    <!-- Video overlay modal -->
+    <div id="yt-modal" class="yt-modal" role="dialog" aria-modal="true" aria-label="Video player" hidden>
+      <div class="yt-modal__backdrop" id="yt-backdrop" />
+      <div class="yt-modal__window">
+        <div class="yt-modal__chrome">
+          <div class="yt-modal__dots">
+            <span class="yt-modal__dot" style="background:#ff5f56" />
+            <span class="yt-modal__dot" style="background:#ffbd2e" />
+            <span class="yt-modal__dot" style="background:#27c93f" />
+          </div>
+          <span class="yt-modal__title mono" id="yt-modal-title"></span>
+          <button class="yt-modal__close mono" id="yt-close" aria-label="Close video">✕</button>
+        </div>
+        <div class="yt-modal__player">
+          <iframe
+            id="yt-iframe"
+            src=""
+            title="YouTube video"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer inline -->
+  <footer class="home-footer">
+    <span class="mono" style="font-size:12px;color:rgba(255,255,255,.5)">
+      let's build → <span class="text-accent">kolawoleoluwasegun567@gmail.com</span>
+    </span>
+    <div class="home-footer__links">
+      {[
+        { label: 'github',   href: 'https://github.com/demola234' },
+        { label: 'x',        href: 'https://twitter.com/demola234' },
+        { label: 'linkedin', href: 'https://linkedin.com/in/ademola-kolawole' },
+        { label: 'youtube',  href: 'https://youtube.com/@CodeWithDemola' },
+      ].map(({ label, href }) => (
+        <a href={href} target="_blank" rel="noopener noreferrer" class="mono edlink" style="font-size:12px;color:rgba(255,255,255,.6);text-decoration:none">{label}</a>
+      ))}
+    </div>
+  </footer>
+
+</BaseLayout>
+
+<script>
+  // ── YouTube modal ────────────────────────────────────────────────────────────
+  const modal    = document.getElementById('yt-modal') as HTMLElement;
+  // Move modal to <body> so position:fixed is never trapped inside a transformed parent
+  document.body.appendChild(modal);
+
+  const iframe   = document.getElementById('yt-iframe') as HTMLIFrameElement;
+  const titleEl  = document.getElementById('yt-modal-title') as HTMLElement;
+  const closeBtn = document.getElementById('yt-close') as HTMLButtonElement;
+  const backdrop = document.getElementById('yt-backdrop') as HTMLElement;
+
+  function openModal(videoId: string, title: string) {
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+    titleEl.textContent = title;
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    iframe.src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-video-id]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.videoId ?? '';
+      const title = btn.dataset.title ?? '';
+      openModal(id, title);
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  // ── Section reveal — add init class first so content is visible before JS
+  const sections = document.querySelectorAll<HTMLElement>('.section');
+  sections.forEach((s) => s.classList.add('reveal-init'));
+  const secObs = new IntersectionObserver(
+    (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visible'); secObs.unobserve(e.target); } }),
+    { threshold: 0.08 }
+  );
+  sections.forEach((s) => secObs.observe(s));
+
+  // Stack icon staggered reveal
+  const icons = document.querySelectorAll<HTMLElement>('.stackicon');
+  icons.forEach((ic) => ic.classList.add('stagger-init'));
+  const iconObs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          const idx = Array.from(icons).indexOf(e.target as HTMLElement);
+          (e.target as HTMLElement).style.animationDelay = `${idx * 40}ms`;
+          e.target.classList.add('visible');
+          iconObs.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+  icons.forEach((ic) => iconObs.observe(ic));
+</script>
+
+<style>
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .status-bar__left { display: flex; align-items: center; gap: 9px; }
+
+  /* Hero */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 44px;
+    padding: 44px 0 34px;
+    align-items: center;
+  }
+
+  .hero__label {
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: .14em;
+    margin-bottom: 18px;
+  }
+
+  .hero__h1 {
+    font-size: 78px;
+    line-height: .92;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -.03em;
+    color: #fff;
+  }
+
+  .hero__h1-dim { color: rgba(255,255,255,.32); }
+
+  .hero__body {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255,255,255,.72);
+    max-width: 540px;
+    margin: 26px 0 0;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 9px;
+    height: 16px;
+    background: var(--accent);
+    margin-left: 4px;
+    vertical-align: -2px;
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(22px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* Hero text stagger */
+  .hero__label  { animation: fadeUp .6s ease .05s both; }
+  .hero__h1     { animation: fadeUp .65s ease .12s both; }
+  .hero__body   { animation: fadeUp .65s ease .22s both; }
+
+  .hero__img-col {
+    position: relative;
+    flex-shrink: 0;
+    animation: fadeUp .8s ease .2s both;
+  }
+
+  .hero__img-card {
+    border: 1px solid rgba(90,252,254,.35);
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #091f1f 0%, #05141414 40%, #030e0e 100%);
+    background: linear-gradient(160deg,
+      rgba(90,252,254,.18) 0%,
+      rgba(90,252,254,.08) 40%,
+      rgba(90,252,254,.04) 100%
+    );
+    animation: softfloat 6s ease-in-out infinite;
+    box-shadow:
+      0 24px 60px rgba(0,0,0,.7),
+      0 0 40px rgba(90,252,254,.12),
+      0 0 0 1px rgba(90,252,254,.15),
+      inset 0 1px 0 rgba(90,252,254,.2);
+  }
+
+  @keyframes softfloat {
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
+  }
+
+  .hero__img {
+    width: 100%;
+    display: block;
+    mix-blend-mode: multiply;
+  }
+
+  .hero__corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    transition: opacity .3s ease;
+  }
+  .hero__corner--tl { top: -8px; left: -8px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+  .hero__corner--br { bottom: -8px; right: -8px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+
+  /* Accent ring that pulses behind card */
+  .hero__img-col::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 22px;
+    background: radial-gradient(ellipse at center, rgba(90,252,254,.12) 0%, transparent 70%);
+    animation: pulseGlow 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @keyframes pulseGlow {
+    0%,100%{opacity:.5;transform:scale(1)}
+    50%{opacity:1;transform:scale(1.04)}
+  }
+
+  /* Section shared */
+  .section {
+    padding-top: 26px;
+    border-top: 1px solid rgba(255,255,255,.1);
+    margin-top: 26px;
+  }
+
+  .section-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+
+  .path-label {
+    font-size: 12px;
+    color: rgba(255,255,255,.4);
+    letter-spacing: .14em;
+  }
+
+  .accent-link {
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    background-image: linear-gradient(currentColor,currentColor);
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size .3s ease;
+  }
+  .accent-link:hover { background-size: 100% 1px; }
+
+  /* Row list */
+  .row-list { border-top: 1px solid rgba(255,255,255,.1); }
+
+  .rowa {
+    display: flex;
+    text-decoration: none;
+    transition: background .2s ease;
+    background: transparent;
+    border-radius: 0;
+  }
+  .rowa:hover { background: rgba(90,252,254,.06); }
+  .rowa:hover .arw { transform: translateX(6px); color: var(--accent) !important; }
+  .arw { transition: transform .25s ease, color .25s ease; }
+
+  /* Work rows */
+  .work-row {
+    display: grid;
+    grid-template-columns: 44px 1fr 210px 30px;
+    gap: 20px;
+    align-items: center;
+    padding: 22px 12px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+
+  .work-row__num { font-size: 13px; }
+  .work-row__title { font-size: 22px; font-weight: 600; color: #fff; }
+  .work-row__stack { font-size: 11px; }
+
+  /* Stack icons */
+  .stack-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+    gap: 26px 16px;
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding-top: 28px;
+  }
+
+  .stackicon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    cursor: default;
+    transition: transform .2s ease, opacity .4s ease;
+    opacity: 1;
+  }
+  .stackicon.stagger-init {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  .stackicon.visible {
+    animation: fadeUp .5s ease both;
+    opacity: 1;
+  }
+  .stackicon:hover { transform: translateY(-5px); }
+
+  .stackicon__box {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.09);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .35s ease, border-color .35s ease, box-shadow .35s ease;
+  }
+
+  .stackicon:hover .stackicon__box {
+    background: rgba(255,255,255,.1);
+    border-color: rgba(90,252,254,.4);
+    box-shadow: 0 8px 22px rgba(0,0,0,.4);
+  }
+
+  .stackicon__box img {
+    width: 32px;
+    height: 32px;
+    filter: grayscale(1) brightness(1.7);
+    transition: filter .45s ease, transform .25s ease;
+  }
+
+  .stackicon:hover .stackicon__box img { filter: grayscale(0) brightness(1); transform: scale(1.12); }
+  .stackicon--mono:hover .stackicon__box img { filter: grayscale(1) brightness(1.9); }
+
+  .stackicon__label {
+    font-size: 11px;
+    color: rgba(255,255,255,.55);
+    font-family: var(--font-sans);
+    transition: color .2s ease;
+  }
+  .stackicon:hover .stackicon__label { color: rgba(255,255,255,.92); }
+
+  /* Notes */
+  .notes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .note-card {
+    border: 1px solid rgba(255,255,255,.1);
+    border-left: 2px solid rgba(90,252,254,.5);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 20px;
+    background: rgba(255,255,255,.015);
+    transition: border-color .25s ease, transform .25s ease;
+  }
+  .tcard:hover { border-color: rgba(90,252,254,.45); transform: translateY(-3px); }
+  .note-card__date { font-size: 11px; margin-bottom: 8px; }
+  .note-card__body {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255,255,255,.75);
+    margin: 0;
+  }
+  .note-card__body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: rgba(90,252,254,.1);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* YouTube */
+  .yt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .yt-card {
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,.015);
+    display: block;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    transition: border-color .25s ease, transform .25s ease;
+  }
+  .yt-card:hover { border-color: rgba(90,252,254,.45); transform: translateY(-3px); }
+
+  .yt-card__thumb {
+    position: relative;
+    height: 162px;
+    background: linear-gradient(#0e0e0e, #080808);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    overflow: hidden;
+  }
+
+  .yt-card__thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .yt-card__preview {
+    margin: 0;
+    padding: 14px 16px;
+    font-size: 10px;
+    line-height: 1.75;
+    color: rgba(255,255,255,.3);
+    white-space: pre-wrap;
+    overflow: hidden;
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Modal */
+  .yt-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .yt-modal[hidden] { display: none; }
+
+  .yt-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    cursor: pointer;
+  }
+
+  .yt-modal__window {
+    position: relative;
+    width: 100%;
+    max-width: 860px;
+    margin: auto;
+    border: 1px solid rgba(90,252,254,.3);
+    border-radius: 16px;
+    overflow: hidden;
+    background: #080808;
+    box-shadow:
+      0 0 0 1px rgba(90,252,254,.08),
+      0 40px 100px rgba(0,0,0,.9),
+      0 0 60px rgba(90,252,254,.06);
+    animation: modalIn .25s cubic-bezier(.16,1,.3,1) both;
+  }
+
+  @keyframes modalIn {
+    from { opacity:0; transform:scale(.93) translateY(20px); }
+    to   { opacity:1; transform:scale(1) translateY(0); }
+  }
+
+  .yt-modal__chrome {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    background: #0d0d0d;
+  }
+
+  .yt-modal__dots {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .yt-modal__dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+
+  .yt-modal__title {
+    flex: 1;
+    font-size: 11px;
+    color: rgba(255,255,255,.4);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    padding: 0 8px;
+  }
+
+  .yt-modal__close {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 999px;
+    color: rgba(255,255,255,.5);
+    font-size: 11px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color .2s ease, color .2s ease, background .2s ease;
+  }
+  .yt-modal__close:hover {
+    border-color: rgba(90,252,254,.5);
+    color: var(--accent);
+    background: rgba(90,252,254,.06);
+  }
+
+  .yt-modal__player {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    background: #000;
+  }
+
+  .yt-modal__player iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .yt-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .yt-play__btn {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: rgba(255,0,40,.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,.55);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .yt-card:hover .yt-play__btn { transform: scale(1.12); box-shadow: 0 8px 26px rgba(255,0,40,.45); }
+
+  .yt-play__arrow {
+    width: 0;
+    height: 0;
+    border-left: 17px solid #fff;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent;
+    margin-left: 4px;
+  }
+
+  .yt-duration {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,.82);
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .yt-card__body { padding: 15px 18px; }
+  .yt-card__title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: #fff;
+    line-height: 1.35;
+  }
+
+  /* Footer */
+  .home-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 24px;
+  }
+  .home-footer__links { display: flex; gap: 18px; }
+
+  .edlink {
+    background-image: linear-gradient(currentColor,currentColor);
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size .3s ease;
+  }
+  .edlink:hover { background-size: 100% 1px; }
+
+  /* Section scroll reveal — only applies when JS has run */
+  .section.reveal-init {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .55s ease, transform .55s ease;
+  }
+  .section.visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero__img-col { display: none; }
+    .hero__h1 { font-size: 52px; }
+    .work-row { grid-template-columns: 36px 1fr 30px; }
+    .work-row__stack { display: none; }
+    .notes-grid, .yt-grid { grid-template-columns: 1fr; }
+    .home-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .stack-row { grid-template-columns: repeat(4, 1fr); gap: 20px 10px; }
+    .stackicon__box { width: 52px; height: 52px; border-radius: 12px; }
+    .stackicon__box img { width: 26px; height: 26px; }
+    .stackicon__label { font-size: 10px; }
+  }
+
+  @media (max-width: 400px) {
+    .stack-row { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>

@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/layout/Nav.astro';
+---
+
+<BaseLayout title="404 — Page Not Found" description="This page doesn't exist.">
+  <Nav />
+
+  <div class="not-found">
+    <!-- Terminal window -->
+    <div class="terminal">
+      <div class="terminal__chrome">
+        <span class="dot" style="background:#ff5f56" />
+        <span class="dot" style="background:#ffbd2e" />
+        <span class="dot" style="background:#27c93f" />
+        <span class="terminal__title mono">bash — not-found</span>
+      </div>
+
+      <div class="terminal__body">
+        <div class="terminal__line">
+          <span class="prompt mono"><span class="prompt__dir text-accent">~/ademola.dev</span> <span class="prompt__sym" style="color:rgba(255,255,255,.35)">$</span></span>
+          <span class="mono cmd" id="cmd-text"></span><span class="cur" id="cursor" aria-hidden="true" />
+        </div>
+
+        <div class="terminal__output" id="output" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <!-- 404 code -->
+    <div class="code-block">
+      <span class="code-num mono">4</span>
+      <span class="code-num mono text-accent">0</span>
+      <span class="code-num mono">4</span>
+    </div>
+
+    <p class="not-found__msg text-secondary">
+      This route doesn't exist. Maybe it was moved, deleted, or never shipped.
+    </p>
+
+    <div class="not-found__actions">
+      <a href="/" class="btn-home mono">← go home</a>
+      <a href="/writing" class="btn-ghost-link mono">read something →</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 72vh;
+    padding: 60px 0;
+    text-align: center;
+    gap: 32px;
+  }
+
+  /* Terminal window */
+  .terminal {
+    width: 100%;
+    max-width: 560px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0a0a0a;
+    box-shadow: 0 24px 60px rgba(0,0,0,.6);
+  }
+
+  .terminal__chrome {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    background: #0d0d0d;
+  }
+
+  .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .terminal__title {
+    margin-left: 8px;
+    font-size: 11px;
+    color: rgba(255,255,255,.35);
+  }
+
+  .terminal__body {
+    padding: 20px 22px 24px;
+    text-align: left;
+    min-height: 120px;
+  }
+
+  .terminal__line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+
+  .prompt { display: flex; gap: 6px; align-items: center; white-space: nowrap; font-size: 13px; }
+
+  .cmd {
+    font-size: 13px;
+    color: rgba(255,255,255,.85);
+    letter-spacing: .01em;
+  }
+
+  .cur {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background: var(--accent);
+    vertical-align: -2px;
+    animation: blink 1.1s steps(1) infinite;
+    margin-left: 2px;
+  }
+
+  @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+  .terminal__output {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.8;
+    color: rgba(255,255,255,.55);
+    white-space: pre-wrap;
+    min-height: 60px;
+  }
+
+  :global(.terminal__output .err)  { color: #ff5f56; }
+  :global(.terminal__output .warn) { color: #ffbd2e; }
+  :global(.terminal__output .acc)  { color: var(--accent); }
+
+  /* Big 404 */
+  .code-block {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    line-height: 1;
+  }
+
+  .code-num {
+    font-size: clamp(96px, 18vw, 160px);
+    font-weight: 700;
+    letter-spacing: -.05em;
+    color: rgba(255,255,255,.08);
+    transition: color .3s ease;
+    cursor: default;
+    user-select: none;
+  }
+
+  .code-num:hover { color: rgba(255,255,255,.18); }
+  .code-num.text-accent { color: rgba(90,252,254,.35); }
+  .code-num.text-accent:hover { color: rgba(90,252,254,.6); }
+
+  /* Message */
+  .not-found__msg {
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 400px;
+    margin: 0;
+  }
+
+  /* Actions */
+  .not-found__actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-home {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 22px;
+    border: 1px solid rgba(90,252,254,.45);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 13px;
+    text-decoration: none;
+    transition: background .2s ease, box-shadow .2s ease;
+  }
+  .btn-home:hover {
+    background: rgba(90,252,254,.08);
+    box-shadow: 0 0 18px rgba(90,252,254,.15);
+  }
+
+  .btn-ghost-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 22px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 999px;
+    color: rgba(255,255,255,.6);
+    font-size: 13px;
+    text-decoration: none;
+    transition: border-color .2s ease, color .2s ease;
+  }
+  .btn-ghost-link:hover {
+    border-color: rgba(255,255,255,.3);
+    color: #fff;
+  }
+</style>
+
+<script>
+  const CMD   = 'cd /pages/this-route';
+  const LINES = [
+    { text: `bash: cd: /pages/this-route: No such file or directory`, cls: 'err' },
+    { text: `` },
+    { text: `<span class="acc">suggestion</span>  try one of these instead:`, cls: '' },
+    { text: `  <span class="acc">→</span>  /             home` },
+    { text: `  <span class="acc">→</span>  /projects     shipped work` },
+    { text: `  <span class="acc">→</span>  /writing      articles` },
+    { text: `  <span class="acc">→</span>  /notes        quick thoughts` },
+    { text: `  <span class="acc">→</span>  /experience   timeline` },
+    { text: `` },
+    { text: `<span class="warn">exit code 1</span>` },
+  ];
+
+  const cmdEl    = document.getElementById('cmd-text')!;
+  const cursor   = document.getElementById('cursor')!;
+  const outputEl = document.getElementById('output')!;
+
+  let i = 0;
+
+  // Type the command
+  function typeCmd() {
+    if (i < CMD.length) {
+      cmdEl.textContent += CMD[i++];
+      setTimeout(typeCmd, 48 + Math.random() * 30);
+    } else {
+      cursor.style.display = 'none';
+      setTimeout(printOutput, 320);
+    }
+  }
+
+  // Print output lines one by one
+  function printOutput() {
+    let li = 0;
+    function next() {
+      if (li >= LINES.length) return;
+      const div = document.createElement('div');
+      div.innerHTML = LINES[li].text;
+      outputEl.appendChild(div);
+      li++;
+      setTimeout(next, 55);
+    }
+    next();
+  }
+
+  // Start after a short delay
+  setTimeout(typeCmd, 600);
+</script>

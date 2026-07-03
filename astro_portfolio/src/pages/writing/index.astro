@@ -1,0 +1,204 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/layout/Nav.astro';
+import Footer from '../../components/layout/Footer.astro';
+
+const posts = (await getCollection('writing'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+
+<BaseLayout title="Writing — Ademola Kolawole" description="Articles on Flutter, mobile architecture, Go, and software craft.">
+  <Nav />
+
+  <div class="write-page">
+    <header class="write-head">
+      <p class="mono" style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.14em;margin-bottom:10px">~/writing</p>
+      <h1 class="write-h1">Writing.</h1>
+      <p class="write-sub text-secondary">Deep-dives on Flutter, mobile architecture, Go, and software craft.</p>
+    </header>
+
+    <!-- Tag filter chips -->
+    <div class="tag-bar" id="tag-bar">
+      <button class="tchip tchip--active" data-tag="all">all</button>
+      {allTags.map((t) => (
+        <button class="tchip" data-tag={t}>{t}</button>
+      ))}
+    </div>
+
+    <!-- Post list -->
+    <div class="post-list" id="post-list">
+      {posts.map((p) => (
+        <a
+          href={`/writing/${p.slug}`}
+          class="post-row"
+          data-tags={p.data.tags.join(',')}
+        >
+          <div class="post-row__meta mono">
+            <span class="post-row__date text-secondary">
+              {p.data.date.toLocaleDateString('en-US',{month:'short',year:'numeric'}).toUpperCase()}
+            </span>
+            <span class="post-row__min text-secondary">· {p.data.readMins} min</span>
+          </div>
+          <div class="post-row__body">
+            <h2 class="post-row__title">{p.data.title}</h2>
+            <p class="post-row__excerpt text-secondary">{p.data.excerpt}</p>
+            <div class="post-row__tags">
+              {p.data.tags.map((t) => (
+                <span class="ptag mono">{t}</span>
+              ))}
+            </div>
+          </div>
+          <span class="post-row__arrow text-secondary">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  const bar = document.getElementById('tag-bar');
+  const list = document.getElementById('post-list');
+  if (bar && list) {
+    bar.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-tag]');
+      if (!btn) return;
+      bar.querySelectorAll('.tchip').forEach((c) => c.classList.remove('tchip--active'));
+      btn.classList.add('tchip--active');
+      const tag = btn.dataset.tag ?? 'all';
+      list.querySelectorAll<HTMLElement>('.post-row').forEach((row) => {
+        const tags = row.dataset.tags?.split(',') ?? [];
+        row.style.display = tag === 'all' || tags.includes(tag) ? '' : 'none';
+      });
+    });
+  }
+</script>
+
+<style>
+  .write-page {
+    padding-top: 32px;
+    padding-bottom: 64px;
+  }
+
+  .write-head { margin-bottom: 36px; }
+
+  .write-h1 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -.03em;
+    margin: 0 0 14px;
+  }
+
+  .write-sub {
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 540px;
+    margin: 0;
+  }
+
+  .tag-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 32px;
+  }
+
+  .tchip {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 5px 13px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 999px;
+    color: rgba(255,255,255,.55);
+    background: transparent;
+    cursor: pointer;
+    transition: color .2s ease, border-color .2s ease;
+  }
+
+  .tchip:hover,
+  .tchip--active {
+    color: var(--accent);
+    border-color: rgba(90,252,254,.45);
+  }
+
+  .post-list {
+    border-top: 1px solid rgba(255,255,255,.1);
+  }
+
+  .post-row {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    padding: 24px 12px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    text-decoration: none;
+    transition: background .2s ease;
+  }
+
+  .post-row:hover { background: rgba(90,252,254,.05); }
+
+  .post-row:hover .post-row__arrow {
+    transform: translateX(6px);
+    color: var(--accent) !important;
+  }
+
+  .post-row__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 90px;
+    font-size: 11px;
+    padding-top: 3px;
+  }
+
+  .post-row__body { flex: 1; }
+
+  .post-row__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 6px;
+    line-height: 1.35;
+  }
+
+  .post-row__excerpt {
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0 0 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .post-row__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ptag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border: 1px solid rgba(90,252,254,.25);
+    border-radius: 999px;
+    color: rgba(90,252,254,.7);
+  }
+
+  .post-row__arrow {
+    font-size: 22px;
+    flex-shrink: 0;
+    padding-top: 2px;
+    transition: transform .25s ease, color .25s ease;
+  }
+
+  @media (max-width: 600px) {
+    .post-row { flex-direction: column; gap: 10px; }
+    .post-row__meta { flex-direction: row; gap: 4px; }
+  }
+</style>

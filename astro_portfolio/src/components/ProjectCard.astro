@@ -1,0 +1,173 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  tags: string[];
+  image_url?: string;
+  github?: string;
+  play_store?: string;
+  app_store?: string;
+}
+
+const { slug, title, subtitle, description, tags, image_url, github, play_store, app_store } = Astro.props;
+---
+
+<a href={`/projects/${slug}`} class="project-card card glow-on-hover">
+  {image_url && (
+    <div class="project-card__img-wrap">
+      <img
+        src={image_url}
+        alt={title}
+        class="project-card__img"
+        loading="lazy"
+        decoding="async"
+        width="560"
+        height="315"
+      />
+    </div>
+  )}
+
+  <div class="project-card__body">
+    <div class="project-card__top">
+      <span class="section-label">{subtitle}</span>
+      <h3 class="project-card__title">{title}</h3>
+      <p class="project-card__desc">{description}</p>
+    </div>
+
+    <div class="project-card__footer">
+      <div class="project-card__tags">
+        {tags.slice(0, 4).map((t) => <span class="tag">{t}</span>)}
+      </div>
+
+      <div class="project-card__links" role="group" aria-label={`Links for ${title}`}>
+        {github && (
+          <a
+            href={github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="project-card__link mono-to-brand"
+            aria-label="GitHub"
+            onclick="event.stopPropagation()"
+          >
+            GitHub ↗
+          </a>
+        )}
+        {play_store && (
+          <a
+            href={play_store}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="project-card__link mono-to-brand"
+            aria-label="Play Store"
+            onclick="event.stopPropagation()"
+          >
+            Play Store ↗
+          </a>
+        )}
+        {app_store && (
+          <a
+            href={app_store}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="project-card__link mono-to-brand"
+            aria-label="App Store"
+            onclick="event.stopPropagation()"
+          >
+            App Store ↗
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</a>
+
+<style>
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .project-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .project-card__img-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--card-fill);
+  }
+
+  .project-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .project-card:hover .project-card__img {
+    transform: scale(1.03);
+  }
+
+  .project-card__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    flex: 1;
+  }
+
+  .project-card__top {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .project-card__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.01em;
+    margin-top: 4px;
+  }
+
+  .project-card__desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .project-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+
+  .project-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .project-card__links {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .project-card__link {
+    font-size: 0.72rem;
+    text-decoration: none;
+  }
+</style>

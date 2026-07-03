@@ -1,0 +1,124 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: Date;
+  readMins: number;
+  tags: string[];
+}
+
+const { slug, title, excerpt, date, readMins, tags } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<a href={`/writing/${slug}`} class="post-row underline-sweep">
+  <div class="post-row__main">
+    <div class="post-row__meta">
+      <span class="post-row__date mono-to-brand">{formattedDate}</span>
+      <span class="post-row__sep" aria-hidden="true">·</span>
+      <span class="post-row__read mono-to-brand">{readMins} min read</span>
+    </div>
+
+    <h3 class="post-row__title">{title}</h3>
+    <p class="post-row__excerpt">{excerpt}</p>
+
+    <div class="post-row__tags">
+      {tags.map((t) => <span class="tag">{t}</span>)}
+    </div>
+  </div>
+
+  <span class="post-row__arrow text-accent" aria-hidden="true">→</span>
+</a>
+
+<style>
+  .post-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+  }
+
+  /* override underline-sweep — we don't want the underline here, just the link style */
+  .post-row::after { display: none; }
+
+  .post-row:last-child {
+    border-bottom: none;
+  }
+
+  .post-row:hover .post-row__title {
+    color: var(--accent);
+  }
+
+  .post-row:hover .post-row__arrow {
+    transform: translateX(4px);
+  }
+
+  .post-row__main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .post-row__meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .post-row__date,
+  .post-row__read {
+    font-size: 0.72rem;
+  }
+
+  .post-row__sep {
+    color: var(--border);
+    font-size: 0.8rem;
+  }
+
+  .post-row__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    transition: color 0.2s ease;
+    line-height: 1.4;
+  }
+
+  .post-row__excerpt {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .post-row__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .post-row__arrow {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: transform 0.2s ease;
+  }
+
+  @media (max-width: 480px) {
+    .post-row__arrow { display: none; }
+  }
+</style>

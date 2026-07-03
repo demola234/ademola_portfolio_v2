@@ -1,0 +1,257 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/layout/Nav.astro';
+import Footer from '../components/layout/Footer.astro';
+import { experience } from '../data/Experience';
+
+const education = {
+  school: 'University of Ilorin',
+  degree: 'B.Sc. Microbiology',
+  dateRange: '2017 — 2022',
+  location: 'Ilorin, Nigeria',
+};
+
+const stats = [
+  { value: '5+', label: 'Years' },
+  { value: '50M+', label: 'Users' },
+  { value: '10+', label: 'Apps' },
+  { value: '6', label: 'Companies' },
+];
+---
+
+<BaseLayout title="Experience — Ademola Kolawole" description="Mobile & backend engineering experience across fintech, identity, and payments.">
+  <Nav />
+
+  <div class="exp-page">
+    <header class="exp-head">
+      <p class="mono" style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.14em;margin-bottom:10px">~/experience</p>
+      <h1 class="exp-h1">Where I've built.</h1>
+      <p class="exp-sub text-secondary">5+ years of mobile-first engineering across fintech, identity, and payments. Here's the full timeline.</p>
+      <div class="stat-chips">
+        {stats.map(({ value, label }) => (
+          <div class="stat-chip">
+            <span class="stat-chip__val text-accent mono">{value}</span>
+            <span class="stat-chip__label mono">{label}</span>
+          </div>
+        ))}
+      </div>
+    </header>
+
+    <!-- Timeline -->
+    <div class="timeline">
+      {experience.map((exp, i) => (
+        <div class="tl-row">
+          <div class="tl-date-col">
+            <span class="tl-date mono">{exp.dateRange}</span>
+          </div>
+          <div class="tl-spine">
+            <div class="tl-dot" />
+            {i < experience.length - 1 && <div class="tl-line" />}
+          </div>
+          <div class="tl-content">
+            <div class="tl-header">
+              <h2 class="tl-role">{exp.role}</h2>
+              <span class="tl-company text-accent">{exp.company}</span>
+              <span class="tl-loc mono text-secondary">{exp.location}</span>
+            </div>
+            <ul class="tl-bullets">
+              {exp.bullets.map((b) => (
+                <li class="tl-bullet">{b}</li>
+              ))}
+            </ul>
+            <div class="tl-stack">
+              {exp.stack.map((t) => (
+                <span class="tl-tag mono">{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+
+      <!-- Education -->
+      <div class="tl-row">
+        <div class="tl-date-col">
+          <span class="tl-date mono">{education.dateRange}</span>
+        </div>
+        <div class="tl-spine">
+          <div class="tl-dot tl-dot--edu" />
+        </div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <h2 class="tl-role">{education.degree}</h2>
+            <span class="tl-company" style="color:rgba(255,255,255,.6)">{education.school}</span>
+            <span class="tl-loc mono text-secondary">{education.location}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .exp-page {
+    padding-top: 32px;
+    padding-bottom: 64px;
+  }
+
+  .exp-head {
+    margin-bottom: 56px;
+  }
+
+  .exp-h1 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -.03em;
+    margin: 0 0 14px;
+  }
+
+  .exp-sub {
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 540px;
+    margin: 0 0 28px;
+  }
+
+  .stat-chips {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .stat-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 22px;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    background: rgba(255,255,255,.02);
+    gap: 3px;
+  }
+
+  .stat-chip__val { font-size: 24px; font-weight: 700; }
+  .stat-chip__label { font-size: 10px; color: rgba(255,255,255,.5); letter-spacing: .1em; }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .tl-row {
+    display: grid;
+    grid-template-columns: 170px 28px 1fr;
+    gap: 0 16px;
+    min-height: 0;
+  }
+
+  .tl-date-col {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 6px;
+  }
+
+  .tl-date {
+    font-size: 11px;
+    color: rgba(255,255,255,.35);
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .tl-spine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tl-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(90,252,254,.6);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  .tl-dot--edu {
+    background: rgba(255,255,255,.3);
+    box-shadow: none;
+  }
+
+  .tl-line {
+    flex: 1;
+    width: 1px;
+    background: rgba(255,255,255,.1);
+    margin-top: 6px;
+  }
+
+  .tl-content {
+    padding-bottom: 48px;
+  }
+
+  .tl-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 14px;
+    margin-bottom: 14px;
+  }
+
+  .tl-role {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+  }
+
+  .tl-company { font-size: 15px; font-weight: 500; }
+
+  .tl-loc { font-size: 11px; }
+
+  .tl-bullets {
+    margin: 0 0 14px;
+    padding-left: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tl-bullet {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255,255,255,.72);
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .tl-bullet::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: rgba(90,252,254,.5);
+  }
+
+  .tl-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tl-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border: 1px solid rgba(90,252,254,.25);
+    border-radius: 999px;
+    color: rgba(90,252,254,.7);
+  }
+
+  @media (max-width: 700px) {
+    .tl-row { grid-template-columns: 0 24px 1fr; }
+    .tl-date-col { display: none; }
+  }
+</style>

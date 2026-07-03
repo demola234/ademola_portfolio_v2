@@ -1,0 +1,119 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/layout/Nav.astro';
+import Footer from '../../components/layout/Footer.astro';
+
+const projects = await getCollection('projects');
+---
+
+<BaseLayout title="Projects — Ademola Kolawole" description="Apps and tools built by Ademola Kolawole.">
+  <Nav />
+
+  <div class="proj-page">
+    <header class="proj-head">
+      <p class="mono" style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.14em;margin-bottom:10px">~/projects</p>
+      <h1 class="proj-h1">Things I've shipped.</h1>
+      <p class="proj-sub text-secondary">Apps, tools, and experiments — from production fintech to dev utilities.</p>
+    </header>
+
+    <div class="proj-list">
+      {projects.map((p) => (
+        <a href={`/projects/${p.slug}`} class="proj-row">
+          <div class="proj-row__main">
+            <h2 class="proj-row__title">{p.data.title}</h2>
+            <p class="proj-row__desc text-secondary">{p.data.description}</p>
+            <div class="proj-row__tags">
+              {p.data.tags.map((t: string) => (
+                <span class="ptag mono">{t}</span>
+              ))}
+            </div>
+          </div>
+          <span class="proj-row__arrow text-secondary">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .proj-page {
+    padding-top: 32px;
+    padding-bottom: 64px;
+  }
+
+  .proj-head { margin-bottom: 40px; }
+
+  .proj-h1 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -.03em;
+    margin: 0 0 14px;
+  }
+
+  .proj-sub {
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 540px;
+    margin: 0;
+  }
+
+  .proj-list {
+    border-top: 1px solid rgba(255,255,255,.1);
+  }
+
+  .proj-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 26px 12px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    text-decoration: none;
+    transition: background .2s ease;
+  }
+
+  .proj-row:hover { background: rgba(90,252,254,.05); }
+
+  .proj-row:hover .proj-row__arrow {
+    transform: translateX(6px);
+    color: var(--accent) !important;
+  }
+
+  .proj-row__main { flex: 1; }
+
+  .proj-row__title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 6px;
+  }
+
+  .proj-row__desc {
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0 0 12px;
+  }
+
+  .proj-row__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ptag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border: 1px solid rgba(90,252,254,.25);
+    border-radius: 999px;
+    color: rgba(90,252,254,.7);
+  }
+
+  .proj-row__arrow {
+    font-size: 22px;
+    flex-shrink: 0;
+    transition: transform .25s ease, color .25s ease;
+  }
+</style>

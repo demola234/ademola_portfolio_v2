@@ -1,0 +1,731 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/layout/Nav.astro';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('writing'))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  return posts.map((post, i) => ({
+    params: { slug: post.slug },
+    props: {
+      post,
+      prev: i < posts.length - 1 ? posts[i + 1] : null,
+      next: i > 0               ? posts[i - 1] : null,
+    },
+  }));
+}
+
+const { post, prev, next } = Astro.props;
+const { Content, headings } = await post.render();
+
+const formattedDate = post.data.date.toLocaleDateString('en-US', {
+  weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+});
+
+const twitterText = encodeURIComponent(post.data.title);
+const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
+---
+
+<BaseLayout
+  title={`${post.data.title} — Ademola Kolawole`}
+  description={post.data.excerpt}
+  ogImage={post.data.image_url}
+>
+
+  <!-- breadcrumb status bar -->
+  <div class="art-statusbar">
+    <a href="/writing" class="art-back mono">← ademola.dev / writing</a>
+    <span class="mono text-accent" style="font-size:12px">{post.data.readMins} min read</span>
+  </div>
+
+  <!-- share bar -->
+  <div class="share-bar">
+    {post.data.medium_link && (
+      <a href={post.data.medium_link} target="_blank" rel="noopener noreferrer" class="shareic share-read mono">
+        ▶ Read on Medium ↗
+      </a>
+    )}
+    <span class="share-divider" aria-hidden="true" />
+    <span class="mono" style="font-size:12px;color:rgba(255,255,255,.4)">share →</span>
+    <a href={`https://twitter.com/intent/tweet?text=${twitterText}&url=${pageUrl}`} target="_blank" rel="noopener noreferrer" class="shareic share-icon" aria-label="Share on X">X</a>
+    <a href={`https://linkedin.com/sharing/share-offsite/?url=${pageUrl}`} target="_blank" rel="noopener noreferrer" class="shareic share-icon" aria-label="Share on LinkedIn">in</a>
+    <a href={`https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`} target="_blank" rel="noopener noreferrer" class="shareic share-icon" aria-label="Share on Facebook">f</a>
+    <button onclick={`navigator.clipboard.writeText(window.location.href)`} class="shareic share-icon" aria-label="Copy link">⧉</button>
+  </div>
+
+  <!-- article header -->
+  <header class="art-header">
+    <div class="art-tags">
+      {post.data.tags.map((t) => (
+        <span class="atag mono">{t}</span>
+      ))}
+    </div>
+    <h1 class="art-title">{post.data.title}</h1>
+    <div class="art-meta mono">
+      <span style="display:flex;align-items:center;gap:8px">
+        <span class="status-dot-sm" aria-hidden="true" />
+        {post.data.excerpt.split('—')[0]?.trim() ?? 'Article'}
+      </span>
+      <span>·</span>
+      <span>{formattedDate}</span>
+    </div>
+
+    <!-- byline -->
+    <div class="art-byline">
+      <div class="byline-avatar">
+        <img src="/memoji.png" alt="Ademola" style="width:100%;transform:scale(1.4) translateY(4px);mix-blend-mode:multiply" />
+      </div>
+      <div style="flex:1">
+        <div style="font-weight:600;color:#fff;font-size:15px">Ademola Kolawole</div>
+        <div class="mono" style="font-size:12px;color:rgba(255,255,255,.5)">Software Engineer · Mobile & Backend</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- featured image -->
+  {post.data.image_url && (
+    <div class="art-cover">
+      <img src={post.data.image_url} alt={post.data.title} loading="lazy" decoding="async" />
+    </div>
+  )}
+
+  <!-- body + toc -->
+  <div class="art-layout">
+    <article class="art-body prose">
+      <Content />
+    </article>
+
+    {headings.length > 0 && (
+      <aside class="art-toc" aria-label="Table of contents">
+        <div class="toc-head mono">☰ TABLE OF CONTENTS</div>
+        <nav class="toc-nav">
+          {headings.map((h) => (
+            <a
+              href={`#${h.slug}`}
+              class={`tocitem toc-depth-${h.depth}`}
+              data-depth={h.depth}
+            >
+              {h.text}
+            </a>
+          ))}
+        </nav>
+      </aside>
+    )}
+  </div>
+
+  <!-- prev / next -->
+  {(prev || next) && (
+    <div class="art-prevnext">
+      {prev ? (
+        <a href={`/writing/${prev.slug}`} class="prevnext-link">
+          <span class="mono" style="font-size:11px;color:rgba(255,255,255,.4)">← Previous</span>
+          <span class="prevnext-title">{prev.data.title}</span>
+        </a>
+      ) : <div />}
+      {next ? (
+        <a href={`/writing/${next.slug}`} class="prevnext-link prevnext-link--right">
+          <span class="mono" style="font-size:11px;color:rgba(255,255,255,.4)">Next →</span>
+          <span class="prevnext-title">{next.data.title}</span>
+        </a>
+      ) : <div />}
+    </div>
+  )}
+
+</BaseLayout>
+
+<style>
+  /* Status / breadcrumb bar */
+  .art-statusbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    margin-bottom: 0;
+  }
+
+  .art-back {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 12px;
+    color: rgba(255,255,255,.7);
+    text-decoration: none;
+    transition: color .2s ease;
+  }
+  .art-back:hover { color: var(--accent); }
+
+  /* Share bar */
+  .share-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 0 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    flex-wrap: wrap;
+  }
+
+  .share-divider {
+    width: 1px;
+    height: 22px;
+    background: rgba(255,255,255,.12);
+    margin: 0 6px;
+  }
+
+  .shareic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 999px;
+    color: rgba(255,255,255,.75);
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    transition: border-color .2s ease, color .2s ease, background .2s ease;
+  }
+  .shareic:hover {
+    border-color: rgba(90,252,254,.5);
+    color: var(--accent);
+  }
+
+  .share-read {
+    padding: 9px 16px;
+    gap: 9px;
+  }
+
+  .share-icon {
+    width: 34px;
+    height: 34px;
+    font-weight: 600;
+  }
+
+
+  /* Header */
+  .art-header {
+    padding: 28px 0 24px;
+  }
+
+  .art-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+
+  .atag {
+    font-size: 11px;
+    padding: 5px 12px;
+    background: rgba(90,252,254,.08);
+    color: var(--accent);
+    border: 1px solid rgba(90,252,254,.2);
+    border-radius: 6px;
+  }
+
+  .art-title {
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.04;
+    font-weight: 600;
+    letter-spacing: -.03em;
+    color: #fff;
+    margin: 0 0 18px;
+    max-width: 900px;
+  }
+
+  .art-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(255,255,255,.5);
+    flex-wrap: wrap;
+  }
+
+  .status-dot-sm {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  /* Byline */
+  .art-byline {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+
+  .byline-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(90,252,254,.15);
+    border: 1px solid rgba(90,252,254,.3);
+    flex-shrink: 0;
+  }
+
+  /* Cover image */
+  .art-cover {
+    margin: 0 0 32px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.1);
+    overflow: hidden;
+    background: #080808;
+  }
+  .art-cover img {
+    width: 100%;
+    display: block;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+  }
+
+  /* Body + ToC grid */
+  .art-layout {
+    display: grid;
+    grid-template-columns: 1fr 264px;
+    gap: 44px;
+    align-items: start;
+    padding-bottom: 60px;
+  }
+
+  .art-body { min-width: 0; }
+
+  /* ToC */
+  .art-toc {
+    position: sticky;
+    top: 24px;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    padding: 20px;
+    background: rgba(255,255,255,.015);
+  }
+
+  .toc-head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 11px;
+    letter-spacing: .14em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .toc-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 14px;
+  }
+
+  .tocitem {
+    display: block;
+    padding: 7px 12px;
+    border-radius: 7px;
+    color: rgba(255,255,255,.55);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color .2s ease, background .2s ease, border-color .2s ease;
+    line-height: 1.4;
+  }
+
+  .toc-depth-3 { padding-left: 24px; font-size: 13px; }
+  .toc-depth-4 { padding-left: 36px; font-size: 12px; }
+
+  .tocitem:hover,
+  .tocitem.active {
+    color: var(--accent);
+    background: rgba(90,252,254,.08);
+    border-left-color: var(--accent);
+  }
+
+  /* Prev / Next */
+  .art-prevnext {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 32px 0;
+    border-top: 1px solid rgba(255,255,255,.1);
+    flex-wrap: wrap;
+  }
+
+  .prevnext-link {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-decoration: none;
+    max-width: 42%;
+  }
+
+  .prevnext-link--right { align-items: flex-end; }
+
+  .prevnext-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255,255,255,.85);
+    line-height: 1.35;
+    transition: color .2s ease;
+  }
+
+  .prevnext-link:hover .prevnext-title { color: var(--accent); }
+
+  /* Prose overrides — terminal style */
+  :global(.prose) {
+    color: rgba(255,255,255,.78);
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  :global(.prose h2) {
+    font-size: 32px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -.02em;
+    margin: 48px 0 16px;
+  }
+
+  :global(.prose h3) {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin: 36px 0 12px;
+  }
+
+  :global(.prose p) { margin: 0 0 22px; }
+
+  :global(.prose a) {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(90,252,254,.35);
+    transition: border-color .2s ease;
+  }
+  :global(.prose a:hover) { border-color: var(--accent); }
+
+  :global(.prose strong) { color: #fff; font-weight: 600; }
+
+  :global(.prose code) {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    background: rgba(90,252,254,.1);
+    color: var(--accent);
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+
+  /* Code block — raw pre is hidden; JS wraps it in terminal chrome */
+  :global(.prose pre) {
+    margin: 0 0 28px;
+    border-radius: 0 0 12px 12px;
+    background: #0a0a0a;
+    overflow-x: auto;
+    padding: 0;
+  }
+
+  :global(.prose pre code) {
+    display: block;
+    background: none;
+    color: rgba(255,255,255,.85);
+    padding: 20px;
+    font-size: 13px;
+    line-height: 1.7;
+    min-width: max-content;
+  }
+
+  /* Terminal wrapper injected by JS */
+  :global(.code-block) {
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.1);
+    overflow: hidden;
+    margin: 0 0 28px;
+    background: #0a0a0a;
+  }
+
+  :global(.code-chrome) {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,.4);
+    background: #0d0d0d;
+    user-select: none;
+  }
+
+  :global(.code-dot) {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  :global(.code-filename) {
+    margin-left: 8px;
+    flex: 1;
+    color: rgba(255,255,255,.45);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :global(.code-lang) {
+    color: rgba(255,255,255,.28);
+    margin-right: 10px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: 10px;
+  }
+
+  :global(.code-copy) {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 999px;
+    background: transparent;
+    color: rgba(255,255,255,.5);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    cursor: pointer;
+    transition: border-color .2s ease, color .2s ease, background .2s ease;
+    white-space: nowrap;
+  }
+
+  :global(.code-copy:hover) {
+    border-color: rgba(90,252,254,.45);
+    color: var(--accent);
+    background: rgba(90,252,254,.06);
+  }
+
+  :global(.code-copy.copied) {
+    border-color: rgba(90,252,254,.6);
+    color: var(--accent);
+    background: rgba(90,252,254,.1);
+  }
+
+  /* Line numbers */
+  :global(.code-inner) {
+    display: flex;
+    overflow-x: auto;
+  }
+
+  :global(.code-inner > pre) {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  :global(.code-lines) {
+    padding: 20px 14px 20px 20px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(255,255,255,.2);
+    text-align: right;
+    user-select: none;
+    border-right: 1px solid rgba(255,255,255,.06);
+    flex-shrink: 0;
+    white-space: pre;
+  }
+
+  :global(.prose blockquote) {
+    margin: 0 0 32px;
+    padding: 4px 0 4px 26px;
+    border-left: 3px solid var(--accent);
+  }
+
+  :global(.prose blockquote p) {
+    font-size: 24px;
+    line-height: 1.45;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: -.01em;
+    margin: 0;
+  }
+
+  :global(.prose ul, .prose ol) {
+    padding-left: 0;
+    margin: 0 0 26px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  :global(.prose ul li) {
+    padding-left: 18px;
+    position: relative;
+    color: rgba(255,255,255,.72);
+  }
+  :global(.prose ul li::before) {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: rgba(90,252,254,.5);
+  }
+
+  :global(.prose ol) { counter-reset: li; }
+  :global(.prose ol li) {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  :global(.prose ol li::before) {
+    counter-increment: li;
+    content: counter(li, decimal-leading-zero);
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid rgba(90,252,254,.35);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  :global(.prose img) {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.1);
+    margin: 0 0 28px;
+  }
+
+  :global(.prose hr) {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,.1);
+    margin: 40px 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .art-layout { grid-template-columns: 1fr; }
+    .art-toc { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .art-title { font-size: 28px; }
+    .prevnext-link { max-width: 100%; }
+    .share-bar { gap: 8px; }
+  }
+</style>
+
+<script>
+  // ── Terminal chrome for every <pre> in the article ──────────────────────────
+  const LANG_MAP: Record<string, string> = {
+    js: 'JavaScript', javascript: 'JavaScript',
+    ts: 'TypeScript', typescript: 'TypeScript',
+    dart: 'Dart', flutter: 'Dart',
+    go: 'Go', golang: 'Go',
+    py: 'Python', python: 'Python',
+    kt: 'Kotlin', kotlin: 'Kotlin',
+    swift: 'Swift',
+    rust: 'Rust',
+    sh: 'Shell', bash: 'Shell', shell: 'Shell', zsh: 'Shell',
+    yaml: 'YAML', yml: 'YAML',
+    json: 'JSON',
+    sql: 'SQL',
+    html: 'HTML', css: 'CSS',
+    md: 'Markdown', markdown: 'Markdown',
+    proto: 'Protobuf',
+    toml: 'TOML',
+    dockerfile: 'Dockerfile',
+    plaintext: '', text: '', txt: '',
+  };
+
+  document.querySelectorAll<HTMLElement>('.art-body pre').forEach((pre) => {
+    const code = pre.querySelector('code');
+    if (!code) return;
+
+    // detect language from class e.g. "language-go" or "lang-go"
+    const cls = Array.from(code.classList).find((c) => /^(language|lang)-/.test(c)) ?? '';
+    const rawLang = cls.replace(/^(language|lang)-/, '').toLowerCase();
+    const langLabel = LANG_MAP[rawLang] ?? (rawLang ? rawLang.toUpperCase() : '');
+
+    // build line numbers
+    const text = code.textContent ?? '';
+    const lineCount = text.split('\n').filter((_, i, a) => i < a.length - 1 || a[i] !== '').length || 1;
+    const lineNums = Array.from({ length: lineCount }, (_, i) => i + 1).join('\n');
+
+    // wrapper
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block';
+
+    // chrome header
+    const chrome = document.createElement('div');
+    chrome.className = 'code-chrome';
+    chrome.innerHTML = `
+      <span class="code-dot" style="background:#ff5f56"></span>
+      <span class="code-dot" style="background:#ffbd2e"></span>
+      <span class="code-dot" style="background:#27c93f"></span>
+      <span class="code-filename">${langLabel ? `${langLabel.toLowerCase()} snippet` : 'code'}</span>
+      ${langLabel ? `<span class="code-lang">${langLabel}</span>` : ''}
+      <button class="code-copy" aria-label="Copy code">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        copy
+      </button>`;
+
+    // copy handler
+    const btn = chrome.querySelector<HTMLButtonElement>('.code-copy')!;
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(code.textContent ?? '');
+        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> copied!`;
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy`;
+          btn.classList.remove('copied');
+        }, 2200);
+      } catch {
+        btn.textContent = 'error';
+      }
+    });
+
+    // inner: line numbers + code
+    const inner = document.createElement('div');
+    inner.className = 'code-inner';
+
+    const nums = document.createElement('div');
+    nums.className = 'code-lines';
+    nums.textContent = lineNums;
+
+    inner.appendChild(nums);
+    inner.appendChild(pre.cloneNode(true));
+
+    wrapper.appendChild(chrome);
+    wrapper.appendChild(inner);
+
+    pre.replaceWith(wrapper);
+  });
+
+  // ── ToC active highlight ─────────────────────────────────────────────────────
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.tocitem');
+  if (tocLinks.length) {
+    const headings = document.querySelectorAll<HTMLElement>('h2[id],h3[id],h4[id]');
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        const link = document.querySelector<HTMLAnchorElement>(`.tocitem[href="#${e.target.id}"]`);
+        if (link) link.classList.toggle('active', e.isIntersecting);
+      }),
+      { rootMargin: '0px 0px -60% 0px' }
+    );
+    headings.forEach((h) => obs.observe(h));
+  }
+</script>

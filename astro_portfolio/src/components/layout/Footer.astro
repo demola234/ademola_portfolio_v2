@@ -1,0 +1,88 @@
+---
+const year = new Date().getFullYear();
+
+const socials = [
+  { label: 'GitHub',    href: 'https://github.com/demola234' },
+  { label: 'LinkedIn',  href: 'https://linkedin.com/in/ademola-kolawole' },
+  { label: 'Twitter',   href: 'https://twitter.com/demola234' },
+  { label: 'Medium',    href: 'https://medium.com/@ademolakolawole' },
+];
+---
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__left">
+      <span class="footer__name mono">ademola<span class="text-accent">.</span></span>
+      <p class="footer__copy text-secondary">
+        &copy; {year} Ademola Kolawole.
+      </p>
+    </div>
+
+    <nav class="footer__socials" aria-label="Social links">
+      {socials.map(({ label, href }) => (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer__social-link mono-to-brand underline-sweep"
+        >
+          {label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+    margin-top: 80px;
+    padding-block: 40px;
+  }
+
+  .footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .footer__left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .footer__name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .footer__copy {
+    font-size: 0.75rem;
+  }
+
+  .footer__socials {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .footer__social-link {
+    font-size: 0.78rem;
+    text-decoration: none;
+  }
+
+  @media (max-width: 480px) {
+    .footer__inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .footer__socials {
+      gap: 16px;
+    }
+  }
+</style>

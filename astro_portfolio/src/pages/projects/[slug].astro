@@ -1,0 +1,138 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/layout/Nav.astro';
+import Footer from '../../components/layout/Footer.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((p) => ({
+    params: { slug: p.slug },
+    props: { project: p },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+const { title, subtitle, description, tags, image_url, github, play_store, app_store } = project.data;
+---
+
+<BaseLayout
+  title={`${title} — Ademola Kolawole`}
+  description={description}
+  ogImage={image_url}
+>
+  <Nav />
+
+  <div class="proj-detail">
+    <a href="/projects" class="back-link mono-to-brand">← Projects</a>
+
+    <header class="proj-header">
+      <p class="section-label">{subtitle}</p>
+      <h1 class="proj-title">{title}</h1>
+      <p class="proj-desc text-secondary">{description}</p>
+
+      <div class="proj-meta">
+        <div class="proj-tags">
+          {tags.map((t: string) => <span class="tag">{t}</span>)}
+        </div>
+
+        <div class="proj-links">
+          {github && (
+            <a href={github} target="_blank" rel="noopener noreferrer" class="btn-ghost">
+              GitHub ↗
+            </a>
+          )}
+          {play_store && (
+            <a href={play_store} target="_blank" rel="noopener noreferrer" class="btn-ghost">
+              Play Store ↗
+            </a>
+          )}
+          {app_store && (
+            <a href={app_store} target="_blank" rel="noopener noreferrer" class="btn-ghost">
+              App Store ↗
+            </a>
+          )}
+        </div>
+      </div>
+    </header>
+
+    {image_url && (
+      <div class="proj-img-wrap">
+        <img
+          src={image_url}
+          alt={title}
+          class="proj-img"
+          loading="lazy"
+          decoding="async"
+          width="1120"
+          height="630"
+        />
+      </div>
+    )}
+
+    <div class="proj-body prose">
+      <Content />
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .proj-detail {
+    padding-block: 32px 0;
+    max-width: 800px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8rem;
+    text-decoration: none;
+    margin-bottom: 40px;
+  }
+
+  .proj-header { margin-bottom: 40px; }
+
+  .proj-title {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #fff;
+    margin-block: 12px 16px;
+  }
+
+  .proj-desc {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    margin-bottom: 28px;
+  }
+
+  .proj-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .proj-links { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .proj-img-wrap {
+    margin-bottom: 48px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .proj-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+
+  .proj-body { max-width: 100%; }
+</style>

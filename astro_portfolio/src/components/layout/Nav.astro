@@ -1,0 +1,90 @@
+---
+const pathname = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href);
+}
+
+const navLinks = [
+  { href: '/',           label: 'home' },
+  { href: '/writing',    label: 'writing' },
+  { href: '/projects',   label: 'projects' },
+  { href: '/experience', label: 'experience' },
+  { href: '/notes',      label: 'notes' },
+];
+
+const rightLinks = [
+  { href: 'https://youtube.com/@CodeWithDemola',  label: 'youtube',  external: true },
+  { href: 'https://github.com/demola234',         label: 'github',   external: true },
+  { href: 'https://medium.com/@ademolakolawole',  label: 'medium',   external: true },
+  { href: '#',                                     label: 'resume ↗', external: true },
+];
+---
+
+<nav class="nav-chips">
+  {navLinks.map(({ href, label }) => (
+    <a
+      href={href}
+      class={`navchip ${isActive(href) ? 'navchip--active' : ''}`}
+      aria-current={isActive(href) ? 'page' : undefined}
+    >
+      {label}
+    </a>
+  ))}
+  <span class="nav-spacer" aria-hidden="true" />
+  {rightLinks.map(({ href, label, external }) => (
+    <a
+      href={href}
+      class="navchip"
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    >
+      {label}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .nav-chips {
+    display: flex;
+    gap: 8px;
+    padding: 18px 0 0;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .nav-spacer {
+    flex: 1;
+  }
+
+  .navchip {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    margin-bottom: 18px;
+    white-space: nowrap;
+  }
+
+  .navchip:hover {
+    color: var(--accent);
+    border-color: rgba(90, 252, 254, 0.5);
+  }
+
+  .navchip--active {
+    border-color: rgba(90, 252, 254, 0.5);
+    color: var(--accent);
+  }
+
+  @media (max-width: 600px) {
+    .nav-spacer { display: none; }
+  }
+</style>

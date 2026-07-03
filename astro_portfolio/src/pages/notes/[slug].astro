@@ -1,0 +1,382 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/layout/Nav.astro';
+import Footer from '../../components/layout/Footer.astro';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((note) => ({ params: { slug: note.slug }, props: { note } }));
+}
+
+const { note } = Astro.props;
+const { Content, headings } = await note.render();
+const dateLabel = note.data.date.toLocaleDateString('en-US', {
+  weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={`${note.data.excerpt?.split('—')[0]?.trim() ?? note.slug} — Notes`}
+  description={note.data.excerpt}
+>
+  <Nav />
+
+  <div class="note-page">
+    <a href="/notes" class="back mono">← notes</a>
+
+    <header class="note-head">
+      <div class="note-meta">
+        <span class="status-dot-sm text-accent" aria-hidden="true" />
+        <span class="mono" style="font-size:12px;color:rgba(255,255,255,.45)">{dateLabel}</span>
+        {(note.data.tags ?? []).map((t) => (
+          <span class="ntag mono">{t}</span>
+        ))}
+      </div>
+      {note.data.excerpt && (
+        <p class="note-excerpt text-secondary">{note.data.excerpt}</p>
+      )}
+    </header>
+
+    <div class="note-layout">
+      <div class="note-body prose">
+        <Content />
+      </div>
+
+      {headings.length > 2 && (
+        <aside class="note-toc">
+          <div class="toc-head mono">☰ ON THIS PAGE</div>
+          <nav>
+            {headings.map((h) => (
+              <a href={`#${h.slug}`} class={`tocitem toc-depth-${h.depth}`}>{h.text}</a>
+            ))}
+          </nav>
+        </aside>
+      )}
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .note-page {
+    padding-top: 28px;
+    padding-bottom: 64px;
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    color: rgba(255,255,255,.5);
+    text-decoration: none;
+    margin-bottom: 32px;
+    transition: color .2s ease;
+  }
+  .back:hover { color: var(--accent); }
+
+  .note-head { margin-bottom: 36px; }
+
+  .note-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .status-dot-sm {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    flex-shrink: 0;
+  }
+
+  .ntag {
+    font-size: 10px;
+    padding: 2px 8px;
+    background: rgba(90,252,254,.08);
+    color: var(--accent);
+    border: 1px solid rgba(90,252,254,.2);
+    border-radius: 4px;
+  }
+
+  .note-excerpt {
+    font-size: 17px;
+    line-height: 1.65;
+    max-width: 680px;
+    margin: 0;
+  }
+
+  .note-layout {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 44px;
+    align-items: start;
+  }
+
+  .note-body { min-width: 0; }
+
+  /* ToC */
+  .note-toc {
+    position: sticky;
+    top: 24px;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    padding: 18px;
+    background: rgba(255,255,255,.015);
+  }
+
+  .toc-head {
+    font-size: 11px;
+    letter-spacing: .14em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .tocitem {
+    display: block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border-left: 2px solid transparent;
+    color: rgba(255,255,255,.5);
+    font-size: 13px;
+    text-decoration: none;
+    line-height: 1.4;
+    transition: color .2s ease, background .2s ease, border-color .2s ease;
+  }
+  .toc-depth-3 { padding-left: 20px; font-size: 12px; }
+  .toc-depth-4 { padding-left: 30px; font-size: 11px; }
+  .tocitem:hover, .tocitem.active {
+    color: var(--accent);
+    background: rgba(90,252,254,.07);
+    border-left-color: var(--accent);
+  }
+
+  /* Prose */
+  :global(.note-body.prose) { font-size: 16px; line-height: 1.8; color: rgba(255,255,255,.78); }
+  :global(.note-body.prose h2) { font-size: 26px; font-weight: 600; color: #fff; letter-spacing: -.02em; margin: 44px 0 14px; }
+  :global(.note-body.prose h3) { font-size: 20px; font-weight: 600; color: #fff; margin: 32px 0 10px; }
+  :global(.note-body.prose h4) { font-size: 16px; font-weight: 600; color: rgba(255,255,255,.85); margin: 24px 0 8px; }
+  :global(.note-body.prose p) { margin: 0 0 18px; }
+  :global(.note-body.prose hr) { border: none; border-top: 1px solid rgba(255,255,255,.1); margin: 36px 0; }
+  :global(.note-body.prose a) { color: var(--accent); border-bottom: 1px solid rgba(90,252,254,.3); text-decoration: none; }
+  :global(.note-body.prose a:hover) { border-color: var(--accent); }
+  :global(.note-body.prose strong) { color: #fff; font-weight: 600; }
+  :global(.note-body.prose code) {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: rgba(90,252,254,.1);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  :global(.note-body.prose pre) {
+    background: #0a0a0a;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    margin: 0 0 24px;
+    overflow-x: auto;
+  }
+
+  :global(.code-block) {
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.1);
+    overflow: hidden;
+    margin: 0 0 28px;
+    background: #0a0a0a;
+  }
+
+  :global(.code-chrome) {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,.4);
+    background: #0d0d0d;
+    user-select: none;
+  }
+
+  :global(.code-dot) {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  :global(.code-filename) {
+    margin-left: 8px;
+    flex: 1;
+    color: rgba(255,255,255,.45);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :global(.code-lang) {
+    color: rgba(255,255,255,.28);
+    margin-right: 10px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: 10px;
+  }
+
+  :global(.code-copy) {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 999px;
+    background: transparent;
+    color: rgba(255,255,255,.5);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    cursor: pointer;
+    transition: border-color .2s ease, color .2s ease, background .2s ease;
+    white-space: nowrap;
+  }
+
+  :global(.code-copy:hover) {
+    border-color: rgba(90,252,254,.45);
+    color: var(--accent);
+    background: rgba(90,252,254,.06);
+  }
+
+  :global(.code-copy.copied) {
+    border-color: rgba(90,252,254,.6);
+    color: var(--accent);
+    background: rgba(90,252,254,.1);
+  }
+
+  :global(.code-inner) {
+    display: flex;
+    overflow-x: auto;
+  }
+
+  :global(.code-inner > pre) {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  :global(.code-lines) {
+    padding: 20px 14px 20px 20px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(255,255,255,.2);
+    text-align: right;
+    user-select: none;
+    border-right: 1px solid rgba(255,255,255,.06);
+    flex-shrink: 0;
+    white-space: pre;
+  }
+  :global(.note-body.prose pre code) {
+    background: none;
+    color: rgba(255,255,255,.85);
+    padding: 18px 20px;
+    display: block;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  :global(.note-body.prose blockquote) {
+    margin: 0 0 24px;
+    padding: 4px 0 4px 22px;
+    border-left: 3px solid var(--accent);
+  }
+  :global(.note-body.prose blockquote p) { color: rgba(255,255,255,.9); font-style: italic; margin: 0; }
+  :global(.note-body.prose ul) { padding-left: 0; margin: 0 0 20px; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  :global(.note-body.prose ul li) { padding-left: 16px; position: relative; color: rgba(255,255,255,.72); }
+  :global(.note-body.prose ul li::before) { content: '–'; position: absolute; left: 0; color: rgba(90,252,254,.5); }
+  :global(.note-body.prose ol) { padding-left: 0; margin: 0 0 20px; list-style: decimal; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  :global(.note-body.prose ol li) { color: rgba(255,255,255,.72); padding-left: 4px; }
+  :global(.note-body.prose table) { width: 100%; border-collapse: collapse; margin: 0 0 24px; font-size: 14px; }
+  :global(.note-body.prose th) { text-align: left; padding: 8px 12px; border-bottom: 1px solid rgba(90,252,254,.3); color: var(--accent); font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; }
+  :global(.note-body.prose td) { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,.07); color: rgba(255,255,255,.72); }
+  :global(.note-body.prose tr:hover td) { background: rgba(255,255,255,.02); }
+  :global(.note-body.prose img) { width: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,.1); margin: 0 0 24px; }
+
+  @media (max-width: 1024px) {
+    .note-layout { grid-template-columns: 1fr; }
+    .note-toc { display: none; }
+  }
+</style>
+
+<script>
+  // Code block chrome — same terminal treatment as articles
+  const LANG_MAP: Record<string, string> = {
+    js:'JavaScript', ts:'TypeScript', dart:'Dart', go:'Go', golang:'Go',
+    py:'Python', python:'Python', kt:'Kotlin', swift:'Swift', rust:'Rust',
+    sh:'Shell', bash:'Shell', yaml:'YAML', yml:'YAML', json:'JSON',
+    sql:'SQL', toml:'TOML', dockerfile:'Dockerfile', plaintext:'', text:'',
+  };
+
+  document.querySelectorAll<HTMLElement>('.note-body pre').forEach((pre) => {
+    const code = pre.querySelector('code');
+    if (!code) return;
+    const cls = Array.from(code.classList).find((c) => /^(language|lang)-/.test(c)) ?? '';
+    const rawLang = cls.replace(/^(language|lang)-/, '').toLowerCase();
+    const langLabel = LANG_MAP[rawLang] ?? (rawLang ? rawLang.toUpperCase() : '');
+    const lineCount = (code.textContent ?? '').split('\n').filter((_, i, a) => i < a.length - 1 || a[i] !== '').length || 1;
+    const lineNums = Array.from({ length: lineCount }, (_, i) => i + 1).join('\n');
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block';
+
+    const chrome = document.createElement('div');
+    chrome.className = 'code-chrome';
+    chrome.innerHTML = `
+      <span class="code-dot" style="background:#ff5f56"></span>
+      <span class="code-dot" style="background:#ffbd2e"></span>
+      <span class="code-dot" style="background:#27c93f"></span>
+      <span class="code-filename">${langLabel ? `${langLabel.toLowerCase()} snippet` : 'code'}</span>
+      ${langLabel ? `<span class="code-lang">${langLabel}</span>` : ''}
+      <button class="code-copy" aria-label="Copy">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        copy
+      </button>`;
+
+    chrome.querySelector<HTMLButtonElement>('.code-copy')!.addEventListener('click', async () => {
+      const btn = chrome.querySelector<HTMLButtonElement>('.code-copy')!;
+      await navigator.clipboard.writeText(code.textContent ?? '');
+      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> copied!`;
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy`; btn.classList.remove('copied'); }, 2200);
+    });
+
+    const inner = document.createElement('div');
+    inner.className = 'code-inner';
+    const nums = document.createElement('div');
+    nums.className = 'code-lines';
+    nums.textContent = lineNums;
+    inner.appendChild(nums);
+    inner.appendChild(pre.cloneNode(true));
+    wrapper.appendChild(chrome);
+    wrapper.appendChild(inner);
+    pre.replaceWith(wrapper);
+  });
+
+  // ToC highlight
+  const links = document.querySelectorAll<HTMLAnchorElement>('.tocitem');
+  if (links.length) {
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        const link = document.querySelector<HTMLAnchorElement>(`.tocitem[href="#${e.target.id}"]`);
+        if (link) link.classList.toggle('active', e.isIntersecting);
+      }),
+      { rootMargin: '0px 0px -60% 0px' }
+    );
+    document.querySelectorAll<HTMLElement>('h2[id],h3[id],h4[id]').forEach((h) => obs.observe(h));
+  }
+</script>

@@ -1,0 +1,227 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/layout/Nav.astro';
+import Footer from '../../components/layout/Footer.astro';
+
+const notes = (await getCollection('notes'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const allTags = [...new Set(notes.flatMap((n) => n.data.tags ?? []))].sort();
+---
+
+<BaseLayout title="Notes — Ademola Kolawole" description="Quick thoughts, TILs, and engineering observations.">
+  <Nav />
+
+  <div class="notes-page">
+    <header class="notes-head">
+      <p class="mono" style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.14em;margin-bottom:10px">~/notes</p>
+      <h1 class="notes-h1">Notes.</h1>
+      <p class="notes-sub text-secondary">Quick thoughts, TILs, and observations from building mobile & backend systems.</p>
+    </header>
+
+    <!-- Tag filter -->
+    <div class="tag-bar" id="tag-bar">
+      <button class="tchip tchip--active" data-tag="all">all</button>
+      {allTags.map((t) => (
+        <button class="tchip" data-tag={t}>{t}</button>
+      ))}
+    </div>
+
+    <!-- Notes grid -->
+    <div class="notes-grid" id="notes-grid">
+      {notes.map(async (note) => {
+        // Long note: has excerpt set OR body > 800 chars → link to full page
+        const rawBody = note.body ?? '';
+        const isLong = !!note.data.excerpt || rawBody.length > 800;
+        const preview = note.data.excerpt ?? rawBody
+          .split('\n')
+          .filter((l) => !l.startsWith('#') && !l.startsWith('`') && l.trim())
+          .join(' ')
+          .slice(0, 200) + '…';
+
+        const { Content } = isLong ? { Content: null } : await note.render();
+        const dateLabel = note.data.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
+        const tagStr = (note.data.tags ?? []).join(',');
+        return (
+          <div class="note-card" class:list={[{ 'note-card--linked': isLong }]} data-tags={tagStr}>
+            <div class="note-card__header">
+              <span class="note-card__date mono text-accent">{dateLabel}</span>
+              <div class="note-card__tags">
+                {(note.data.tags ?? []).map((t) => (
+                  <span class="ntag mono">{t}</span>
+                ))}
+              </div>
+            </div>
+            {isLong ? (
+              <a href={`/notes/${note.slug}`} class="note-link-body">
+                <p class="note-preview">{preview}</p>
+                <span class="note-read mono">read note →</span>
+              </a>
+            ) : (
+              <div class="note-card__body prose-note">
+                <Content />
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  const bar = document.getElementById('tag-bar');
+  const grid = document.getElementById('notes-grid');
+  if (bar && grid) {
+    bar.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-tag]');
+      if (!btn) return;
+      bar.querySelectorAll('.tchip').forEach((c) => c.classList.remove('tchip--active'));
+      btn.classList.add('tchip--active');
+      const tag = btn.dataset.tag ?? 'all';
+      grid.querySelectorAll<HTMLElement>('.note-card').forEach((card) => {
+        const tags = card.dataset.tags?.split(',') ?? [];
+        card.style.display = tag === 'all' || tags.includes(tag) ? '' : 'none';
+      });
+    });
+  }
+</script>
+
+<style>
+  .notes-page {
+    padding-top: 32px;
+    padding-bottom: 64px;
+  }
+
+  .notes-head { margin-bottom: 32px; }
+
+  .notes-h1 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -.03em;
+    margin: 0 0 14px;
+  }
+
+  .notes-sub {
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 540px;
+    margin: 0;
+  }
+
+  .tag-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 32px;
+  }
+
+  .tchip {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 5px 13px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 999px;
+    color: rgba(255,255,255,.55);
+    background: transparent;
+    cursor: pointer;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .tchip:hover, .tchip--active {
+    color: var(--accent);
+    border-color: rgba(90,252,254,.45);
+  }
+
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 14px;
+  }
+
+  .note-card {
+    border: 1px solid rgba(255,255,255,.1);
+    border-left: 2px solid rgba(90,252,254,.5);
+    border-radius: 0 10px 10px 0;
+    padding: 22px 24px;
+    background: rgba(255,255,255,.015);
+    transition: border-color .25s ease, transform .25s ease, background .25s ease;
+  }
+
+  .note-card:hover {
+    border-color: rgba(90,252,254,.45);
+    transform: translateY(-3px);
+    background: rgba(90,252,254,.03);
+  }
+
+  .note-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .note-card__date { font-size: 11px; }
+
+  .note-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .ntag {
+    font-size: 10px;
+    padding: 2px 8px;
+    background: rgba(90,252,254,.08);
+    color: var(--accent);
+    border: 1px solid rgba(90,252,254,.2);
+    border-radius: 4px;
+  }
+
+  .note-link-body {
+    display: block;
+    text-decoration: none;
+  }
+
+  .note-preview {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,.7);
+    margin: 0 0 14px;
+  }
+
+  .note-read {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: .04em;
+    transition: letter-spacing .2s ease;
+  }
+
+  .note-link-body:hover .note-read { letter-spacing: .1em; }
+
+  /* Prose for notes — plain body text, inline code only */
+  :global(.prose-note p) {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,.75);
+    margin: 0;
+  }
+
+  :global(.prose-note code) {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: rgba(90,252,254,.1);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 600px) {
+    .notes-grid { grid-template-columns: 1fr; }
+  }
+</style>
