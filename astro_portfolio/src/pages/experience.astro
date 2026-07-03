@@ -53,6 +53,7 @@ const stats = [
               <h2 class="tl-role">{exp.role}</h2>
               <span class="tl-company text-accent">{exp.company}</span>
               <span class="tl-loc mono text-secondary">{exp.location}</span>
+              <span class="tl-date-inline mono">{exp.dateRange}</span>
             </div>
             <ul class="tl-bullets">
               {exp.bullets.map((b) => (
@@ -253,23 +254,10 @@ const stats = [
   @media (max-width: 700px) {
     .tl-row {
       grid-template-columns: 24px 1fr;
-      grid-template-areas:
-        'spine date'
-        'spine content';
     }
 
-    .tl-date-col {
-      grid-area: date;
-      justify-content: flex-start;
-      padding-top: 4px;
-    }
-
-    .tl-spine { grid-area: spine; }
-
-    .tl-content {
-      grid-area: content;
-      padding-bottom: 36px;
-    }
+    .tl-date-col { display: none; }
+    .tl-content { padding-bottom: 36px; }
 
     .stat-chips { gap: 8px; }
     .stat-chip { padding: 10px 16px; }
