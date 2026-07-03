@@ -251,7 +251,28 @@ const stats = [
   }
 
   @media (max-width: 700px) {
-    .tl-row { grid-template-columns: 0 24px 1fr; }
-    .tl-date-col { display: none; }
+    .tl-row {
+      grid-template-columns: 24px 1fr;
+      grid-template-areas:
+        'spine date'
+        'spine content';
+    }
+
+    .tl-date-col {
+      grid-area: date;
+      justify-content: flex-start;
+      padding-top: 4px;
+    }
+
+    .tl-spine { grid-area: spine; }
+
+    .tl-content {
+      grid-area: content;
+      padding-bottom: 36px;
+    }
+
+    .stat-chips { gap: 8px; }
+    .stat-chip { padding: 10px 16px; }
+    .stat-chip__val { font-size: 20px; }
   }
 </style>
