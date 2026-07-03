@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="index, follow"><meta name="author" content="Ademola Kolawole"><meta name="description" content="gRPC is powerful when working across distributed teams. It generates type-safe client and server code for Go, Dart, Swift, Kotlin and more — making it a natural fit for Flutter apps backed by Go microservices."><meta name="keywords" content="Ademola Kolawole, Software Engineer, Mobile Developer, Flutter, iOS, Android, Go, Portfolio"><!-- Open Graph --><meta property="og:title" content="Exploring gRPC and Flutter for Modern App Development — Ademola Kolawole"><meta property="og:description" content="gRPC is powerful when working across distributed teams. It generates type-safe client and server code for Go, Dart, Swift, Kotlin and more — making it a natural fit for Flutter apps backed by Go microservices."><meta property="og:url" content="https://demola.dev/writing/exploring-grpc-flutter-modern-app-development/"><meta property="og:type" content="website"><meta property="og:image" content="https://res.cloudinary.com/dcnuiaskr/image/upload/v1736673287/gRPC_i56qa9.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="en_US"><meta property="og:site_name" content="Ademola Kolawole"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Exploring gRPC and Flutter for Modern App Development — Ademola Kolawole"><meta name="twitter:description" content="gRPC is powerful when working across distributed teams. It generates type-safe client and server code for Go, Dart, Swift, Kotlin and more — making it a natural fit for Flutter apps backed by Go microservices."><meta name="twitter:image" content="https://res.cloudinary.com/dcnuiaskr/image/upload/v1736673287/gRPC_i56qa9.png"><meta name="twitter:creator" content="@demola234"><meta name="theme-color" content="#060606"><link rel="canonical" href="https://demola.dev/writing/exploring-grpc-flutter-modern-app-development/"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Structured data --><script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Ademola Kolawole",
+        "url": "https://demola.dev",
+        "jobTitle": "Software Engineer",
+        "knowsAbout": ["Flutter", "iOS", "Android", "Go", "Mobile Development"],
+        "sameAs": [
+          "https://github.com/demola234",
+          "https://twitter.com/demola234",
+          "https://linkedin.com/in/ademola-kolawole"
+        ]
+      }
+    </script><meta name="generator" content="Astro v5.16.11"><title>Exploring gRPC and Flutter for Modern App Development — Ademola Kolawole</title><link rel="stylesheet" href="/_astro/experience.KLKRrrZU.css">
+<link rel="stylesheet" href="/_astro/_slug_.Df19GQEC.css"></head> <body> <div class="site-wrapper">   <div class="art-statusbar" data-astro-cid-jxnjfbl4> <a href="/writing" class="art-back mono" data-astro-cid-jxnjfbl4>← ademola.dev / writing</a> <span class="mono text-accent" style="font-size:12px" data-astro-cid-jxnjfbl4>14 min read</span> </div>  <div class="share-bar" data-astro-cid-jxnjfbl4> <a href="https://medium.com/stackademic/exploring-grpc-and-flutter-for-modern-app-development-ad2d890bfe95" target="_blank" rel="noopener noreferrer" class="shareic share-read mono" data-astro-cid-jxnjfbl4>
+▶ Read on Medium ↗
+</a> <span class="share-divider" aria-hidden="true" data-astro-cid-jxnjfbl4></span> <span class="mono" style="font-size:12px;color:rgba(255,255,255,.4)" data-astro-cid-jxnjfbl4>share →</span> <a href="https://twitter.com/intent/tweet?text=Exploring%20gRPC%20and%20Flutter%20for%20Modern%20App%20Development&url=https%3A%2F%2Fdemola.dev%2Fwriting%2Fexploring-grpc-flutter-modern-app-development" target="_blank" rel="noopener noreferrer" class="shareic share-icon" aria-label="Share on X" data-astro-cid-jxnjfbl4>X</a> <a href="https://linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fdemola.dev%2Fwriting%2Fexploring-grpc-flutter-modern-app-development" target="_blank" rel="noopener noreferrer" class="shareic share-icon" aria-label="Share on LinkedIn" data-astro-cid-jxnjfbl4>in</a> <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdemola.dev%2Fwriting%2Fexploring-grpc-flutter-modern-app-development" target="_blank" rel="noopener noreferrer" class="shareic share-icon" aria-label="Share on Facebook" data-astro-cid-jxnjfbl4>f</a> <button onclick="navigator.clipboard.writeText(window.location.href)" class="shareic share-icon" aria-label="Copy link" data-astro-cid-jxnjfbl4>⧉</button> </div>  <header class="art-header" data-astro-cid-jxnjfbl4> <div class="art-tags" data-astro-cid-jxnjfbl4> <span class="atag mono" data-astro-cid-jxnjfbl4>Flutter</span><span class="atag mono" data-astro-cid-jxnjfbl4>gRPC</span><span class="atag mono" data-astro-cid-jxnjfbl4>Go</span><span class="atag mono" data-astro-cid-jxnjfbl4>Riverpod</span> </div> <h1 class="art-title" data-astro-cid-jxnjfbl4>Exploring gRPC and Flutter for Modern App Development</h1> <div class="art-meta mono" data-astro-cid-jxnjfbl4> <span style="display:flex;align-items:center;gap:8px" data-astro-cid-jxnjfbl4> <span class="status-dot-sm" aria-hidden="true" data-astro-cid-jxnjfbl4></span> gRPC is powerful when working across distributed teams. It generates type-safe client and server code for Go, Dart, Swift, Kotlin and more </span> <span data-astro-cid-jxnjfbl4>·</span> <span data-astro-cid-jxnjfbl4>Mon, Apr 22, 2024</span> </div> <!-- byline --> <div class="art-byline" data-astro-cid-jxnjfbl4> <div class="byline-avatar" data-astro-cid-jxnjfbl4> <img src="/memoji.png" alt="Ademola" style="width:100%;transform:scale(1.4) translateY(4px);mix-blend-mode:multiply" data-astro-cid-jxnjfbl4> </div> <div style="flex:1" data-astro-cid-jxnjfbl4> <div style="font-weight:600;color:#fff;font-size:15px" data-astro-cid-jxnjfbl4>Ademola Kolawole</div> <div class="mono" style="font-size:12px;color:rgba(255,255,255,.5)" data-astro-cid-jxnjfbl4>Software Engineer · Mobile & Backend</div> </div> </div> </header>  <div class="art-cover" data-astro-cid-jxnjfbl4> <img src="https://res.cloudinary.com/dcnuiaskr/image/upload/v1736673287/gRPC_i56qa9.png" alt="Exploring gRPC and Flutter for Modern App Development" loading="lazy" decoding="async" data-astro-cid-jxnjfbl4> </div> <div class="art-layout" data-astro-cid-jxnjfbl4> <article class="art-body prose" data-astro-cid-jxnjfbl4> <p>In mobile development the need for more powerful and distributed tools has grown significantly. gRPC tools are powerful when working across many teams or distributed environments. In addition to server-side Golang, gRPC can generate code for Dart, Swift, Objective-C, Java, Kotlin and many other languages.</p>
+<p>Working with gRPC lets you define an API once and generate networking and model code for both your server and any client — including Flutter.</p>
+<h2 id="what-youll-learn">What You’ll Learn</h2>
+<ul>
+<li>Read and modify a <code>.proto</code> file that describes an API</li>
+<li>Test a gRPC API with <strong>Evans</strong></li>
+<li>Build a Flutter client that calls a Go gRPC server</li>
+</ul>
+<h2 id="defining-the-api-with-protocol-buffers">Defining the API with Protocol Buffers</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="protobuf"><code><span class="line"><span style="color:#F97583">syntax</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> "proto3"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">package</span><span style="color:#9ECBFF"> user</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">option</span><span style="color:#79B8FF"> go_package</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> "github.com/demola234/realio/user/pb"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">service</span><span style="color:#B392F0"> UserService</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  rpc</span><span style="color:#B392F0"> GetUser</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">GetUserRequest</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">returns</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">User</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  rpc</span><span style="color:#B392F0"> ListUsers</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">ListUsersRequest</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">returns</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">stream</span><span style="color:#B392F0"> User</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  rpc</span><span style="color:#B392F0"> CreateUser</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">CreateUserRequest</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">returns</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">User</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">message</span><span style="color:#B392F0"> User</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  string</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  string</span><span style="color:#E1E4E8"> name </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  string</span><span style="color:#E1E4E8"> email </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  string</span><span style="color:#E1E4E8"> avatar_url </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">message</span><span style="color:#B392F0"> GetUserRequest</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  string</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">message</span><span style="color:#B392F0"> ListUsersRequest</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  int32</span><span style="color:#E1E4E8"> page </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  int32</span><span style="color:#E1E4E8"> page_size </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">message</span><span style="color:#B392F0"> CreateUserRequest</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  string</span><span style="color:#E1E4E8"> name </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  string</span><span style="color:#E1E4E8"> email </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="go-server-implementation">Go Server Implementation</h2>
+<p>Generate server stubs:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">protoc</span><span style="color:#79B8FF"> --go_out=.</span><span style="color:#79B8FF"> --go-grpc_out=.</span><span style="color:#9ECBFF"> user.proto</span></span></code></pre>
+<p>Implement the service:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="go"><code><span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> UserServer</span><span style="color:#F97583"> struct</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  pb</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">UnimplementedUserServiceServer</span></span>
+<span class="line"><span style="color:#E1E4E8">  repo </span><span style="color:#B392F0">UserRepository</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">func</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">s </span><span style="color:#F97583">*</span><span style="color:#B392F0">UserServer</span><span style="color:#E1E4E8">) </span><span style="color:#B392F0">GetUser</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">ctx</span><span style="color:#B392F0"> context</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Context</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">req</span><span style="color:#F97583"> *</span><span style="color:#B392F0">pb</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">GetUserRequest</span><span style="color:#E1E4E8">) (</span><span style="color:#F97583">*</span><span style="color:#B392F0">pb</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">User</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">error</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  user, err </span><span style="color:#F97583">:=</span><span style="color:#E1E4E8"> s.repo.</span><span style="color:#B392F0">FindByID</span><span style="color:#E1E4E8">(ctx, req.Id)</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> err </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> nil</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> nil</span><span style="color:#E1E4E8">, status.</span><span style="color:#B392F0">Errorf</span><span style="color:#E1E4E8">(codes.NotFound, </span><span style="color:#9ECBFF">"user not found: </span><span style="color:#79B8FF">%v</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">, err)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> &#x26;</span><span style="color:#B392F0">pb</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">User</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">    Id:        user.ID,</span></span>
+<span class="line"><span style="color:#E1E4E8">    Name:      user.Name,</span></span>
+<span class="line"><span style="color:#E1E4E8">    Email:     user.Email,</span></span>
+<span class="line"><span style="color:#E1E4E8">    AvatarUrl: user.AvatarURL,</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, </span><span style="color:#79B8FF">nil</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="flutter-client-setup">Flutter Client Setup</h2>
+<p>Add dependencies to <code>pubspec.yaml</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">dependencies</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  grpc</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">^3.2.4</span></span>
+<span class="line"><span style="color:#85E89D">  protobuf</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">^3.1.0</span></span></code></pre>
+<p>Generate Dart stubs:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">protoc</span><span style="color:#79B8FF"> --dart_out=grpc:lib/src/generated</span><span style="color:#9ECBFF"> user.proto</span></span></code></pre>
+<p>Create the client:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="dart"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#79B8FF"> UserClient</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  late</span><span style="color:#F97583"> final</span><span style="color:#79B8FF"> ClientChannel</span><span style="color:#E1E4E8"> _channel;</span></span>
+<span class="line"><span style="color:#F97583">  late</span><span style="color:#F97583"> final</span><span style="color:#79B8FF"> UserServiceClient</span><span style="color:#E1E4E8"> _stub;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">  UserClient</span><span style="color:#E1E4E8">({</span><span style="color:#F97583">required</span><span style="color:#79B8FF"> String</span><span style="color:#E1E4E8"> host, </span><span style="color:#F97583">required</span><span style="color:#79B8FF"> int</span><span style="color:#E1E4E8"> port}) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    _channel </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> ClientChannel</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      host,</span></span>
+<span class="line"><span style="color:#E1E4E8">      port</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> port,</span></span>
+<span class="line"><span style="color:#E1E4E8">      options</span><span style="color:#F97583">:</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> ChannelOptions</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        credentials</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> ChannelCredentials</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">insecure</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#E1E4E8">      ),</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">    _stub </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> UserServiceClient</span><span style="color:#E1E4E8">(_channel);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">  Future</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">User</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">getUser</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">String</span><span style="color:#E1E4E8"> id) </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    final</span><span style="color:#E1E4E8"> response </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> _stub.</span><span style="color:#B392F0">getUser</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">      GetUserRequest</span><span style="color:#E1E4E8">()..id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> id,</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> response;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">  Stream</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">User</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">listUsers</span><span style="color:#E1E4E8">({</span><span style="color:#79B8FF">int</span><span style="color:#E1E4E8"> page </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">int</span><span style="color:#E1E4E8"> pageSize </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span><span style="color:#E1E4E8">}) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> _stub.</span><span style="color:#B392F0">listUsers</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">      ListUsersRequest</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">        ..page </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> page</span></span>
+<span class="line"><span style="color:#E1E4E8">        ..pageSize </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pageSize,</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">  Future</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">void</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">dispose</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> _channel.</span><span style="color:#B392F0">shutdown</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="integrating-with-riverpod">Integrating with Riverpod</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="dart"><code><span class="line"><span style="color:#F97583">final</span><span style="color:#E1E4E8"> userClientProvider </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> Provider</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">UserClient</span><span style="color:#E1E4E8">>((ref) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#79B8FF"> UserClient</span><span style="color:#E1E4E8">(host</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> 'localhost'</span><span style="color:#E1E4E8">, port</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> 9090</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">final</span><span style="color:#E1E4E8"> userProvider </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> FutureProvider</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">family</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">User</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">String</span><span style="color:#E1E4E8">>((ref, id) </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  final</span><span style="color:#E1E4E8"> client </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ref.</span><span style="color:#B392F0">read</span><span style="color:#E1E4E8">(userClientProvider);</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> client.</span><span style="color:#B392F0">getUser</span><span style="color:#E1E4E8">(id);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h2 id="testing-with-evans">Testing with Evans</h2>
+<p>Evans is a gRPC client for the terminal. Install it:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> evans</span></span></code></pre>
+<p>Connect to your server:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">evans</span><span style="color:#79B8FF"> --host</span><span style="color:#9ECBFF"> localhost</span><span style="color:#79B8FF"> --port</span><span style="color:#79B8FF"> 9090</span><span style="color:#79B8FF"> --proto</span><span style="color:#9ECBFF"> user.proto</span><span style="color:#9ECBFF"> repl</span></span></code></pre>
+<p>Then call your service interactively:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>user.UserService@localhost:9090> call GetUser</span></span>
+<span class="line"><span>id (TYPE_STRING) => abc123</span></span></code></pre>
+<h2 id="why-grpc-over-rest">Why gRPC Over REST?</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Feature</th><th>REST</th><th>gRPC</th></tr></thead><tbody><tr><td>Protocol</td><td>HTTP/1.1</td><td>HTTP/2</td></tr><tr><td>Payload</td><td>JSON</td><td>Protocol Buffers (binary)</td></tr><tr><td>Streaming</td><td>Limited</td><td>Bi-directional</td></tr><tr><td>Code gen</td><td>Optional</td><td>First-class</td></tr><tr><td>Type safety</td><td>No</td><td>Yes</td></tr></tbody></table>
+<p>For Flutter + Go microservices, gRPC cuts payload size, eliminates serialization bugs, and makes API contracts explicit and versioned.</p> </article> <aside class="art-toc" aria-label="Table of contents" data-astro-cid-jxnjfbl4> <div class="toc-head mono" data-astro-cid-jxnjfbl4>☰ TABLE OF CONTENTS</div> <nav class="toc-nav" data-astro-cid-jxnjfbl4> <a href="#what-youll-learn" class="tocitem toc-depth-2" data-depth="2" data-astro-cid-jxnjfbl4> What You’ll Learn </a><a href="#defining-the-api-with-protocol-buffers" class="tocitem toc-depth-2" data-depth="2" data-astro-cid-jxnjfbl4> Defining the API with Protocol Buffers </a><a href="#go-server-implementation" class="tocitem toc-depth-2" data-depth="2" data-astro-cid-jxnjfbl4> Go Server Implementation </a><a href="#flutter-client-setup" class="tocitem toc-depth-2" data-depth="2" data-astro-cid-jxnjfbl4> Flutter Client Setup </a><a href="#integrating-with-riverpod" class="tocitem toc-depth-2" data-depth="2" data-astro-cid-jxnjfbl4> Integrating with Riverpod </a><a href="#testing-with-evans" class="tocitem toc-depth-2" data-depth="2" data-astro-cid-jxnjfbl4> Testing with Evans </a><a href="#why-grpc-over-rest" class="tocitem toc-depth-2" data-depth="2" data-astro-cid-jxnjfbl4> Why gRPC Over REST? </a> </nav> </aside> </div>  <div class="reply-cta" data-astro-cid-jxnjfbl4> <div class="reply-cta__inner" data-astro-cid-jxnjfbl4> <span class="status-pulse" aria-hidden="true" data-astro-cid-jxnjfbl4></span> <div data-astro-cid-jxnjfbl4> <p class="reply-cta__label mono" data-astro-cid-jxnjfbl4>thoughts on this?</p> <p class="reply-cta__sub" data-astro-cid-jxnjfbl4>Hit reply — I read every email.</p> </div> <a href="mailto:hello@demola.dev?subject=Re: Exploring%20gRPC%20and%20Flutter%20for%20Modern%20App%20Development&#38;body=Hi Ademola,%0A%0A" class="reply-btn mono" data-astro-cid-jxnjfbl4>
+hello@demola.dev →
+</a> </div> </div>  <div class="comments-wrap" data-astro-cid-jxnjfbl4> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="Z3tpIm" component-url="/_astro/Comments.Bt4E--Hu.js" component-export="default" renderer-url="/_astro/client.9unXo8s5.js" props="{&quot;data-astro-cid-jxnjfbl4&quot;:[0,true]}" ssr client="only" opts="{&quot;name&quot;:&quot;Comments&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div>  <div class="art-prevnext" data-astro-cid-jxnjfbl4> <a href="/writing/implementing-unit-tests-for-riverpod" class="prevnext-link" data-astro-cid-jxnjfbl4> <span class="mono" style="font-size:11px;color:rgba(255,255,255,.4)" data-astro-cid-jxnjfbl4>← Previous</span> <span class="prevnext-title" data-astro-cid-jxnjfbl4>Implementing Unit Tests for Riverpod</span> </a> <a href="/writing/dependency-injection-go-uber-fx" class="prevnext-link prevnext-link--right" data-astro-cid-jxnjfbl4> <span class="mono" style="font-size:11px;color:rgba(255,255,255,.4)" data-astro-cid-jxnjfbl4>Next →</span> <span class="prevnext-title" data-astro-cid-jxnjfbl4>Taming the Dependencies: Mastering Dependency Injection in Go with Uber Fx</span> </a> </div> </div> </body></html>  <script type="module">const m={js:"JavaScript",javascript:"JavaScript",ts:"TypeScript",typescript:"TypeScript",dart:"Dart",flutter:"Dart",go:"Go",golang:"Go",py:"Python",python:"Python",kt:"Kotlin",kotlin:"Kotlin",swift:"Swift",rust:"Rust",sh:"Shell",bash:"Shell",shell:"Shell",zsh:"Shell",yaml:"YAML",yml:"YAML",json:"JSON",sql:"SQL",html:"HTML",css:"CSS",md:"Markdown",markdown:"Markdown",proto:"Protobuf",toml:"TOML",dockerfile:"Dockerfile",plaintext:"",text:"",txt:""};document.querySelectorAll(".art-body pre").forEach(s=>{const t=s.querySelector("code");if(!t)return;const o=(Array.from(t.classList).find(p=>/^(language|lang)-/.test(p))??"").replace(/^(language|lang)-/,"").toLowerCase(),e=m[o]??(o?o.toUpperCase():""),u=(t.textContent??"").split(`
+`).filter((p,i,h)=>i<h.length-1||h[i]!=="").length||1,g=Array.from({length:u},(p,i)=>i+1).join(`
+`),r=document.createElement("div");r.className="code-block";const l=document.createElement("div");l.className="code-chrome",l.innerHTML=`
+      <span class="code-dot" style="background:#ff5f56"></span>
+      <span class="code-dot" style="background:#ffbd2e"></span>
+      <span class="code-dot" style="background:#27c93f"></span>
+      <span class="code-filename">${e?`${e.toLowerCase()} snippet`:"code"}</span>
+      ${e?`<span class="code-lang">${e}</span>`:""}
+      <button class="code-copy" aria-label="Copy code">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        copy
+      </button>`;const n=l.querySelector(".code-copy");n.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(t.textContent??""),n.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> copied!',n.classList.add("copied"),setTimeout(()=>{n.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy',n.classList.remove("copied")},2200)}catch{n.textContent="error"}});const a=document.createElement("div");a.className="code-inner";const d=document.createElement("div");d.className="code-lines",d.textContent=g,a.appendChild(d),a.appendChild(s.cloneNode(!0)),r.appendChild(l),r.appendChild(a),s.replaceWith(r)});const y=document.querySelectorAll(".tocitem");if(y.length){const s=document.querySelectorAll("h2[id],h3[id],h4[id]"),t=new IntersectionObserver(c=>c.forEach(o=>{const e=document.querySelector(`.tocitem[href="#${o.target.id}"]`);e&&e.classList.toggle("active",o.isIntersecting)}),{rootMargin:"0px 0px -60% 0px"});s.forEach(c=>t.observe(c))}</script>
