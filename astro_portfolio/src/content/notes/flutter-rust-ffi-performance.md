@@ -1,6 +1,6 @@
 ---
 date: "2026-07-03"
-tags: ["flutter", "rust", "ffi", "performance", "observability"]
+tags: ["Flutter", "Rust", "FFI", "Performance", "Observability"]
 excerpt: "Notes on bridging Flutter and Rust via FFI for performance tooling — frame timing, ring buffers, event correlation, and OpenTelemetry mapping."
 ---
 

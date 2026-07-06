@@ -3,7 +3,7 @@ title: "Getting Started with Jetpack Compose: A Flutter Developer's Perspective"
 excerpt: "Coming from Flutter, Jetpack Compose feels surprisingly familiar — but the mental model shifts matter. Here's what I learned moving between the two."
 date: "2026-06-15"
 readMins: 8
-tags: ["android", "jetpack-compose", "kotlin", "flutter"]
+tags: ["Android", "Jetpack Compose", "Kotlin", "Flutter"]
 ---
 
 When I first started building Android apps alongside my Flutter work, I expected Jetpack Compose to feel completely alien. It didn't. The declarative model is similar enough that a Flutter developer can get productive quickly — but similar isn't the same, and the places where they diverge are exactly where you'll trip up if you're not paying attention.
