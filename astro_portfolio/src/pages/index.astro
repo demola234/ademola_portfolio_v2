@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/layout/Nav.astro';
 import Footer from '../components/layout/Footer.astro';
 import LiveClock from '../components/LiveClock.tsx';
+import AsciiPortrait from '../components/AsciiPortrait.tsx';
 
 const allProjects = (await getCollection('projects'))
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
@@ -79,10 +80,8 @@ const youtube = [
     </div>
     <div class="hero__img-col" aria-hidden="true">
       <div class="hero__img-card">
-        <img src="/memoji.png" alt="Ademola Kolawole memoji" class="hero__img" width="300" height="300" loading="eager" decoding="async" />
+        <AsciiPortrait client:only="react" src="/personal_image.png" size={300} />
       </div>
-      <div class="hero__corner hero__corner--tl" />
-      <div class="hero__corner hero__corner--br" />
     </div>
   </section>
 
@@ -385,42 +384,15 @@ const youtube = [
   }
 
   .hero__img-card {
-    border: 1px solid rgba(90,252,254,.35);
     border-radius: 16px;
     overflow: hidden;
-    background: linear-gradient(160deg, #091f1f 0%, #05141414 40%, #030e0e 100%);
-    background: linear-gradient(160deg,
-      rgba(90,252,254,.18) 0%,
-      rgba(90,252,254,.08) 40%,
-      rgba(90,252,254,.04) 100%
-    );
     animation: softfloat 6s ease-in-out infinite;
-    box-shadow:
-      0 24px 60px rgba(0,0,0,.7),
-      0 0 40px rgba(90,252,254,.12),
-      0 0 0 1px rgba(90,252,254,.15),
-      inset 0 1px 0 rgba(90,252,254,.2);
   }
 
   @keyframes softfloat {
     0%,100%{transform:translateY(0)}
     50%{transform:translateY(-10px)}
   }
-
-  .hero__img {
-    width: 100%;
-    display: block;
-    mix-blend-mode: multiply;
-  }
-
-  .hero__corner {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    transition: opacity .3s ease;
-  }
-  .hero__corner--tl { top: -8px; left: -8px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
-  .hero__corner--br { bottom: -8px; right: -8px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
 
   /* Accent ring that pulses behind card */
   .hero__img-col::before {
