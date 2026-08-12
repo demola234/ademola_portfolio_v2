@@ -4,7 +4,7 @@ subtitle: "Cross-platform reading app — native Android & iOS"
 description: "A cross-platform reading app built natively for Android (Kotlin + Jetpack Compose) and iOS (Swift + SwiftUI), backed by a Rust/Axum REST API with 76 endpoints. Features Readium-powered EPUB rendering, offline-first sync with outbox pattern, on-device AI recap, OAuth social login, in-app purchases, TTS with background playback, and a Focus Lock mode that blocks other apps until a reading goal is met."
 tags: ["Kotlin", "Jetpack Compose", "Swift", "SwiftUI", "Rust", "Android", "iOS"]
 category: "app"
-order: 2
+order: 3
 ---
 
 ## Architecture

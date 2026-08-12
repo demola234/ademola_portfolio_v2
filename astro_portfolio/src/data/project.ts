@@ -1,5 +1,25 @@
 export const projects = [
   {
+    project_name: "Rodinia",
+    short_description:
+      "A fast, synchronous, optionally-encrypted key-value store for Flutter apps, with the actual storage engine written in Rust and exposed to Dart via flutter_rust_bridge.",
+    technologies_used: [
+      "Flutter",
+      "Rust",
+      "Dart",
+      "FFI",
+      "flutter_rust_bridge",
+      "AES-256-GCM",
+      "Write-Ahead Log (WAL)",
+    ],
+    markdown_path: "/markdown/rodinia_project.md",
+    category: "Mobile, Rust, Open Source",
+    image_url: null,
+    github_link: "https://github.com/demola234/tiny-tools/tree/main/rodinia",
+    play_store_link: null,
+    app_store_link: null,
+  },
+  {
     project_name: "Ani",
     short_description:
       "A comprehensive platform tailored to anime, manga, and gaming enthusiasts, providing an extensive content library and community-driven features.",
