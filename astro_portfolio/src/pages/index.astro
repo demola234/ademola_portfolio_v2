@@ -3,7 +3,6 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/layout/Nav.astro';
 import Footer from '../components/layout/Footer.astro';
-import LiveClock from '../components/LiveClock.tsx';
 import AsciiPortrait from '../components/AsciiPortrait.tsx';
 
 const allProjects = (await getCollection('projects'))
@@ -56,15 +55,9 @@ const youtube = [
 <BaseLayout title="Ademola Kolawole — Software Engineer">
 
   <!-- Status bar -->
-  <div class="status-bar">
-    <span class="status-bar__left">
-      <span class="status-dot" aria-hidden="true" />
-      <span class="mono" style="font-size:12px;color:rgba(255,255,255,.55)">ademola.dev</span>
-    </span>
-    <span class="status-bar__right mono" style="font-size:12px;color:rgba(255,255,255,.55);display:flex;gap:22px">
-      <span>ABUJA, NG</span>
-      <LiveClock client:only="react" className="text-accent" />
-    </span>
+  <div class="status-bar mono">
+    <span>ademola.dev</span>
+    <span>Abuja, NG</span>
   </div>
 
   <Nav />
@@ -72,10 +65,10 @@ const youtube = [
   <!-- Hero -->
   <section class="hero">
     <div class="hero__text">
-      <div class="hero__label mono">SOFTWARE ENGINEER · MOBILE & BACKEND</div>
+      <div class="hero__label mono">Software engineer · Mobile &amp; backend</div>
       <h1 class="hero__h1">Ademola<br><span class="hero__h1-dim">Kolawole</span></h1>
-      <p class="hero__body mono">
-        I ship <span class="text-accent">Flutter, Android &amp; iOS</span> from architecture to production — with backend depth in <span class="text-accent">Go, Kotlin &amp; Rust</span>. Built features serving <span class="text-accent">50M+ users</span> across payments, KYC, analytics &amp; engagement.<span class="cursor" aria-hidden="true" />
+      <p class="hero__body">
+        I ship <strong>Flutter, Android &amp; iOS</strong> from architecture to production — with backend depth in <strong>Go, Kotlin &amp; Rust</strong>. Built features serving <strong>50M+ users</strong> across payments, KYC, analytics &amp; engagement.
       </p>
     </div>
     <div class="hero__img-col" aria-hidden="true">
@@ -89,7 +82,7 @@ const youtube = [
   <section class="section" style="padding-top:30px">
     <div class="section-row" style="margin-bottom:22px">
       <span class="path-label mono">~/stack</span>
-      <span class="mono" style="font-size:11px;color:rgba(255,255,255,.35)">the tools I build with</span>
+      <span class="section-hint">the tools I build with</span>
     </div>
     <div class="stack-row">
       {stack.map(({ name, src, mono }) => (
@@ -107,14 +100,14 @@ const youtube = [
   <section class="section">
     <div class="section-row">
       <span class="path-label mono">~/writing</span>
-      <a href="/writing" class="accent-link mono">all posts →</a>
+      <a href="/writing" class="btn-ghost btn-sm">all posts →</a>
     </div>
     <div class="row-list">
       {posts.map((p) => (
-        <a href={`/writing/${p.slug}`} class="rowa" style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:18px 12px;border-bottom:1px solid rgba(255,255,255,.1)">
-          <span style="font-size:17px;color:#fff">{p.data.title}</span>
-          <span class="mono text-secondary" style="font-size:12px;white-space:nowrap">
-            {p.data.date.toLocaleDateString('en-US',{month:'short',year:'numeric'}).toUpperCase()} · {p.data.readMins} min
+        <a href={`/writing/${p.slug}`} class="rowa post-row">
+          <span class="post-row__title">{p.data.title}</span>
+          <span class="post-row__meta mono">
+            {p.data.date.toLocaleDateString('en-US',{month:'short',year:'numeric'})} · {p.data.readMins} min
           </span>
         </a>
       ))}
@@ -125,19 +118,19 @@ const youtube = [
   <section class="section">
     <div class="section-row">
       <span class="path-label mono">~/selected-work</span>
-      <a href="/projects" class="accent-link mono">all projects →</a>
+      <a href="/projects" class="btn-ghost btn-sm">all projects →</a>
     </div>
     <div class="row-list">
       {selectedWork.map(({ num, title, sub, stack: st, slug }) => (
         <a href={`/projects/${slug}`} class="rowa work-row">
-          <span class="work-row__num mono text-accent">{num}</span>
+          <span class="work-row__num mono">{num}</span>
           <span class="work-row__info">
             <span class="work-row__title">{title}</span>
             <br />
-            <span class="text-secondary" style="font-size:14px">{sub}</span>
+            <span class="work-row__sub">{sub}</span>
           </span>
           <span class="mono text-secondary work-row__stack">{st}</span>
-          <span class="arw text-secondary" style="font-size:22px">→</span>
+          <span class="arw" aria-hidden="true">→</span>
         </a>
       ))}
     </div>
@@ -147,17 +140,17 @@ const youtube = [
   <section class="section">
     <div class="section-row" style="margin-bottom:14px">
       <span class="path-label mono">~/notes</span>
-      <a href="/notes" class="accent-link mono">all notes →</a>
+      <a href="/notes" class="btn-ghost btn-sm">all notes →</a>
     </div>
     <div class="notes-grid">
       {notes.map((note) => {
-        const dateLabel = note.data.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
+        const dateLabel = note.data.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
         // Use excerpt if set, otherwise strip markdown and truncate
         const raw = note.body.split('\n').filter(l => !l.startsWith('#') && !l.startsWith('`') && l.trim()).join(' ');
         const preview = note.data.excerpt ?? (raw.slice(0, 160) + '…');
         return (
-          <a href="/notes" class="note-card tcard" style="text-decoration:none;display:block">
-            <div class="note-card__date mono text-accent">{dateLabel}</div>
+          <a href="/notes" class="note-card card">
+            <div class="note-card__date mono">{dateLabel}</div>
             <p class="note-card__body">{preview}</p>
           </a>
         );
@@ -169,11 +162,11 @@ const youtube = [
   <section class="section">
     <div class="section-row" style="margin-bottom:14px">
       <span class="path-label mono">~/youtube</span>
-      <a href="https://youtube.com/@CodeWithDemola" target="_blank" rel="noopener noreferrer" class="accent-link mono">@CodeWithDemola →</a>
+      <a href="https://youtube.com/@CodeWithDemola" target="_blank" rel="noopener noreferrer" class="btn-ghost btn-sm">@CodeWithDemola ↗</a>
     </div>
     <div class="yt-grid">
       {youtube.map(({ title, views, ago, duration, preview, videoId }) => (
-        <button class="yt-card tcard" data-video-id={videoId} data-title={title} aria-label={`Play ${title}`}>
+        <button class="yt-card card" data-video-id={videoId} data-title={title} aria-label={`Play ${title}`}>
           <div class="yt-card__thumb">
             <img
               src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
@@ -193,7 +186,7 @@ const youtube = [
           </div>
           <div class="yt-card__body">
             <h3 class="yt-card__title">{title}</h3>
-            <span class="mono" style="font-size:11px;color:rgba(255,255,255,.4)">{views} · {ago}</span>
+            <span class="yt-card__meta">{views} · {ago}</span>
           </div>
         </button>
       ))}
@@ -210,7 +203,9 @@ const youtube = [
             <span class="yt-modal__dot" style="background:#27c93f" />
           </div>
           <span class="yt-modal__title mono" id="yt-modal-title"></span>
-          <button class="yt-modal__close mono" id="yt-close" aria-label="Close video">✕</button>
+          <button class="yt-modal__close btn-ghost btn-icon btn-sm" id="yt-close" aria-label="Close video">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" /></svg>
+          </button>
         </div>
         <div class="yt-modal__player">
           <iframe
@@ -228,8 +223,9 @@ const youtube = [
 
   <!-- Footer inline -->
   <footer class="home-footer">
-    <span class="mono" style="font-size:12px;color:rgba(255,255,255,.5)">
-      let's build → <span class="text-accent">hello@demola.dev</span>
+    <span class="home-footer__cta">
+      <span class="home-footer__lead">let's build</span>
+      <a href="mailto:hello@demola.dev" class="glass">hello@demola.dev</a>
     </span>
     <div class="home-footer__links">
       {[
@@ -238,7 +234,7 @@ const youtube = [
         { label: 'linkedin', href: 'https://linkedin.com/in/ademola-kolawole' },
         { label: 'youtube',  href: 'https://youtube.com/@CodeWithDemola' },
       ].map(({ label, href }) => (
-        <a href={href} target="_blank" rel="noopener noreferrer" class="mono edlink" style="font-size:12px;color:rgba(255,255,255,.6);text-decoration:none">{label}</a>
+        <a href={href} target="_blank" rel="noopener noreferrer" class="btn-ghost btn-sm">{label}</a>
       ))}
     </div>
   </footer>
@@ -281,181 +277,115 @@ const youtube = [
   backdrop.addEventListener('click', closeModal);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
-  // ── Section reveal — add init class first so content is visible before JS
-  const sections = document.querySelectorAll<HTMLElement>('.section');
-  sections.forEach((s) => s.classList.add('reveal-init'));
-  const secObs = new IntersectionObserver(
-    (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visible'); secObs.unobserve(e.target); } }),
-    { threshold: 0.08 }
-  );
-  sections.forEach((s) => secObs.observe(s));
-
-  // Stack icon staggered reveal
-  const icons = document.querySelectorAll<HTMLElement>('.stackicon');
-  icons.forEach((ic) => ic.classList.add('stagger-init'));
-  const iconObs = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          const idx = Array.from(icons).indexOf(e.target as HTMLElement);
-          (e.target as HTMLElement).style.animationDelay = `${idx * 40}ms`;
-          e.target.classList.add('visible');
-          iconObs.unobserve(e.target);
-        }
-      });
-    },
-    { threshold: 0.1 }
-  );
-  icons.forEach((ic) => iconObs.observe(ic));
 </script>
 
 <style>
-  /* Status bar */
+  /* Status bar — a kept terminal touch */
   .status-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 14px 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--line-faint);
+    font-size: 12px;
+    color: var(--text-2);
   }
-  .status-bar__left { display: flex; align-items: center; gap: 9px; }
 
   /* Hero */
   .hero {
     display: grid;
     grid-template-columns: 1fr 300px;
     gap: 44px;
-    padding: 44px 0 34px;
+    padding: 48px 0 36px;
     align-items: center;
   }
 
   .hero__label {
     font-size: 12px;
-    color: var(--accent);
-    letter-spacing: .14em;
+    color: var(--text-2);
     margin-bottom: 18px;
   }
 
   .hero__h1 {
     font-size: 78px;
-    line-height: .92;
-    font-weight: 600;
+    line-height: .95;
+    font-weight: 500;
     margin: 0;
-    letter-spacing: -.03em;
-    color: #fff;
+    letter-spacing: -.035em;
+    color: var(--text-1);
   }
 
-  .hero__h1-dim { color: rgba(255,255,255,.32); }
+  .hero__h1-dim { color: var(--text-3); }
 
   .hero__body {
-    font-size: 14px;
-    line-height: 1.7;
-    color: rgba(255,255,255,.72);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-2);
     max-width: 540px;
     margin: 26px 0 0;
   }
-
-  .cursor {
-    display: inline-block;
-    width: 9px;
-    height: 16px;
-    background: var(--accent);
-    margin-left: 4px;
-    vertical-align: -2px;
-    animation: blink 1.1s steps(1) infinite;
-  }
-
-  @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
-
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(22px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-
-  /* Hero text stagger */
-  .hero__label  { animation: fadeUp .6s ease .05s both; }
-  .hero__h1     { animation: fadeUp .65s ease .12s both; }
-  .hero__body   { animation: fadeUp .65s ease .22s both; }
+  .hero__body strong { color: var(--text-1); font-weight: 500; }
 
   .hero__img-col {
     position: relative;
     flex-shrink: 0;
-    animation: fadeUp .8s ease .2s both;
   }
 
   .hero__img-card {
-    border-radius: 16px;
+    border-radius: var(--radius-shell);
     overflow: hidden;
-    animation: softfloat 6s ease-in-out infinite;
-  }
-
-  @keyframes softfloat {
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-10px)}
-  }
-
-  /* Accent ring that pulses behind card */
-  .hero__img-col::before {
-    content: '';
-    position: absolute;
-    inset: -12px;
-    border-radius: 22px;
-    background: radial-gradient(ellipse at center, rgba(90,252,254,.12) 0%, transparent 70%);
-    animation: pulseGlow 4s ease-in-out infinite;
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  @keyframes pulseGlow {
-    0%,100%{opacity:.5;transform:scale(1)}
-    50%{opacity:1;transform:scale(1.04)}
+    box-shadow: inset 0 0 0 1px var(--line-faint);
   }
 
   /* Section shared */
   .section {
-    padding-top: 26px;
-    border-top: 1px solid rgba(255,255,255,.1);
-    margin-top: 26px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line-faint);
+    margin-top: 28px;
   }
 
   .section-row {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     margin-bottom: 8px;
   }
 
   .path-label {
     font-size: 12px;
-    color: rgba(255,255,255,.4);
-    letter-spacing: .14em;
+    color: var(--text-3);
   }
 
-  .accent-link {
+  .section-hint {
     font-size: 12px;
-    color: var(--accent);
-    text-decoration: none;
-    background-image: linear-gradient(currentColor,currentColor);
-    background-size: 0% 1px;
-    background-repeat: no-repeat;
-    background-position: 0 100%;
-    transition: background-size .3s ease;
+    color: var(--text-3);
   }
-  .accent-link:hover { background-size: 100% 1px; }
 
-  /* Row list */
-  .row-list { border-top: 1px solid rgba(255,255,255,.1); }
+  /* Item rows */
+  .row-list { border-top: 1px solid var(--line-faint); }
 
   .rowa {
     display: flex;
     text-decoration: none;
-    transition: background .2s ease;
-    background: transparent;
-    border-radius: 0;
+    border-bottom: 1px solid var(--line-faint);
+    transition: background-color var(--dur-state) var(--ease-out);
   }
-  .rowa:hover { background: rgba(90,252,254,.06); }
-  .rowa:hover .arw { transform: translateX(6px); color: var(--accent) !important; }
-  .arw { transition: transform .25s ease, color .25s ease; }
+  .rowa:hover { background: var(--hover-row); }
+  .rowa:hover .arw { color: var(--text-1); }
+  .arw {
+    font-size: 18px;
+    color: var(--text-3);
+    transition: color var(--dur-state) var(--ease-out);
+  }
+
+  .post-row {
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    padding: 16px 12px;
+  }
+  .post-row__title { font-size: 16px; font-weight: 500; color: var(--text-1); }
+  .post-row__meta { font-size: 12px; color: var(--text-2); white-space: nowrap; }
 
   /* Work rows */
   .work-row {
@@ -463,20 +393,20 @@ const youtube = [
     grid-template-columns: 44px 1fr 210px 30px;
     gap: 20px;
     align-items: center;
-    padding: 22px 12px;
-    border-bottom: 1px solid rgba(255,255,255,.1);
+    padding: 20px 12px;
   }
 
-  .work-row__num { font-size: 13px; }
-  .work-row__title { font-size: 22px; font-weight: 600; color: #fff; }
-  .work-row__stack { font-size: 11px; }
+  .work-row__num { font-size: 12px; color: var(--text-3); }
+  .work-row__title { font-size: 20px; font-weight: 500; color: var(--text-1); letter-spacing: -.01em; }
+  .work-row__sub { font-size: 14px; color: var(--text-2); }
+  .work-row__stack { font-size: 11.2px; color: var(--text-2); }
 
-  /* Stack icons */
+  /* Stack icons — monochrome, no lift */
   .stack-row {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
     gap: 26px 16px;
-    border-top: 1px solid rgba(255,255,255,.1);
+    border-top: 1px solid var(--line-faint);
     padding-top: 28px;
   }
 
@@ -486,113 +416,88 @@ const youtube = [
     align-items: center;
     gap: 9px;
     cursor: default;
-    transition: transform .2s ease, opacity .4s ease;
-    opacity: 1;
   }
-  .stackicon.stagger-init {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  .stackicon.visible {
-    animation: fadeUp .5s ease both;
-    opacity: 1;
-  }
-  .stackicon:hover { transform: translateY(-5px); }
 
   .stackicon__box {
     width: 58px;
     height: 58px;
-    border-radius: 14px;
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.09);
+    border-radius: var(--radius-panel);
+    background: var(--shell);
+    box-shadow: inset 0 0 0 1px var(--line-faint);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background .35s ease, border-color .35s ease, box-shadow .35s ease;
+    transition: background-color var(--dur-state) var(--ease-out);
   }
-
-  .stackicon:hover .stackicon__box {
-    background: rgba(255,255,255,.1);
-    border-color: rgba(90,252,254,.4);
-    box-shadow: 0 8px 22px rgba(0,0,0,.4);
-  }
+  .stackicon:hover .stackicon__box { background: var(--flat-hover); }
 
   .stackicon__box img {
-    width: 32px;
-    height: 32px;
-    filter: grayscale(1) brightness(1.7);
-    transition: filter .45s ease, transform .25s ease;
+    width: 30px;
+    height: 30px;
+    filter: grayscale(1) brightness(1.6);
+    opacity: .85;
   }
-
-  .stackicon:hover .stackicon__box img { filter: grayscale(0) brightness(1); transform: scale(1.12); }
-  .stackicon--mono:hover .stackicon__box img { filter: grayscale(1) brightness(1.9); }
+  .stackicon--mono .stackicon__box img { filter: grayscale(1) brightness(1.9); }
 
   .stackicon__label {
-    font-size: 11px;
-    color: rgba(255,255,255,.55);
-    font-family: var(--font-sans);
-    transition: color .2s ease;
+    font-size: 12px;
+    color: var(--text-2);
+    transition: color var(--dur-state) var(--ease-out);
   }
-  .stackicon:hover .stackicon__label { color: rgba(255,255,255,.92); }
+  .stackicon:hover .stackicon__label { color: var(--text-1); }
 
   /* Notes */
   .notes-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    gap: 12px;
   }
 
   .note-card {
-    border: 1px solid rgba(255,255,255,.1);
-    border-left: 2px solid rgba(90,252,254,.5);
-    border-radius: 0 10px 10px 0;
+    display: block;
     padding: 18px 20px;
-    background: rgba(255,255,255,.015);
-    transition: border-color .25s ease, transform .25s ease;
+    text-decoration: none;
   }
-  .tcard:hover { border-color: rgba(90,252,254,.45); transform: translateY(-3px); }
-  .note-card__date { font-size: 11px; margin-bottom: 8px; }
+  .note-card__date { font-size: 11.2px; color: var(--text-2); margin-bottom: 8px; }
   .note-card__body {
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.6;
-    color: rgba(255,255,255,.75);
+    color: var(--text-1);
     margin: 0;
   }
   .note-card__body :global(code) {
     font-family: var(--font-mono);
-    font-size: 13px;
-    background: rgba(90,252,254,.1);
-    color: var(--accent);
+    font-size: .8em;
+    background: var(--ink-06);
+    color: var(--text-1);
     padding: 1px 6px;
-    border-radius: 4px;
+    border-radius: var(--radius-tag);
   }
 
   /* YouTube */
   .yt-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 12px;
   }
 
   .yt-card {
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 12px;
     overflow: hidden;
-    background: rgba(255,255,255,.015);
     display: block;
     text-align: left;
     width: 100%;
+    padding: 0;
     cursor: pointer;
     font-family: var(--font-sans);
-    transition: border-color .25s ease, transform .25s ease;
+    color: inherit;
   }
-  .yt-card:hover { border-color: rgba(90,252,254,.45); transform: translateY(-3px); }
+  .yt-card:hover { background: var(--flat-hover); }
 
   .yt-card__thumb {
     position: relative;
     height: 162px;
-    background: linear-gradient(#0e0e0e, #080808);
-    border-bottom: 1px solid rgba(255,255,255,.08);
+    background: var(--page);
+    border-bottom: 1px solid var(--line-faint);
     overflow: hidden;
   }
 
@@ -601,6 +506,8 @@ const youtube = [
     height: 100%;
     object-fit: cover;
     display: block;
+    filter: grayscale(1);
+    opacity: .9;
   }
 
   .yt-card__preview {
@@ -608,18 +515,71 @@ const youtube = [
     padding: 14px 16px;
     font-size: 10px;
     line-height: 1.75;
-    color: rgba(255,255,255,.3);
+    color: var(--text-3);
     white-space: pre-wrap;
     overflow: hidden;
     position: absolute;
     inset: 0;
   }
 
-  /* Modal */
+  .yt-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .yt-play__btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #0c0c0cb3;
+    box-shadow: inset 0 0 0 1px var(--line);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--dur-state) var(--ease-out);
+  }
+  .yt-card:hover .yt-play__btn { background: #0c0c0ce6; }
+
+  .yt-play__arrow {
+    width: 0;
+    height: 0;
+    border-left: 14px solid var(--text-1);
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    margin-left: 4px;
+  }
+
+  .yt-duration {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: #0c0c0ccc;
+    color: var(--text-1);
+    font-size: 11.2px;
+    padding: 2px 6px;
+    border-radius: var(--radius-tag);
+  }
+
+  .yt-card__body { padding: 14px 18px 16px; }
+  .yt-card__title {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 6px;
+    color: var(--text-1);
+    line-height: 1.35;
+  }
+  .yt-card__meta { font-size: 12px; color: var(--text-2); }
+
+  /* Video dialog — Glaze overlay; the Mac window dots are a kept terminal touch */
   .yt-modal {
     position: fixed;
     inset: 0;
-    z-index: 9999;
+    z-index: 50;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -631,10 +591,9 @@ const youtube = [
   .yt-modal__backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,.92);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: var(--scrim);
     cursor: pointer;
+    animation: overlayFade var(--dur-overlay) var(--ease-out) both;
   }
 
   .yt-modal__window {
@@ -642,29 +601,25 @@ const youtube = [
     width: 100%;
     max-width: 860px;
     margin: auto;
-    border: 1px solid rgba(90,252,254,.3);
-    border-radius: 16px;
+    border-radius: var(--radius-overlay);
     overflow: hidden;
-    background: #080808;
-    box-shadow:
-      0 0 0 1px rgba(90,252,254,.08),
-      0 40px 100px rgba(0,0,0,.9),
-      0 0 60px rgba(90,252,254,.06);
-    animation: modalIn .25s cubic-bezier(.16,1,.3,1) both;
+    background: var(--paper);
+    box-shadow: 0 0 0 1px var(--line);
+    animation: overlayIn var(--dur-overlay) var(--ease-out) both;
   }
 
-  @keyframes modalIn {
-    from { opacity:0; transform:scale(.93) translateY(20px); }
-    to   { opacity:1; transform:scale(1) translateY(0); }
+  @keyframes overlayFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes overlayIn {
+    from { opacity: 0; transform: scale(.97); }
+    to   { opacity: 1; transform: scale(1); }
   }
 
   .yt-modal__chrome {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 16px;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    background: #0d0d0d;
+    padding: 8px 10px 8px 14px;
+    border-bottom: 1px solid var(--line-faint);
   }
 
   .yt-modal__dots {
@@ -674,15 +629,15 @@ const youtube = [
   }
 
   .yt-modal__dot {
-    width: 11px;
-    height: 11px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
   }
 
   .yt-modal__title {
     flex: 1;
-    font-size: 11px;
-    color: rgba(255,255,255,.4);
+    font-size: 11.2px;
+    color: var(--text-2);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -690,26 +645,7 @@ const youtube = [
     padding: 0 8px;
   }
 
-  .yt-modal__close {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,.14);
-    border-radius: 999px;
-    color: rgba(255,255,255,.5);
-    font-size: 11px;
-    width: 26px;
-    height: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: border-color .2s ease, color .2s ease, background .2s ease;
-  }
-  .yt-modal__close:hover {
-    border-color: rgba(90,252,254,.5);
-    color: var(--accent);
-    background: rgba(90,252,254,.06);
-  }
+  .yt-modal__close { flex-shrink: 0; }
 
   .yt-modal__player {
     position: relative;
@@ -726,86 +662,19 @@ const youtube = [
     border: none;
   }
 
-  .yt-play {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .yt-play__btn {
-    width: 54px;
-    height: 54px;
-    border-radius: 50%;
-    background: rgba(255,0,40,.92);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 6px 20px rgba(0,0,0,.55);
-    transition: transform .25s ease, box-shadow .25s ease;
-  }
-  .yt-card:hover .yt-play__btn { transform: scale(1.12); box-shadow: 0 8px 26px rgba(255,0,40,.45); }
-
-  .yt-play__arrow {
-    width: 0;
-    height: 0;
-    border-left: 17px solid #fff;
-    border-top: 11px solid transparent;
-    border-bottom: 11px solid transparent;
-    margin-left: 4px;
-  }
-
-  .yt-duration {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    background: rgba(0,0,0,.82);
-    color: #fff;
-    font-size: 11px;
-    padding: 2px 6px;
-    border-radius: 4px;
-  }
-
-  .yt-card__body { padding: 15px 18px; }
-  .yt-card__title {
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0 0 6px;
-    color: #fff;
-    line-height: 1.35;
-  }
-
-  /* Footer */
+  /* Footer — the page's one glass action */
   .home-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 16px;
     padding: 24px 0;
-    border-top: 1px solid var(--border);
-    margin-top: 24px;
+    border-top: 1px solid var(--line-faint);
+    margin-top: 28px;
   }
-  .home-footer__links { display: flex; gap: 18px; }
-
-  .edlink {
-    background-image: linear-gradient(currentColor,currentColor);
-    background-size: 0% 1px;
-    background-repeat: no-repeat;
-    background-position: 0 100%;
-    transition: background-size .3s ease;
-  }
-  .edlink:hover { background-size: 100% 1px; }
-
-  /* Section scroll reveal — only applies when JS has run */
-  .section.reveal-init {
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity .55s ease, transform .55s ease;
-  }
-  .section.visible {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
+  .home-footer__cta { display: flex; align-items: center; gap: 12px; }
+  .home-footer__lead { font-size: 13px; color: var(--text-2); }
+  .home-footer__links { display: flex; gap: 2px; flex-wrap: wrap; }
 
   /* Responsive */
   @media (max-width: 768px) {
@@ -815,11 +684,12 @@ const youtube = [
     .work-row { grid-template-columns: 36px 1fr 30px; }
     .work-row__stack { display: none; }
     .notes-grid, .yt-grid { grid-template-columns: 1fr; }
-    .home-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .home-footer { flex-direction: column; align-items: flex-start; }
+    .home-footer__links { margin-left: -10px; }
     .stack-row { grid-template-columns: repeat(4, 1fr); gap: 20px 10px; }
-    .stackicon__box { width: 52px; height: 52px; border-radius: 12px; }
+    .stackicon__box { width: 52px; height: 52px; }
     .stackicon__box img { width: 26px; height: 26px; }
-    .stackicon__label { font-size: 10px; }
+    .post-row { flex-direction: column; gap: 4px; }
 
     .yt-modal { padding: 0; }
     .yt-modal__window {
@@ -827,7 +697,6 @@ const youtube = [
       max-width: 100%;
       height: 100dvh;
       border-radius: 0;
-      border: none;
       display: flex;
       flex-direction: column;
     }
@@ -841,9 +710,5 @@ const youtube = [
       width: 100%;
       height: 100%;
     }
-  }
-
-  @media (max-width: 400px) {
-    .stack-row { grid-template-columns: repeat(4, 1fr); }
   }
 </style>

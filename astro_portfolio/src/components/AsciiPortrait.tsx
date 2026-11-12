@@ -35,7 +35,7 @@ const calculateSize = (width: number) => {
 
 const chars = ' .:-=+*#%@'.split('');
 
-export default function AsciiPortrait({ src, size: fixedSize, color = '90, 252, 254' }: Props) {
+export default function AsciiPortrait({ src, size: fixedSize, color = '244, 244, 243' }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -1000, y: -1000, active: false });
   const mouseTargetRef = useRef({ x: -1000, y: -1000 });
