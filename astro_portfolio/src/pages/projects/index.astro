@@ -8,14 +8,14 @@ const projects = (await getCollection('projects'))
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 ---
 
-<BaseLayout title="Projects — Ademola Kolawole" description="Apps and tools built by Ademola Kolawole.">
+<BaseLayout title="Projects — Ademola Kolawole" description="Personal projects by Ademola Kolawole: apps, tools and experiments.">
   <Nav />
 
   <div class="proj-page">
     <header class="proj-head">
       <p class="proj-path mono">~/projects</p>
       <h1 class="proj-h1">Things I've shipped.</h1>
-      <p class="proj-sub text-secondary">Apps, tools, and experiments — from production fintech to dev utilities.</p>
+      <p class="proj-sub text-secondary">Just some personal projects.</p>
     </header>
 
     <div class="proj-list">
