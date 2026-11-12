@@ -10,14 +10,14 @@ const posts = (await getCollection('writing'))
 const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 ---
 
-<BaseLayout title="Writing — Ademola Kolawole" description="Articles on Flutter, mobile architecture, Go, and software craft.">
+<BaseLayout title="Writing — Ademola Kolawole" description="Deep-dives on systems, mobile internals, Go and software craft, plus personal essays.">
   <Nav />
 
   <div class="write-page">
     <header class="write-head">
       <p class="write-path mono">~/writing</p>
       <h1 class="write-h1">Writing.</h1>
-      <p class="write-sub text-secondary">Deep-dives on Flutter, mobile architecture, Go, and software craft.</p>
+      <p class="write-sub text-secondary">Deep-dives on systems, mobile internals, Go, software craft, and some emotional shit.</p>
     </header>
 
     <!-- Tag filter chips -->
