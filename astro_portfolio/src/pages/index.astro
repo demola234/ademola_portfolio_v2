@@ -56,7 +56,7 @@ const youtube = [
 
   <!-- Status bar -->
   <div class="status-bar mono">
-    <span>ademola.dev</span>
+    <span>demola.dev</span>
   </div>
 
   <Nav />
@@ -72,7 +72,14 @@ const youtube = [
     </div>
     <div class="hero__img-col" aria-hidden="true">
       <div class="hero__img-card">
-        <AsciiPortrait client:only="react" src="/personal_image.png" size={300} />
+        <AsciiPortrait
+          client:only="react"
+          size={300}
+          sources={[
+            { src: '/portrait/portrait.webm', type: 'video/webm' },
+            { src: '/portrait/portrait.mp4', type: 'video/mp4' },
+          ]}
+        />
       </div>
     </div>
   </section>
