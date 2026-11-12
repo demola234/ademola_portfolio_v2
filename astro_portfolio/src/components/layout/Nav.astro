@@ -15,10 +15,10 @@ const navLinks = [
 ];
 
 const rightLinks = [
-  { href: 'https://youtube.com/@CodeWithDemola',  label: 'youtube',  external: true },
   { href: 'https://github.com/demola234',         label: 'github',   external: true },
   { href: 'https://medium.com/@ademolakolawole',  label: 'medium',   external: true },
   { href: 'https://docs.google.com/document/d/1_f1ufm9wkCCEWFMyIKFfso7bRFG-mB3YnMMTPIogMkw/edit?usp=sharing', label: 'resume ↗', external: true },
+  { href: 'https://youtube.com/@CodeWithDemola',  label: 'youtube',  external: true },
 ];
 ---
 
@@ -45,16 +45,14 @@ const rightLinks = [
 </nav>
 
 <style>
+  /* Glaze: pill links; the current page sits on the paper pill. No track behind the group. */
   .nav-chips {
     display: flex;
-    gap: 8px;
-    padding: 18px 0 0;
-    font-family: var(--font-mono);
-    font-size: 12.5px;
+    align-items: center;
+    gap: 2px;
+    padding: 16px 0;
     flex-wrap: wrap;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0;
-    margin-bottom: 0;
+    border-bottom: 1px solid var(--line-faint);
   }
 
   .nav-spacer {
@@ -64,24 +62,28 @@ const rightLinks = [
   .navchip {
     display: inline-flex;
     align-items: center;
-    padding: 7px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 999px;
-    color: rgba(255, 255, 255, 0.6);
+    height: var(--control);
+    padding: 0 12px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-2);
     text-decoration: none;
-    transition: color 0.2s ease, border-color 0.2s ease;
-    margin-bottom: 18px;
     white-space: nowrap;
+    transition: background-color var(--dur-state) var(--ease-out), color var(--dur-state) var(--ease-out);
   }
 
   .navchip:hover {
-    color: var(--accent);
-    border-color: rgba(90, 252, 254, 0.5);
+    background: var(--hover);
+    color: var(--text-1);
   }
 
-  .navchip--active {
-    border-color: rgba(90, 252, 254, 0.5);
-    color: var(--accent);
+  .navchip--active,
+  .navchip--active:hover {
+    background: var(--paper);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--text-1);
   }
 
   @media (max-width: 600px) {

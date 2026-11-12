@@ -3,6 +3,9 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/layout/Nav.astro';
 import Comments from '../../components/blogs/Comments';
+import audioManifest from '../../data/audio.json';
+
+type AudioEntry = { file: string; timings?: string; hash: string; durationSec: number };
 
 export async function getStaticPaths() {
   const posts = (await getCollection('writing'))
@@ -25,6 +28,10 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
   weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
 });
 
+const audio = (audioManifest as Record<string, AudioEntry>)[post.slug];
+const SPEEDS = [0.75, 1, 1.25, 1.5, 2];
+const fmtTime = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+
 const twitterText = encodeURIComponent(post.data.title);
 const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
 ---
@@ -38,38 +45,58 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
 
   <!-- breadcrumb status bar -->
   <div class="art-statusbar">
-    <a href="/writing" class="art-back mono">← ademola.dev / writing</a>
-    <span class="mono text-accent" style="font-size:12px">{post.data.readMins} min read</span>
+    <a href="/writing" class="art-back mono">← demola.dev / writing</a>
+    <span class="art-read mono">{post.data.readMins} min read</span>
   </div>
 
   <!-- share bar -->
   <div class="share-bar">
+    {audio && (
+      <div class="listen" data-duration={audio.durationSec} data-timings={audio.timings}>
+        <button type="button" class="listen-btn glass" aria-label={`Listen to this article, ${Math.max(1, Math.round(audio.durationSec / 60))} minutes`}>
+          <svg class="listen-icon" data-icon="play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6a.6.6 0 0 0 .92.5l7.4-4.8a.6.6 0 0 0 0-1L5.92 2.7A.6.6 0 0 0 5 3.2Z" /></svg>
+          <svg class="listen-icon" data-icon="pause" viewBox="0 0 16 16" aria-hidden="true" hidden><rect x="4" y="3" width="2.75" height="10" rx=".8" /><rect x="9.25" y="3" width="2.75" height="10" rx=".8" /></svg>
+          <span class="listen-label">Listen · {Math.max(1, Math.round(audio.durationSec / 60))} min</span>
+        </button>
+        <div class="listen-controls" hidden>
+          <input type="range" class="listen-seek" min="0" max={audio.durationSec} step="1" value="0" aria-label="Seek" />
+          <span class="listen-time">0:00 / {fmtTime(audio.durationSec)}</span>
+          <div class="listen-speed" role="radiogroup" aria-label="Playback speed">
+            <span class="seg-thumb" aria-hidden="true"></span>
+            {SPEEDS.map((rate) => (
+              <label class="seg">
+                <input type="radio" name="listen-speed" value={rate} checked={rate === 1} />
+                <span>{rate}×</span>
+              </label>
+            ))}
+          </div>
+        </div>
+        <audio src={audio.file} preload="none"></audio>
+      </div>
+    )}
     {post.data.medium_link && (
-      <a href={post.data.medium_link} target="_blank" rel="noopener noreferrer" class="shareic share-read mono">
-        ▶ Read on Medium ↗
+      <a href={post.data.medium_link} target="_blank" rel="noopener noreferrer" class="btn">
+        Read on Medium ↗
       </a>
     )}
     <span class="share-divider" aria-hidden="true" />
-    <span class="mono" style="font-size:12px;color:rgba(255,255,255,.4)">share →</span>
-    <a href={`https://twitter.com/intent/tweet?text=${twitterText}&url=${pageUrl}`} target="_blank" rel="noopener noreferrer" class="shareic share-icon" aria-label="Share on X">X</a>
-    <a href={`https://linkedin.com/sharing/share-offsite/?url=${pageUrl}`} target="_blank" rel="noopener noreferrer" class="shareic share-icon" aria-label="Share on LinkedIn">in</a>
-    <a href={`https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`} target="_blank" rel="noopener noreferrer" class="shareic share-icon" aria-label="Share on Facebook">f</a>
-    <button onclick={`navigator.clipboard.writeText(window.location.href)`} class="shareic share-icon" aria-label="Copy link">⧉</button>
+    <span class="share-label">Share</span>
+    <a href={`https://twitter.com/intent/tweet?text=${twitterText}&url=${pageUrl}`} target="_blank" rel="noopener noreferrer" class="btn-ghost btn-icon share-icon" aria-label="Share on X">X</a>
+    <a href={`https://linkedin.com/sharing/share-offsite/?url=${pageUrl}`} target="_blank" rel="noopener noreferrer" class="btn-ghost btn-icon share-icon" aria-label="Share on LinkedIn">in</a>
+    <a href={`https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`} target="_blank" rel="noopener noreferrer" class="btn-ghost btn-icon share-icon" aria-label="Share on Facebook">f</a>
+    <button onclick={`navigator.clipboard.writeText(window.location.href)`} class="btn-ghost btn-icon share-icon" aria-label="Copy link">⧉</button>
   </div>
 
   <!-- article header -->
   <header class="art-header">
     <div class="art-tags">
       {post.data.tags.map((t) => (
-        <span class="atag mono">{t}</span>
+        <span class="badge">{t}</span>
       ))}
     </div>
     <h1 class="art-title">{post.data.title}</h1>
     <div class="art-meta mono">
-      <span style="display:flex;align-items:center;gap:8px">
-        <span class="status-dot-sm" aria-hidden="true" />
-        {post.data.excerpt.split('—')[0]?.trim() ?? 'Article'}
-      </span>
+      <span>{post.data.excerpt.split('—')[0]?.trim() ?? 'Article'}</span>
       <span>·</span>
       <span>{formattedDate}</span>
     </div>
@@ -77,11 +104,11 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     <!-- byline -->
     <div class="art-byline">
       <div class="byline-avatar">
-        <img src="/memoji.png" alt="Ademola" style="width:100%;transform:scale(1.4) translateY(4px);mix-blend-mode:multiply" />
+        <img src="/memoji.png" alt="Ademola" style="width:100%;transform:scale(1.4) translateY(4px)" />
       </div>
       <div style="flex:1">
-        <div style="font-weight:600;color:#fff;font-size:15px">Ademola Kolawole</div>
-        <div class="mono" style="font-size:12px;color:rgba(255,255,255,.5)">Software Engineer · Mobile & Backend</div>
+        <div class="byline-name">Ademola Kolawole</div>
+        <div class="byline-role">Product Engineer · Mobile &amp; Platform</div>
       </div>
     </div>
   </header>
@@ -101,7 +128,7 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
 
     {headings.length > 0 && (
       <aside class="art-toc" aria-label="Table of contents">
-        <div class="toc-head mono">☰ TABLE OF CONTENTS</div>
+        <div class="toc-head section-label">Table of contents</div>
         <nav class="toc-nav">
           {headings.map((h) => (
             <a
@@ -118,18 +145,17 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
   </div>
 
   <!-- reply CTA -->
-  <div class="reply-cta">
+  <div class="reply-cta card">
     <div class="reply-cta__inner">
-      <span class="status-pulse" aria-hidden="true" />
       <div>
-        <p class="reply-cta__label mono">thoughts on this?</p>
+        <p class="reply-cta__label">Thoughts on this?</p>
         <p class="reply-cta__sub">Hit reply — I read every email.</p>
       </div>
       <a
         href={`mailto:hello@demola.dev?subject=Re: ${encodeURIComponent(post.data.title)}&body=Hi Ademola,%0A%0A`}
-        class="reply-btn mono"
+        class="glass reply-btn"
       >
-        hello@demola.dev →
+        hello@demola.dev
       </a>
     </div>
   </div>
@@ -144,13 +170,13 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     <div class="art-prevnext">
       {prev ? (
         <a href={`/writing/${prev.slug}`} class="prevnext-link">
-          <span class="mono" style="font-size:11px;color:rgba(255,255,255,.4)">← Previous</span>
+          <span class="prevnext-dir">← Previous</span>
           <span class="prevnext-title">{prev.data.title}</span>
         </a>
       ) : <div />}
       {next ? (
         <a href={`/writing/${next.slug}`} class="prevnext-link prevnext-link--right">
-          <span class="mono" style="font-size:11px;color:rgba(255,255,255,.4)">Next →</span>
+          <span class="prevnext-dir">Next →</span>
           <span class="prevnext-title">{next.data.title}</span>
         </a>
       ) : <div />}
@@ -160,67 +186,180 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
 </BaseLayout>
 
 <style>
-  /* Status / breadcrumb bar */
+  /* Breadcrumb status bar — a kept terminal touch */
   .art-statusbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 14px 0;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    margin-bottom: 0;
+    border-bottom: 1px solid var(--line-faint);
   }
 
   .art-back {
-    display: flex;
-    align-items: center;
-    gap: 9px;
     font-size: 12px;
-    color: rgba(255,255,255,.7);
+    color: var(--text-2);
     text-decoration: none;
-    transition: color .2s ease;
+    transition: color var(--dur-state) var(--ease-out);
   }
-  .art-back:hover { color: var(--accent); }
+  .art-back:hover { color: var(--text-1); }
+  .art-read { font-size: 12px; color: var(--text-2); }
 
   /* Share bar */
   .share-bar {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     padding: 20px 0 0;
-    font-family: var(--font-mono);
-    font-size: 12px;
     flex-wrap: wrap;
   }
 
   .share-divider {
     width: 1px;
-    height: 22px;
-    background: rgba(255,255,255,.12);
-    margin: 0 6px;
+    height: 20px;
+    background: var(--line);
+    margin: 0 8px;
   }
 
-  .shareic {
+  .share-label { font-size: 12px; color: var(--text-2); margin-right: 2px; }
+  .share-icon { font-size: 13px; font-weight: 600; }
+
+  /* Listen player — Glaze components; tokens and .glass come from global.css */
+  .listen {
+    font-family: var(--font-sans); /* the share bar around it is mono */
     display: flex;
     align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(255,255,255,.16);
-    border-radius: 999px;
-    color: rgba(255,255,255,.75);
-    text-decoration: none;
-    cursor: pointer;
-    background: transparent;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    transition: border-color .2s ease, color .2s ease, background .2s ease;
+    gap: 12px;
+    flex-wrap: wrap;
   }
-  .shareic:hover {
-    border-color: rgba(90,252,254,.5);
-    color: var(--accent);
+  /* Once started, the controls sit in a shell card: depth inside the shape, no shadow. */
+  .listen[data-active="true"] {
+    padding: 4px 10px 4px 4px;
+    border-radius: 14px;
+    background: var(--shell);
+    box-shadow: inset 0 0 0 1px var(--line-faint);
+  }
+  .listen-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .listen-controls[hidden] { display: none; }
+
+  .listen-btn { padding-left: 11px; }
+  .listen-icon { width: 14px; height: 14px; fill: currentColor; flex: none; }
+  .listen-icon[hidden] { display: none; }
+
+  /* Slider: small glaze on the run and thumb, never glass */
+  .listen-seek {
+    --pct: 0%;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 180px;
+    height: 16px;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .listen-seek::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 999px;
+    background:
+      linear-gradient(90deg, var(--glaze-sm-top), var(--glaze-sm-mid) 50%, var(--glaze-sm-bottom)) 0 0 / var(--pct) 100% no-repeat,
+      var(--ink-10);
+  }
+  .listen-seek::-moz-range-track { height: 4px; border-radius: 999px; background: var(--ink-10); }
+  .listen-seek::-moz-range-progress {
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--glaze-sm-top), var(--glaze-sm-mid) 50%, var(--glaze-sm-bottom));
+  }
+  .listen-seek::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    margin-top: -6px;
+    border: 0;
+    border-radius: 50%;
+    background: linear-gradient(var(--glaze-sm-top), var(--glaze-sm-mid) 50%, var(--glaze-sm-bottom));
+    box-shadow: inset 0 1px 0 var(--glaze-sm-highlight), 0 0 0 .5px var(--glaze-sm-rim);
+  }
+  .listen-seek::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: 0;
+    border-radius: 50%;
+    background: linear-gradient(var(--glaze-sm-top), var(--glaze-sm-mid) 50%, var(--glaze-sm-bottom));
+    box-shadow: inset 0 1px 0 var(--glaze-sm-highlight), 0 0 0 .5px var(--glaze-sm-rim);
+  }
+  .listen-seek:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 999px; }
+
+  .listen-time {
+    font-family: var(--font-mono);
+    font-size: 11.2px;
+    color: var(--text-2);
+    font-variant-numeric: tabular-nums;
+    min-width: 9ch;
   }
 
-  .share-read {
-    padding: 9px 16px;
-    gap: 9px;
+  /* Segmented control: a paper thumb slides to the chosen speed */
+  .listen-speed {
+    position: relative;
+    display: inline-flex;
+    padding: 2px;
+    border-radius: 999px;
+    background: var(--ink-06);
+    box-shadow: inset 0 0 0 1px var(--line-faint);
+  }
+  .seg-thumb {
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    left: 0;
+    width: 0;
+    border-radius: 999px;
+    background: var(--paper);
+    box-shadow: inset 0 0 0 1px var(--line);
+    transition: transform .2s var(--ease-out), width .2s var(--ease-out);
+  }
+  .seg { position: relative; z-index: 1; display: flex; }
+  .seg input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+  .seg span {
+    display: flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-2);
+    font-variant-numeric: tabular-nums;
+    transition: color .16s var(--ease-out);
+  }
+  .seg:hover span,
+  .seg input:checked + span { color: var(--text-1); }
+  .seg input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: -2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seg-thumb, .seg span { transition: none; }
+  }
+  @media (max-width: 600px) {
+    .listen[data-active="true"], .listen-controls { width: 100%; }
+    .listen-seek { flex: 1; width: auto; min-width: 120px; }
+  }
+
+  /* Reading highlight (word spans are created by the script below): a Glaze ink wash */
+  :global(.rw) {
+    border-radius: 4px;
+    transition: background-color .16s cubic-bezier(.2, .8, .2, 1), box-shadow .16s cubic-bezier(.2, .8, .2, 1), color .16s;
+  }
+  :global(.rw-active) {
+    background: #f4f4f326;
+    box-shadow: 0 0 0 2px #f4f4f326;
+    color: #f4f4f3;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.rw) { transition: none; }
   }
 
   .share-icon {
@@ -242,22 +381,13 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     margin-bottom: 18px;
   }
 
-  .atag {
-    font-size: 11px;
-    padding: 5px 12px;
-    background: rgba(90,252,254,.08);
-    color: var(--accent);
-    border: 1px solid rgba(90,252,254,.2);
-    border-radius: 6px;
-  }
-
   .art-title {
     font-size: clamp(32px, 5vw, 52px);
-    line-height: 1.04;
-    font-weight: 600;
-    letter-spacing: -.03em;
-    color: #fff;
-    margin: 0 0 18px;
+    line-height: 1.05;
+    font-weight: 500;
+    letter-spacing: -.035em;
+    color: var(--text-1);
+    margin: 0 0 16px;
     max-width: 900px;
   }
 
@@ -265,47 +395,40 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 13px;
-    color: rgba(255,255,255,.5);
+    font-size: 12px;
+    color: var(--text-2);
     flex-wrap: wrap;
-  }
-
-  .status-dot-sm {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
   }
 
   /* Byline */
   .art-byline {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-top: 26px;
-    padding-top: 22px;
-    border-top: 1px solid rgba(255,255,255,.08);
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-faint);
   }
 
   .byline-avatar {
-    width: 46px;
-    height: 46px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     overflow: hidden;
-    background: rgba(90,252,254,.15);
-    border: 1px solid rgba(90,252,254,.3);
+    background: var(--paper);
+    box-shadow: inset 0 0 0 1px var(--line-faint);
     flex-shrink: 0;
   }
+  .byline-name { font-size: 14px; font-weight: 500; color: var(--text-1); }
+  .byline-role { font-size: 12px; color: var(--text-2); }
 
   /* Cover image */
   .art-cover {
     margin: 0 0 32px;
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,.1);
+    border-radius: var(--radius-shell);
+    box-shadow: inset 0 0 0 1px var(--line-faint);
     overflow: hidden;
-    background: #080808;
+    background: var(--shell);
   }
   .art-cover img {
     width: 100%;
@@ -325,69 +448,35 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
 
   .art-body { min-width: 0; }
 
-  /* ToC */
+  /* ToC panel — items come from global.css */
   .art-toc {
     position: sticky;
     top: 24px;
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 12px;
-    padding: 20px;
-    background: rgba(255,255,255,.015);
+    padding: 14px 10px;
+    border-radius: var(--radius-panel);
+    background: var(--shell);
+    box-shadow: inset 0 0 0 1px var(--line-faint);
   }
 
-  .toc-head {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    font-size: 11px;
-    letter-spacing: .14em;
-    color: var(--accent);
-    margin-bottom: 14px;
-  }
+  .toc-head { padding: 0 10px; margin-bottom: 8px; }
 
   .toc-nav {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    font-size: 14px;
   }
 
-  .tocitem {
-    display: block;
-    padding: 7px 12px;
-    border-radius: 7px;
-    color: rgba(255,255,255,.55);
-    text-decoration: none;
-    border-left: 2px solid transparent;
-    transition: color .2s ease, background .2s ease, border-color .2s ease;
-    line-height: 1.4;
-  }
-
-  .toc-depth-3 { padding-left: 24px; font-size: 13px; }
-  .toc-depth-4 { padding-left: 36px; font-size: 12px; }
-
-  .tocitem:hover,
-  .tocitem.active {
-    color: var(--accent);
-    background: rgba(90,252,254,.08);
-    border-left-color: var(--accent);
-  }
-
-  /* Prev / Next */
   /* Comments */
   .comments-wrap {
     margin-top: 48px;
     padding-top: 32px;
-    border-top: 1px solid rgba(255,255,255,.1);
+    border-top: 1px solid var(--line-faint);
   }
 
-  /* Reply CTA */
+  /* Reply card — its email button is the page's one glass action besides Listen */
   .reply-cta {
     margin: 48px 0 0;
-    padding: 28px 32px;
-    border: 1px solid rgba(90,252,254,.2);
-    border-radius: 14px;
-    background: rgba(90,252,254,.04);
+    padding: 22px 24px;
   }
 
   .reply-cta__inner {
@@ -397,261 +486,97 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     flex-wrap: wrap;
   }
 
-  .status-pulse {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 10px var(--accent);
-    flex-shrink: 0;
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--accent); }
-    50% { opacity: .5; box-shadow: 0 0 4px var(--accent); }
-  }
-
   .reply-cta__label {
-    font-size: 13px;
-    color: var(--accent);
-    margin: 0 0 4px;
-    letter-spacing: .06em;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-1);
+    margin: 0 0 2px;
   }
 
   .reply-cta__sub {
-    font-size: 15px;
-    color: rgba(255,255,255,.75);
+    font-size: 14px;
+    color: var(--text-2);
     margin: 0;
   }
 
-  .reply-btn {
-    margin-left: auto;
-    padding: 10px 20px;
-    border: 1px solid rgba(90,252,254,.4);
-    border-radius: 999px;
-    color: var(--accent);
-    font-size: 13px;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: background .2s ease, border-color .2s ease;
-  }
-
-  .reply-btn:hover {
-    background: rgba(90,252,254,.1);
-    border-color: var(--accent);
-  }
+  .reply-btn { margin-left: auto; }
 
   @media (max-width: 600px) {
-    .reply-cta { padding: 20px; }
-    .reply-btn { margin-left: 0; width: 100%; text-align: center; }
+    .reply-cta { padding: 18px; }
+    .reply-btn { margin-left: 0; width: 100%; }
   }
 
+  /* Prev / Next */
   .art-prevnext {
     display: flex;
     justify-content: space-between;
     gap: 24px;
     padding: 32px 0;
-    border-top: 1px solid rgba(255,255,255,.1);
+    border-top: 1px solid var(--line-faint);
     flex-wrap: wrap;
   }
 
   .prevnext-link {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     text-decoration: none;
     max-width: 42%;
   }
 
-  .prevnext-link--right { align-items: flex-end; }
+  .prevnext-link--right { align-items: flex-end; text-align: right; }
+  .prevnext-dir { font-size: 12px; color: var(--text-2); }
 
   .prevnext-title {
     font-size: 16px;
-    font-weight: 600;
-    color: rgba(255,255,255,.85);
+    font-weight: 500;
+    color: var(--text-1);
     line-height: 1.35;
-    transition: color .2s ease;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition: text-decoration-color var(--dur-state) var(--ease-out);
   }
 
-  .prevnext-link:hover .prevnext-title { color: var(--accent); }
+  .prevnext-link:hover .prevnext-title { text-decoration-color: var(--line-strong); }
 
-  /* Prose overrides — terminal style */
+  /* Article prose — reading size (a builder's call in the spec) */
   :global(.prose) {
-    color: rgba(255,255,255,.78);
+    color: var(--text-1);
     font-size: 17px;
-    line-height: 1.8;
+    line-height: 1.75;
   }
 
   :global(.prose h2) {
-    font-size: 32px;
-    font-weight: 600;
-    color: #fff;
-    letter-spacing: -.02em;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text-1);
+    letter-spacing: -.025em;
     margin: 48px 0 16px;
   }
 
   :global(.prose h3) {
-    font-size: 22px;
-    font-weight: 600;
-    color: #fff;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-1);
     margin: 36px 0 12px;
   }
 
-  :global(.prose p) { margin: 0 0 22px; }
+  :global(.prose p) { margin: 0 0 22px; color: var(--text-1); }
 
-  :global(.prose a) {
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(90,252,254,.35);
-    transition: border-color .2s ease;
-  }
-  :global(.prose a:hover) { border-color: var(--accent); }
-
-  :global(.prose strong) { color: #fff; font-weight: 600; }
-
-  :global(.prose code) {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    background: rgba(90,252,254,.1);
-    color: var(--accent);
-    padding: 2px 7px;
-    border-radius: 5px;
-  }
-
-  /* Code block — raw pre is hidden; JS wraps it in terminal chrome */
-  :global(.prose pre) {
-    margin: 0 0 28px;
-    border-radius: 0 0 12px 12px;
-    background: #0a0a0a;
-    overflow-x: auto;
-    padding: 0;
-  }
-
-  :global(.prose pre code) {
-    display: block;
-    background: none;
-    color: rgba(255,255,255,.85);
-    padding: 20px;
-    font-size: 13px;
-    line-height: 1.7;
-    min-width: max-content;
-  }
-
-  /* Terminal wrapper injected by JS */
-  :global(.code-block) {
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,.1);
-    overflow: hidden;
-    margin: 0 0 28px;
-    background: #0a0a0a;
-  }
-
-  :global(.code-chrome) {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 10px 16px;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: rgba(255,255,255,.4);
-    background: #0d0d0d;
-    user-select: none;
-  }
-
-  :global(.code-dot) {
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  :global(.code-filename) {
-    margin-left: 8px;
-    flex: 1;
-    color: rgba(255,255,255,.45);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  :global(.code-lang) {
-    color: rgba(255,255,255,.28);
-    margin-right: 10px;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    font-size: 10px;
-  }
-
-  :global(.code-copy) {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 10px;
-    border: 1px solid rgba(255,255,255,.14);
-    border-radius: 999px;
-    background: transparent;
-    color: rgba(255,255,255,.5);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    cursor: pointer;
-    transition: border-color .2s ease, color .2s ease, background .2s ease;
-    white-space: nowrap;
-  }
-
-  :global(.code-copy:hover) {
-    border-color: rgba(90,252,254,.45);
-    color: var(--accent);
-    background: rgba(90,252,254,.06);
-  }
-
-  :global(.code-copy.copied) {
-    border-color: rgba(90,252,254,.6);
-    color: var(--accent);
-    background: rgba(90,252,254,.1);
-  }
-
-  /* Line numbers */
-  :global(.code-inner) {
-    display: flex;
-    overflow-x: auto;
-  }
-
-  :global(.code-inner > pre) {
-    flex: 1;
-    min-width: 0;
-    margin: 0;
-    border: none;
-    border-radius: 0;
-    background: transparent;
-  }
-
-  :global(.code-lines) {
-    padding: 20px 14px 20px 20px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    line-height: 1.7;
-    color: rgba(255,255,255,.2);
-    text-align: right;
-    user-select: none;
-    border-right: 1px solid rgba(255,255,255,.06);
-    flex-shrink: 0;
-    white-space: pre;
-  }
+  :global(.prose strong) { color: var(--text-1); font-weight: 600; }
 
   :global(.prose blockquote) {
     margin: 0 0 32px;
-    padding: 4px 0 4px 26px;
-    border-left: 3px solid var(--accent);
+    padding: 2px 0 2px 24px;
+    border-left: 1px solid var(--line-strong);
   }
 
   :global(.prose blockquote p) {
-    font-size: 24px;
+    font-size: 22px;
     line-height: 1.45;
     font-weight: 500;
-    color: #fff;
+    color: var(--text-1);
     letter-spacing: -.01em;
     margin: 0;
   }
@@ -668,32 +593,35 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
   :global(.prose ul li) {
     padding-left: 18px;
     position: relative;
-    color: rgba(255,255,255,.72);
+    color: var(--text-1);
   }
   :global(.prose ul li::before) {
     content: '–';
     position: absolute;
     left: 0;
-    color: rgba(90,252,254,.5);
+    color: var(--text-3);
   }
 
   :global(.prose ol) { counter-reset: li; }
   :global(.prose ol li) {
     display: flex;
-    gap: 16px;
+    gap: 14px;
     align-items: flex-start;
+    color: var(--text-1);
   }
   :global(.prose ol li::before) {
     counter-increment: li;
     content: counter(li, decimal-leading-zero);
     flex: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    border: 1px solid rgba(90,252,254,.35);
-    color: var(--accent);
+    width: 28px;
+    height: 28px;
+    margin-top: 1px;
+    border-radius: var(--radius-tag);
+    background: var(--ink-06);
+    box-shadow: inset 0 0 0 1px var(--line-faint);
+    color: var(--text-2);
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 11.2px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -701,14 +629,14 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
 
   :global(.prose img) {
     width: 100%;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,.1);
+    border-radius: var(--radius-overlay);
+    box-shadow: inset 0 0 0 1px var(--line-faint);
     margin: 0 0 28px;
   }
 
   :global(.prose hr) {
     border: none;
-    border-top: 1px solid rgba(255,255,255,.1);
+    border-top: 1px solid var(--line-faint);
     margin: 40px 0;
   }
 
@@ -719,9 +647,8 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
   }
 
   @media (max-width: 600px) {
-    .art-title { font-size: 28px; }
+    .art-title { font-size: 30px; }
     .prevnext-link { max-width: 100%; }
-    .share-bar { gap: 8px; }
   }
 </style>
 
@@ -812,6 +739,203 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
 
     pre.replaceWith(wrapper);
   });
+
+  // ── Listen player ────────────────────────────────────────────────────────────
+  const listen = document.querySelector<HTMLElement>('.listen');
+  if (listen) {
+    const audioEl = listen.querySelector('audio')!;
+    const btn = listen.querySelector<HTMLButtonElement>('.listen-btn')!;
+    const playIcon = listen.querySelector<SVGElement>('[data-icon="play"]')!;
+    const pauseIcon = listen.querySelector<SVGElement>('[data-icon="pause"]')!;
+    const label = listen.querySelector<HTMLElement>('.listen-label')!;
+    const controls = listen.querySelector<HTMLElement>('.listen-controls')!;
+    const seek = listen.querySelector<HTMLInputElement>('.listen-seek')!;
+    const time = listen.querySelector<HTMLElement>('.listen-time')!;
+    const speedGroup = listen.querySelector<HTMLElement>('.listen-speed')!;
+    const speedThumb = listen.querySelector<HTMLElement>('.seg-thumb')!;
+    const speedInputs = [...listen.querySelectorAll<HTMLInputElement>('.seg input')];
+    const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+    const total = () => (Number.isFinite(audioEl.duration) ? audioEl.duration : Number(listen.dataset.duration));
+
+    // Playback speed: a segmented control; the choice is remembered across articles.
+    const SPEED_KEY = 'listen-speed';
+    const placeThumb = () => {
+      const chosen = speedInputs.find((i) => i.checked)?.parentElement;
+      if (!chosen) return;
+      speedThumb.style.width = `${chosen.offsetWidth}px`;
+      speedThumb.style.transform = `translateX(${chosen.offsetLeft}px)`;
+    };
+    const applySpeed = (rate: number) => {
+      audioEl.playbackRate = rate;
+      audioEl.defaultPlaybackRate = rate;
+      speedInputs.forEach((i) => { i.checked = Number(i.value) === rate; });
+      placeThumb();
+    };
+    try {
+      const saved = Number(localStorage.getItem(SPEED_KEY));
+      if (speedInputs.some((i) => Number(i.value) === saved)) applySpeed(saved);
+    } catch { /* storage unavailable: stay at 1× */ }
+    speedGroup.addEventListener('change', (e) => {
+      const rate = Number((e.target as HTMLInputElement).value);
+      applySpeed(rate);
+      try { localStorage.setItem(SPEED_KEY, String(rate)); } catch { /* not persisted */ }
+    });
+    window.addEventListener('resize', placeThumb);
+
+    const setProgress = (seconds: number) => {
+      seek.value = String(Math.floor(seconds));
+      seek.style.setProperty('--pct', `${(seconds / total()) * 100}%`);
+      seek.setAttribute('aria-valuetext', `${fmt(seconds)} of ${fmt(total())}`);
+      time.textContent = `${fmt(seconds)} / ${fmt(total())}`;
+    };
+
+    const render = () => {
+      const playing = !audioEl.paused;
+      playIcon.toggleAttribute('hidden', playing);
+      pauseIcon.toggleAttribute('hidden', !playing);
+      label.textContent = playing ? 'Pause' : audioEl.currentTime > 0 ? 'Resume' : label.textContent;
+      btn.setAttribute('aria-label', playing ? 'Pause narration' : 'Play narration');
+    };
+
+    btn.addEventListener('click', () => {
+      if (controls.hidden) {
+        controls.hidden = false;
+        listen.dataset.active = 'true';
+        // Place the thumb without animating it in from the left edge.
+        speedThumb.style.transition = 'none';
+        placeThumb();
+        requestAnimationFrame(() => { speedThumb.style.transition = ''; });
+      }
+      if (audioEl.paused) {
+        audioEl.play().catch(() => { label.textContent = 'Audio unavailable'; });
+      } else {
+        audioEl.pause();
+      }
+    });
+    audioEl.addEventListener('play', render);
+    audioEl.addEventListener('pause', render);
+    audioEl.addEventListener('loadedmetadata', () => { seek.max = String(Math.floor(total())); });
+    audioEl.addEventListener('timeupdate', () => setProgress(audioEl.currentTime));
+    seek.addEventListener('input', () => {
+      audioEl.currentTime = Number(seek.value);
+      setProgress(Number(seek.value));
+    });
+    audioEl.addEventListener('ended', () => { audioEl.currentTime = 0; label.textContent = 'Listen again'; render(); });
+
+    // ── Reading highlight ──────────────────────────────────────────────────────
+    // On first play, wraps the article's words in spans and pairs them with the
+    // narration's word timings (public/audio/<slug>.json, from `npm run audio`).
+    const timingsUrl = listen.dataset.timings;
+    const articleBody = document.querySelector<HTMLElement>('.art-body');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const norm = (w: string) => w.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+    let spans: HTMLElement[] = []; // spans[i] is the word that starts at starts[i] ms
+    let starts: number[] = [];
+    let active: HTMLElement | null = null;
+    let raf = 0;
+    let prepared: Promise<void> | null = null;
+
+    const wrapWords = (root: HTMLElement) => {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode: (n) =>
+          n.parentElement?.closest('pre, table, .code-block, script, style')
+            ? NodeFilter.FILTER_REJECT
+            : NodeFilter.FILTER_ACCEPT,
+      });
+      const nodes: Text[] = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+      const out: HTMLElement[] = [];
+      for (const node of nodes) {
+        if (!node.data.trim()) continue;
+        const frag = document.createDocumentFragment();
+        for (const part of node.data.split(/(\s+)/)) {
+          if (!part) continue;
+          if (/^\s+$/.test(part) || !norm(part)) {
+            frag.appendChild(document.createTextNode(part));
+          } else {
+            const span = document.createElement('span');
+            span.className = 'rw';
+            span.textContent = part;
+            frag.appendChild(span);
+            out.push(span);
+          }
+        }
+        node.replaceWith(frag);
+      }
+      return out;
+    };
+
+    // Pairs two nearly-identical word lists, skipping ahead on either side to get
+    // past small differences (e.g. raw HTML in the article that isn't narrated).
+    const alignWords = (a: string[], b: string[], window = 40) => {
+      const pairs: [number, number][] = [];
+      let i = 0;
+      let j = 0;
+      while (i < a.length && j < b.length) {
+        if (a[i] === b[j]) { pairs.push([i++, j++]); continue; }
+        const ai = a.slice(i + 1, i + 1 + window).indexOf(b[j]);
+        const bj = b.slice(j + 1, j + 1 + window).indexOf(a[i]);
+        if (ai !== -1 && (bj === -1 || ai <= bj)) i += ai + 1;
+        else if (bj !== -1) j += bj + 1;
+        else pairs.push([i++, j++]);
+      }
+      return pairs;
+    };
+
+    const prepare = () =>
+      (prepared ??= (async () => {
+        if (!timingsUrl || !articleBody) return;
+        const res = await fetch(timingsUrl);
+        if (!res.ok) return;
+        const { words, t } = (await res.json()) as { words: string[]; t: number[] };
+        const domWords = wrapWords(articleBody);
+        for (const [x, y] of alignWords(words.map(norm), domWords.map((s) => norm(s.textContent ?? '')))) {
+          starts.push(t[x]);
+          spans.push(domWords[y]);
+        }
+      })().catch(() => { spans = []; starts = []; }));
+
+    const onScreen = (el: HTMLElement) => {
+      const r = el.getBoundingClientRect();
+      return r.bottom > 0 && r.top < window.innerHeight;
+    };
+
+    const highlight = () => {
+      const ms = audioEl.currentTime * 1000;
+      let lo = 0;
+      let hi = starts.length - 1;
+      let idx = -1;
+      while (lo <= hi) {
+        const mid = (lo + hi) >> 1;
+        if (starts[mid] <= ms) { idx = mid; lo = mid + 1; } else { hi = mid - 1; }
+      }
+      const next = idx >= 0 ? spans[idx] : null;
+      if (next === active) return;
+      // Only follow along if the reader was still looking at the previous word.
+      const following = !active || onScreen(active);
+      active?.classList.remove('rw-active');
+      next?.classList.add('rw-active');
+      if (next && following && !onScreen(next)) {
+        next.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+      }
+      active = next;
+    };
+
+    const loop = () => {
+      highlight();
+      if (!audioEl.paused) raf = requestAnimationFrame(loop);
+    };
+
+    audioEl.addEventListener('play', () => {
+      prepare().then(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); });
+    });
+    audioEl.addEventListener('seeked', () => { if (prepared) prepared.then(highlight); });
+    audioEl.addEventListener('ended', () => {
+      cancelAnimationFrame(raf);
+      active?.classList.remove('rw-active');
+      active = null;
+    });
+  }
 
   // ── ToC active highlight ─────────────────────────────────────────────────────
   const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.tocitem');

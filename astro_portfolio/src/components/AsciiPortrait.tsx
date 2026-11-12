@@ -1,291 +1,200 @@
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface Props {
-  src: string;
+  /** Video sources for the portrait, in order of preference. */
+  sources: { src: string; type: string }[];
   size?: number;
+  /** RGB triplet for the ASCII ink. */
   color?: string;
+  /** Radius of the colour spotlight around the pointer, in CSS px. */
+  spotlight?: number;
 }
 
-interface RawParticle {
-  x: number;
-  y: number;
-  char: string;
-  alpha: number;
-}
+const CHARS = ' .:-=+*#%@';
+const FONT_SIZE = 7;
+const COL_GAP = FONT_SIZE * 0.7;
+const ROW_GAP = FONT_SIZE * 1.1;
 
-interface Particle extends RawParticle {
-  targetX: number;
-  targetY: number;
-  vx: number;
-  vy: number;
-  fontSize: number;
-  baseAlpha: number;
-  currentAlpha: number;
-  delay: number;
-  shimmer: number;
-}
-
-const memoryCache: Record<string, RawParticle[]> = {};
-
-const calculateSize = (width: number) => {
-  if (width <= 480) return Math.min(220, width - 40);
-  if (width <= 768) return Math.min(280, width - 60);
-  return 400;
-};
-
-const chars = ' .:-=+*#%@'.split('');
-
-export default function AsciiPortrait({ src, size: fixedSize, color = '90, 252, 254' }: Props) {
+/**
+ * An animated portrait drawn as ASCII, frame by frame, from a looping video.
+ * Where the pointer is, a soft circle shows the video in its real colours.
+ */
+export default function AsciiPortrait({ sources, size = 300, color = '244, 244, 243', spotlight = 70 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouseRef = useRef({ x: -1000, y: -1000, active: false });
-  const mouseTargetRef = useRef({ x: -1000, y: -1000 });
-  const particlesRef = useRef<Particle[]>([]);
-  const startTimeRef = useRef(0);
-  const [size, setSize] = useState(() => fixedSize ?? calculateSize(window.innerWidth));
-  const [dataReady, setDataReady] = useState(false);
-
-  useEffect(() => {
-    if (fixedSize) return;
-    const updateSize = () => setSize(calculateSize(window.innerWidth));
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
-  }, [fixedSize]);
-
-  const createParticlesFromRaw = (rawParticles: RawParticle[], isMobileSize: boolean): Particle[] => {
-    const fontSize = isMobileSize ? 5 : 7;
-    return rawParticles.map((p) => ({
-      x: p.x + (Math.random() - 0.5) * 400,
-      y: p.y + (Math.random() - 0.5) * 400,
-      targetX: p.x,
-      targetY: p.y,
-      vx: 0,
-      vy: 0,
-      char: p.char,
-      alpha: p.alpha,
-      fontSize,
-      baseAlpha: p.alpha,
-      currentAlpha: 0,
-      delay: Math.random() * 0.4,
-      shimmer: Math.random() * Math.PI * 2,
-    }));
-  };
-
-  const processImage = (img: HTMLImageElement, targetSize: number): RawParticle[] => {
-    const canvasWidth = targetSize;
-    const canvasHeight = targetSize;
-    const offscreen = document.createElement('canvas');
-    const offCtx = offscreen.getContext('2d')!;
-    offscreen.width = canvasWidth;
-    offscreen.height = canvasHeight;
-
-    const scale = 0.8;
-    const imgAspect = img.width / img.height;
-
-    let drawHeight = canvasHeight * scale;
-    let drawWidth = drawHeight * imgAspect;
-
-    if (drawWidth > canvasWidth * scale) {
-      drawWidth = canvasWidth * scale;
-      drawHeight = drawWidth / imgAspect;
-    }
-
-    const offsetX = (canvasWidth - drawWidth) / 2;
-    const offsetY = (canvasHeight - drawHeight) / 2;
-
-    offCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-    const pixels = offCtx.getImageData(0, 0, canvasWidth, canvasHeight).data;
-
-    const rawParticles: RawParticle[] = [];
-    const isMobileSize = targetSize <= 280;
-    const fontSize = isMobileSize ? 5 : 7;
-    const colGap = fontSize * 0.7;
-    const rowGap = fontSize * 1.1;
-
-    for (let y = 0; y < canvasHeight; y += rowGap) {
-      for (let x = 0; x < canvasWidth; x += colGap) {
-        const i = (Math.floor(y) * canvasWidth + Math.floor(x)) * 4;
-        const a = pixels[i + 3];
-        if (a > 128) {
-          const r = pixels[i];
-          const g = pixels[i + 1];
-          const b = pixels[i + 2];
-          const brightness = (r + g + b) / (3 * 255);
-          const charIndex = Math.floor(brightness * (chars.length - 1));
-          rawParticles.push({
-            x: Number(x.toFixed(1)),
-            y: Number(y.toFixed(1)),
-            char: chars[charIndex],
-            alpha: Number((0.4 + brightness * 0.6).toFixed(2)),
-          });
-        }
-      }
-    }
-    return rawParticles;
-  };
-
-  useEffect(() => {
-    setDataReady(false);
-    const isMobileSize = size <= 280;
-    const cacheKey = `${src}-${size}`;
-
-    if (memoryCache[cacheKey]) {
-      particlesRef.current = createParticlesFromRaw(memoryCache[cacheKey], isMobileSize);
-      setDataReady(true);
-      startTimeRef.current = performance.now();
-      return;
-    }
-
-    const img = new Image();
-    img.crossOrigin = 'Anonymous';
-    img.src = src;
-    img.onload = () => {
-      const raw = processImage(img, size);
-      memoryCache[cacheKey] = raw;
-      particlesRef.current = createParticlesFromRaw(raw, isMobileSize);
-      setDataReady(true);
-      startTimeRef.current = performance.now();
-    };
-  }, [size, src]);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const video = videoRef.current;
+    if (!canvas || !video) return;
 
-    const ctx = canvas.getContext('2d')!;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const dpr = window.devicePixelRatio || 1;
-
     canvas.width = size * dpr;
     canvas.height = size * dpr;
+    const ctx = canvas.getContext('2d')!;
     ctx.scale(dpr, dpr);
 
-    let animationId: number;
+    // One sample per character cell: the browser averages the frame for us when it scales it down.
+    const cols = Math.floor(size / COL_GAP);
+    const rows = Math.floor(size / ROW_GAP);
+    const sample = document.createElement('canvas');
+    sample.width = cols;
+    sample.height = rows;
+    const sampleCtx = sample.getContext('2d', { willReadFrequently: true })!;
 
-    const draw = () => {
-      animationId = requestAnimationFrame(draw);
+    // The spotlight is drawn on its own layer, then masked to a soft-edged circle.
+    const spot = document.createElement('canvas');
+    spot.width = size * dpr;
+    spot.height = size * dpr;
+    const spotCtx = spot.getContext('2d')!;
+    spotCtx.scale(dpr, dpr);
+
+    const pointer = { x: 0, y: 0, tx: 0, ty: 0, active: false, strength: 0 };
+    let raf = 0;
+    let visible = true;
+    let last = performance.now();
+
+    const smoothstep = (e0: number, e1: number, t: number) => {
+      const x = Math.min(1, Math.max(0, (t - e0) / (e1 - e0)));
+      return x * x * (3 - 2 * x);
+    };
+    // The spotlight opens up as it fades in, and closes as it fades out.
+    const radius = () => spotlight * (0.55 + 0.45 * (1 - Math.pow(1 - pointer.strength, 3)));
+    // How much of the colour shows at a distance d from the pointer: 1 at the centre, easing to 0 at the edge.
+    const reveal = (d: number, r: number) => pointer.strength * (1 - smoothstep(0.2, 1, d / r));
+
+    const drawAscii = () => {
+      sampleCtx.drawImage(video, 0, 0, cols, rows);
+      const px = sampleCtx.getImageData(0, 0, cols, rows).data;
       ctx.clearRect(0, 0, size, size);
-      if (!dataReady || !particlesRef.current.length) return;
-
-      const particles = particlesRef.current;
-      const mouse = mouseRef.current;
-      const mouseTarget = mouseTargetRef.current;
-      const elapsed = (performance.now() - startTimeRef.current) / 1000;
-
-      mouse.x += (mouseTarget.x - mouse.x) * 0.15;
-      mouse.y += (mouseTarget.y - mouse.y) * 0.15;
-
-      const isMobileSize = size <= 280;
-      const fontSize = isMobileSize ? 5 : 7;
-      ctx.font = `${fontSize}px monospace`;
+      ctx.font = `${FONT_SIZE}px ui-monospace, monospace`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-
-      particles.forEach((p) => {
-        const particleTime = elapsed - p.delay;
-        if (particleTime < 0) return;
-
-        const fadeProgress = Math.min(particleTime / 1.5, 1);
-        const easedFade = 1 - Math.pow(1 - fadeProgress, 2);
-
-        const isActive = mouse.active || particleTime < 3.0;
-        const shimmerVal = isActive ? Math.sin(elapsed * 2 + p.shimmer) * 0.1 : 0;
-        p.currentAlpha = Math.max(0, p.baseAlpha * easedFade + shimmerVal);
-
-        const moveProgress = Math.min(particleTime / 2.5, 1);
-        const easedMove = 1 - Math.pow(1 - moveProgress, 3);
-
-        if (mouse.active) {
-          const dx = p.x - mouse.x;
-          const dy = p.y - mouse.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const maxDist = size * 0.2;
-
-          if (dist < maxDist && dist > 0) {
-            const force = (1 - dist / maxDist) * 4;
-            p.vx += (dx / dist) * force;
-            p.vy += (dy / dist) * force;
-          }
+      const lit = pointer.strength > 0.01;
+      const r = radius();
+      for (let row = 0; row < rows; row++) {
+        for (let c = 0; c < cols; c++) {
+          const i = (row * cols + c) * 4;
+          const brightness = (px[i] + px[i + 1] + px[i + 2]) / (3 * 255);
+          const ch = CHARS[Math.floor(brightness * (CHARS.length - 1))];
+          if (ch === ' ') continue;
+          const x = c * COL_GAP + COL_GAP / 2;
+          const y = row * ROW_GAP + ROW_GAP / 2;
+          // Characters dissolve where the colour comes through, on the same falloff, so the two blend.
+          const fade = lit ? 1 - reveal(Math.hypot(x - pointer.x, y - pointer.y), r) : 1;
+          if (fade < 0.02) continue;
+          ctx.fillStyle = `rgba(${color}, ${((0.35 + brightness * 0.65) * fade).toFixed(3)})`;
+          ctx.fillText(ch, x, y);
         }
-
-        const dx = p.targetX - p.x;
-        const dy = p.targetY - p.y;
-        const pullStrength = 0.01 + easedMove * 0.08;
-        p.vx += dx * pullStrength;
-        p.vy += dy * pullStrength;
-
-        if (isActive) {
-          const breathX = Math.sin(elapsed * 0.5 + p.targetY * 0.1) * 0.15;
-          const breathY = Math.cos(elapsed * 0.5 + p.targetX * 0.1) * 0.15;
-          p.vx += breathX;
-          p.vy += breathY;
-          p.vx *= 0.92;
-          p.vy *= 0.92;
-        } else {
-          p.vx *= 0.85;
-          p.vy *= 0.85;
-          if (particleTime > 4.0 && Math.abs(dx) < 0.01 && Math.abs(dy) < 0.01) {
-            p.x = p.targetX;
-            p.y = p.targetY;
-            p.vx = 0;
-            p.vy = 0;
-          }
-        }
-
-        p.x += p.vx;
-        p.y += p.vy;
-
-        ctx.fillStyle = `rgba(${color}, ${p.currentAlpha})`;
-        ctx.fillText(p.char, p.x, p.y);
-      });
+      }
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const drawSpotlight = () => {
+      if (pointer.strength < 0.01) return;
+      const r = radius();
+      spotCtx.globalCompositeOperation = 'source-over';
+      spotCtx.clearRect(0, 0, size, size);
+      spotCtx.drawImage(video, 0, 0, size, size);
+      spotCtx.globalCompositeOperation = 'destination-in';
+      const g = spotCtx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, r);
+      // Sample the eased falloff so the edge has no visible ring.
+      for (let k = 0; k <= 10; k++) {
+        const t = k / 10;
+        g.addColorStop(t, `rgba(0,0,0,${reveal(t * r, r).toFixed(3)})`);
+      }
+      spotCtx.fillStyle = g;
+      spotCtx.fillRect(0, 0, size, size);
+      ctx.drawImage(spot, 0, 0, size, size);
+    };
+
+    const frame = (now: number) => {
+      raf = 0;
+      const dt = Math.min(0.1, (now - last) / 1000);
+      last = now;
+      if (!visible || video.readyState < 2) return schedule();
+      // Time-based easing: the same feel at 60 Hz and 120 Hz.
+      const follow = 1 - Math.exp(-dt / 0.09);
+      pointer.x += (pointer.tx - pointer.x) * follow;
+      pointer.y += (pointer.ty - pointer.y) * follow;
+      const fadeTau = pointer.active ? 0.22 : 0.32; // opens a touch faster than it closes
+      pointer.strength += ((pointer.active ? 1 : 0) - pointer.strength) * (1 - Math.exp(-dt / fadeTau));
+      if (!pointer.active && pointer.strength < 0.005) pointer.strength = 0;
+      drawAscii();
+      drawSpotlight();
+      schedule();
+    };
+    const schedule = () => {
+      // A still portrait (reduced motion) only needs redrawing while the spotlight moves or fades.
+      const needed = !reduceMotion || pointer.active || pointer.strength > 0 || video.readyState < 2;
+      if (!raf && needed) { last = Math.min(last, performance.now()); raf = requestAnimationFrame(frame); }
+    };
+
+    const toLocal = (clientX: number, clientY: number) => {
       const rect = canvas.getBoundingClientRect();
-      mouseTargetRef.current.x = e.clientX - rect.left;
-      mouseTargetRef.current.y = e.clientY - rect.top;
-      mouseRef.current.active = true;
+      pointer.tx = clientX - rect.left;
+      pointer.ty = clientY - rect.top;
+      if (!pointer.active) { pointer.x = pointer.tx; pointer.y = pointer.ty; }
+      pointer.active = true;
+      schedule();
     };
+    const onMove = (e: PointerEvent) => toLocal(e.clientX, e.clientY);
+    const onLeave = () => { pointer.active = false; schedule(); };
+    const onUp = (e: PointerEvent) => { if (e.pointerType !== 'mouse') onLeave(); };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const touch = e.touches[0];
-      mouseTargetRef.current.x = touch.clientX - rect.left;
-      mouseTargetRef.current.y = touch.clientY - rect.top;
-      mouseRef.current.active = true;
-      if (e.cancelable) e.preventDefault();
-    };
+    canvas.addEventListener('pointermove', onMove);
+    canvas.addEventListener('pointerdown', onMove);
+    canvas.addEventListener('pointerleave', onLeave);
+    canvas.addEventListener('pointercancel', onLeave);
+    canvas.addEventListener('pointerup', onUp);
 
-    const handleLeave = () => {
-      mouseRef.current.active = false;
-      mouseTargetRef.current.x = -1000;
-      mouseTargetRef.current.y = -1000;
-    };
+    // Stop work while the portrait is scrolled away.
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) {
+        if (!reduceMotion) video.play().catch(() => {});
+        schedule();
+      } else {
+        video.pause();
+      }
+    });
+    io.observe(canvas);
 
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleLeave);
-    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
-    canvas.addEventListener('touchend', handleLeave);
-
-    draw();
+    const onReady = () => schedule();
+    video.addEventListener('loadeddata', onReady);
+    if (!reduceMotion) video.play().catch(() => {});
+    schedule();
 
     return () => {
-      cancelAnimationFrame(animationId);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseleave', handleLeave);
-      canvas.removeEventListener('touchmove', handleTouchMove);
-      canvas.removeEventListener('touchend', handleLeave);
+      cancelAnimationFrame(raf);
+      io.disconnect();
+      video.removeEventListener('loadeddata', onReady);
+      canvas.removeEventListener('pointermove', onMove);
+      canvas.removeEventListener('pointerdown', onMove);
+      canvas.removeEventListener('pointerleave', onLeave);
+      canvas.removeEventListener('pointercancel', onLeave);
+      canvas.removeEventListener('pointerup', onUp);
     };
-  }, [size, dataReady, color]);
+  }, [size, color, spotlight]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        width: `${size}px`,
-        height: `${size}px`,
-        display: 'block',
-        cursor: 'crosshair',
-        touchAction: 'none',
-      }}
-    />
+    <div style={{ position: 'relative', width: `${size}px`, height: `${size}px` }}>
+      {/* The source video is never shown directly; it feeds the canvas. */}
+      <video
+        ref={videoRef}
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        style={{ position: 'absolute', width: 1, height: 1, opacity: 0, pointerEvents: 'none' }}
+      >
+        {sources.map((s) => <source key={s.src} src={s.src} type={s.type} />)}
+      </video>
+      <canvas
+        ref={canvasRef}
+        style={{ width: `${size}px`, height: `${size}px`, display: 'block', cursor: 'crosshair', touchAction: 'none' }}
+      />
+    </div>
   );
 }

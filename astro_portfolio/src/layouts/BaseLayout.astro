@@ -9,8 +9,8 @@ interface Props {
 }
 
 const {
-  title = 'Ademola Kolawole — Software Engineer',
-  description = 'Mobile-first software engineer specialising in Flutter, iOS, Android, and Go.',
+  title = 'Ademola Kolawole — Product Engineer',
+  description = 'Product engineer building mobile software people trust with their money and identity, on Flutter, iOS and Android, backed by Go, Kotlin and Rust.',
   ogImage = 'https://demola.dev/og-default.png',
   ogType = 'website',
 } = Astro.props;
@@ -26,7 +26,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://demola.d
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Ademola Kolawole" />
     <meta name="description" content={description} />
-    <meta name="keywords" content="Ademola Kolawole, Software Engineer, Mobile Developer, Flutter, iOS, Android, Go, Portfolio" />
+    <meta name="keywords" content="Ademola Kolawole, Product Engineer, Platform Engineer, Software Engineer, Mobile Developer, Flutter, iOS, Android, Go, Portfolio" />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
@@ -45,11 +45,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://demola.d
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:creator" content="@demola234" />
 
-    <meta name="theme-color" content="#060606" />
+    <meta name="theme-color" content="#0c0c0c" />
     <link rel="canonical" href={canonicalURL} />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+    <link rel="icon" href="/favicon/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
 
     <!-- Structured data -->
     <script type="application/ld+json">
@@ -58,7 +61,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://demola.d
         "@type": "Person",
         "name": "Ademola Kolawole",
         "url": "https://demola.dev",
-        "jobTitle": "Software Engineer",
+        "jobTitle": "Product Engineer",
         "knowsAbout": ["Flutter", "iOS", "Android", "Go", "Mobile Development"],
         "sameAs": [
           "https://github.com/demola234",
@@ -75,5 +78,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://demola.d
     <div class="site-wrapper">
       <slot />
     </div>
+    <script>
+      import '../scripts/click-sound';
+    </script>
   </body>
 </html>
