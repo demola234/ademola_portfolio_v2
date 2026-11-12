@@ -75,5 +75,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://demola.d
     <div class="site-wrapper">
       <slot />
     </div>
+    <script>
+      import '../scripts/click-sound';
+    </script>
   </body>
 </html>
