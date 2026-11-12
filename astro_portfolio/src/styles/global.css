@@ -94,14 +94,6 @@
   --max-w: 1120px;
   --grid: 64px;
 
-  /* Legacy names, mapped onto Glaze while pages are swept (removed in the final sweep) */
-  --bg: var(--page);
-  --text-primary: var(--text-1);
-  --text-secondary: var(--text-2);
-  --border: var(--line-faint);
-  --border-hover: var(--line);
-  --card-fill: var(--shell);
-  --card-fill-hover: var(--flat-hover);
 }
 
 /* ─── Reset / Base ──────────────────────────────────────────────────────── */
@@ -158,9 +150,7 @@ body {
 }
 
 /* ─── Glass button: the one action you press next ───────────────────────── */
-/* .btn-accent is the legacy name (the old cyan lead button); removed in the final sweep */
-.glass,
-.btn-accent {
+.glass {
   --gl-sheen-now: var(--glass-sheen);
   --gl-core-now: var(--glass-core);
   position: relative;
@@ -197,8 +187,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   transition: scale .2s var(--ease-out);
 }
-.glass::before,
-.btn-accent::before { /* rim */
+.glass::before { /* rim */
   content: "";
   position: absolute;
   inset: 0;
@@ -212,8 +201,7 @@ body {
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   pointer-events: none;
 }
-.glass::after,
-.btn-accent::after { /* catch-light */
+.glass::after { /* catch-light */
   content: "";
   position: absolute;
   z-index: -1;
@@ -225,17 +213,14 @@ body {
   transition: opacity .2s;
   pointer-events: none;
 }
-.glass:hover,
-.btn-accent:hover { --gl-sheen-now: var(--glass-sheen-hover); }
-.glass:active,
-.btn-accent:active {
+.glass:hover { --gl-sheen-now: var(--glass-sheen-hover); }
+.glass:active {
   --gl-sheen-now: 0;
   --gl-core-now: var(--glass-core-held);
   scale: .99;
   transition-duration: 50ms;
 }
-.glass:active::after,
-.btn-accent:active::after { opacity: .6; transition-duration: 50ms; }
+.glass:active::after { opacity: .6; transition-duration: 50ms; }
 .glass-lg { height: var(--control-lg); padding: 0 18px; font-size: 14px; }
 
 /* ─── Flat buttons ──────────────────────────────────────────────────────── */
@@ -289,8 +274,7 @@ a.card:hover,
 }
 
 /* ─── Badge: labels what something is (not pressable, never a pill) ─────── */
-.badge,
-.tag {
+.badge {
   display: inline-flex;
   align-items: center;
   height: 20px;
@@ -352,26 +336,12 @@ a.card:hover,
 }
 .status--ok { color: var(--ok-text); }
 
-/* Legacy: a plain ink mark, no blink */
-.status-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--text-2);
-}
-
 /* ─── Divider ───────────────────────────────────────────────────────────── */
 .divider {
   width: 100%;
   height: 1px;
   background: var(--line-faint);
 }
-
-/* ─── Entrance animations: removed (content is just there). Classes kept as no-ops. */
-.animate-fade-up,
-.animate-fade-in,
-.delay-1, .delay-2, .delay-3, .delay-4, .delay-5 {}
 
 /* ─── Scrollbar ─────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
