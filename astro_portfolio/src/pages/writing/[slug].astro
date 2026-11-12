@@ -253,36 +253,8 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     gap: 9px;
   }
 
-  /* Listen player — Glaze design system (https://design.how/systems/glaze), dark theme.
-     Tokens are scoped here so they don't touch the rest of the site. */
+  /* Listen player — Glaze components; tokens and .glass come from global.css */
   .listen {
-    --g-shell: #161616;
-    --g-paper: #1f1f1f;
-    --g-ink-06: #f4f4f30f;
-    --g-ink-10: #f4f4f31a;
-    --g-line-faint: #f4f4f30f;
-    --g-line: #f4f4f31a;
-    --g-text-1: #f4f4f3;
-    --g-text-2: #f4f4f399;
-    --g-focus: #f4f4f3;
-    --g-glass-base: #ffffff9e;
-    --g-glass-text: #050505e6;
-    --g-glass-ring: #ffffff3d;
-    --g-sheen: .16;
-    --g-sheen-hover: .24;
-    --g-core: 0;
-    --g-core-held: .06;
-    --g-rim: .4;
-    --g-glaze: .14;
-    --g-gloss: .6;
-    --g-sm-top: #fbfbfa;
-    --g-sm-mid: #dcdcdb;
-    --g-sm-bottom: #bdbdbc;
-    --g-sm-highlight: #ffffffe6;
-    --g-sm-rim: #ffffff38;
-    --g-ease-out: cubic-bezier(.2, .8, .2, 1);
-    --g-control: 32px;
-
     font-family: var(--font-sans); /* the share bar around it is mono */
     display: flex;
     align-items: center;
@@ -293,8 +265,8 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
   .listen[data-active="true"] {
     padding: 4px 10px 4px 4px;
     border-radius: 14px;
-    background: var(--g-shell);
-    box-shadow: inset 0 0 0 1px var(--g-line-faint);
+    background: var(--shell);
+    box-shadow: inset 0 0 0 1px var(--line-faint);
   }
   .listen-controls {
     display: flex;
@@ -304,77 +276,7 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
   }
   .listen-controls[hidden] { display: none; }
 
-  /* Glass: the one action you press next */
-  .glass {
-    --g-sheen-now: var(--g-sheen);
-    --g-core-now: var(--g-core);
-    position: relative;
-    isolation: isolate;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    height: var(--g-control);
-    padding: 0 14px 0 11px;
-    border: 0;
-    border-radius: 999px;
-    font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 1.35;
-    color: var(--g-glass-text);
-    background-color: var(--g-glass-base);
-    background-image:
-      radial-gradient(65.62% 65.62% at 50% 50%, rgb(0 0 0 / var(--g-core-now)), transparent),
-      linear-gradient(rgb(255 255 255 / var(--g-sheen-now)), transparent),
-      linear-gradient(rgb(255 255 255 / var(--g-glaze)) 0%, rgb(255 255 255 / calc(var(--g-glaze) * .4)) 50%, transparent 50%);
-    box-shadow:
-      inset 0 -12px 16px 0 #ffffff0f,
-      inset 0 4px 16px 0 #ffffff29,
-      inset 0 .75px .25px 0 #ffffff1f,
-      inset 0 .25px .25px 0 #ffffff52,
-      0 0 0 .75px var(--g-glass-ring);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-    cursor: pointer;
-    white-space: nowrap;
-    -webkit-tap-highlight-color: transparent;
-    transition: scale .2s var(--g-ease-out);
-  }
-  .glass::before { /* rim */
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    padding: 1px;
-    border-radius: inherit;
-    background-image: linear-gradient(#fff 0%, #999 55%, #fff 80%, #999 95%);
-    opacity: var(--g-rim);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-    pointer-events: none;
-  }
-  .glass::after { /* catch-light */
-    content: "";
-    position: absolute;
-    z-index: -1;
-    inset-inline: calc(var(--g-control) * .28);
-    top: 1.5px;
-    height: 44%;
-    border-radius: 999px;
-    background-image: linear-gradient(rgb(255 255 255 / var(--g-gloss)), transparent);
-    transition: opacity .2s;
-    pointer-events: none;
-  }
-  .glass:hover { --g-sheen-now: var(--g-sheen-hover); }
-  .glass:active {
-    --g-sheen-now: 0;
-    --g-core-now: var(--g-core-held);
-    scale: .99;
-    transition-duration: 50ms;
-  }
-  .glass:active::after { opacity: .6; transition-duration: 50ms; }
-  .glass:focus-visible { outline: 2px solid var(--g-focus); outline-offset: 2px; }
+  .listen-btn { padding-left: 11px; }
   .listen-icon { width: 14px; height: 14px; fill: currentColor; flex: none; }
   .listen-icon[hidden] { display: none; }
 
@@ -393,14 +295,14 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     height: 4px;
     border-radius: 999px;
     background:
-      linear-gradient(90deg, var(--g-sm-top), var(--g-sm-mid) 50%, var(--g-sm-bottom)) 0 0 / var(--pct) 100% no-repeat,
-      var(--g-ink-10);
+      linear-gradient(90deg, var(--glaze-sm-top), var(--glaze-sm-mid) 50%, var(--glaze-sm-bottom)) 0 0 / var(--pct) 100% no-repeat,
+      var(--ink-10);
   }
-  .listen-seek::-moz-range-track { height: 4px; border-radius: 999px; background: var(--g-ink-10); }
+  .listen-seek::-moz-range-track { height: 4px; border-radius: 999px; background: var(--ink-10); }
   .listen-seek::-moz-range-progress {
     height: 4px;
     border-radius: 999px;
-    background: linear-gradient(90deg, var(--g-sm-top), var(--g-sm-mid) 50%, var(--g-sm-bottom));
+    background: linear-gradient(90deg, var(--glaze-sm-top), var(--glaze-sm-mid) 50%, var(--glaze-sm-bottom));
   }
   .listen-seek::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -409,23 +311,23 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     margin-top: -6px;
     border: 0;
     border-radius: 50%;
-    background: linear-gradient(var(--g-sm-top), var(--g-sm-mid) 50%, var(--g-sm-bottom));
-    box-shadow: inset 0 1px 0 var(--g-sm-highlight), 0 0 0 .5px var(--g-sm-rim);
+    background: linear-gradient(var(--glaze-sm-top), var(--glaze-sm-mid) 50%, var(--glaze-sm-bottom));
+    box-shadow: inset 0 1px 0 var(--glaze-sm-highlight), 0 0 0 .5px var(--glaze-sm-rim);
   }
   .listen-seek::-moz-range-thumb {
     width: 16px;
     height: 16px;
     border: 0;
     border-radius: 50%;
-    background: linear-gradient(var(--g-sm-top), var(--g-sm-mid) 50%, var(--g-sm-bottom));
-    box-shadow: inset 0 1px 0 var(--g-sm-highlight), 0 0 0 .5px var(--g-sm-rim);
+    background: linear-gradient(var(--glaze-sm-top), var(--glaze-sm-mid) 50%, var(--glaze-sm-bottom));
+    box-shadow: inset 0 1px 0 var(--glaze-sm-highlight), 0 0 0 .5px var(--glaze-sm-rim);
   }
-  .listen-seek:focus-visible { outline: 2px solid var(--g-focus); outline-offset: 2px; border-radius: 999px; }
+  .listen-seek:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 999px; }
 
   .listen-time {
     font-family: var(--font-mono);
     font-size: 11.2px;
-    color: var(--g-text-2);
+    color: var(--text-2);
     font-variant-numeric: tabular-nums;
     min-width: 9ch;
   }
@@ -436,8 +338,8 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     display: inline-flex;
     padding: 2px;
     border-radius: 999px;
-    background: var(--g-ink-06);
-    box-shadow: inset 0 0 0 1px var(--g-line-faint);
+    background: var(--ink-06);
+    box-shadow: inset 0 0 0 1px var(--line-faint);
   }
   .seg-thumb {
     position: absolute;
@@ -446,9 +348,9 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     left: 0;
     width: 0;
     border-radius: 999px;
-    background: var(--g-paper);
-    box-shadow: inset 0 0 0 1px var(--g-line);
-    transition: transform .2s var(--g-ease-out), width .2s var(--g-ease-out);
+    background: var(--paper);
+    box-shadow: inset 0 0 0 1px var(--line);
+    transition: transform .2s var(--ease-out), width .2s var(--ease-out);
   }
   .seg { position: relative; z-index: 1; display: flex; }
   .seg input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
@@ -460,16 +362,16 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     border-radius: 999px;
     font-size: 12px;
     font-weight: 500;
-    color: var(--g-text-2);
+    color: var(--text-2);
     font-variant-numeric: tabular-nums;
-    transition: color .16s var(--g-ease-out);
+    transition: color .16s var(--ease-out);
   }
   .seg:hover span,
-  .seg input:checked + span { color: var(--g-text-1); }
-  .seg input:focus-visible + span { outline: 2px solid var(--g-focus); outline-offset: -2px; }
+  .seg input:checked + span { color: var(--text-1); }
+  .seg input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: -2px; }
 
   @media (prefers-reduced-motion: reduce) {
-    .glass, .seg-thumb, .seg span { transition: none; }
+    .seg-thumb, .seg span { transition: none; }
   }
   @media (max-width: 600px) {
     .listen[data-active="true"], .listen-controls { width: 100%; }
