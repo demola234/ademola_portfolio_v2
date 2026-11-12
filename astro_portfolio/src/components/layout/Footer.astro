@@ -12,7 +12,7 @@ const socials = [
 <footer class="footer">
   <div class="footer__inner">
     <div class="footer__left">
-      <span class="footer__name mono">ademola<span class="text-accent">.</span></span>
+      <span class="footer__name mono">ademola<span class="footer__dot">.</span></span>
       <p class="footer__copy text-secondary">
         &copy; {year} Ademola Kolawole.
       </p>
@@ -24,7 +24,7 @@ const socials = [
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          class="footer__social-link mono-to-brand underline-sweep"
+          class="footer__social-link btn-ghost btn-sm"
         >
           {label}
         </a>
@@ -35,7 +35,7 @@ const socials = [
 
 <style>
   .footer {
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--line-faint);
     margin-top: 80px;
     padding-block: 40px;
   }
@@ -55,24 +55,22 @@ const socials = [
   }
 
   .footer__name {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-1);
   }
 
+  .footer__dot { color: var(--text-3); }
+
   .footer__copy {
-    font-size: 0.75rem;
+    font-size: 12px;
+    color: var(--text-2);
   }
 
   .footer__socials {
     display: flex;
-    gap: 24px;
+    gap: 2px;
     flex-wrap: wrap;
-  }
-
-  .footer__social-link {
-    font-size: 0.78rem;
-    text-decoration: none;
   }
 
   @media (max-width: 480px) {
@@ -82,7 +80,7 @@ const socials = [
     }
 
     .footer__socials {
-      gap: 16px;
+      margin-left: -10px;
     }
   }
 </style>
