@@ -38,30 +38,6 @@ const stack = [
   { name: 'Grafana',  src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg' },
 ];
 
-// Core principles — each one backed by something shipped (see src/data/Experience.ts)
-const principles = [
-  {
-    title: 'Start from the problem, not the stack',
-    body: 'I pick tools after I understand the constraint. That is how a QR payment system went from a blank page to $250K+ in monthly volume.',
-  },
-  {
-    title: 'Design for the bad-network day',
-    body: 'Real users are on weak signal and old phones. Queues, retries and circuit breakers keep analytics flowing for 50M+ users when the network does not cooperate.',
-  },
-  {
-    title: 'Trust is a feature',
-    body: 'In payments and identity, safety is the product. Anti-spoofing, KYC and geo-tagged audit trails cut card fraud by 25%.',
-  },
-  {
-    title: 'Make quality measurable',
-    body: 'If it is not measured, it is a feeling. Taking SDK test coverage from 4% to 76% and cutting crashes by 60% made quality something the team could see.',
-  },
-  {
-    title: 'Leave the team faster than I found it',
-    body: 'Automated CI/CD halved deployment time and a Compose migration cut UI complexity by 40%, so the next feature ships sooner.',
-  },
-];
-
 const allNotes = (await getCollection('notes'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const notes = allNotes.slice(0, 4);
@@ -99,25 +75,6 @@ const youtube = [
         <AsciiPortrait client:only="react" src="/personal_image.png" size={300} />
       </div>
     </div>
-  </section>
-
-  <!-- Principles -->
-  <section class="section">
-    <div class="section-row" style="margin-bottom:14px">
-      <span class="path-label mono">~/principles</span>
-      <span class="section-hint">how I work</span>
-    </div>
-    <ol class="principles">
-      {principles.map(({ title, body }, i) => (
-        <li class="principle">
-          <span class="principle__num mono">{String(i + 1).padStart(2, '0')}</span>
-          <div>
-            <h3 class="principle__title">{title}</h3>
-            <p class="principle__body">{body}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
   </section>
 
   <!-- Stack -->
@@ -401,42 +358,6 @@ const youtube = [
   .section-hint {
     font-size: 12px;
     color: var(--text-3);
-  }
-
-  /* Principles — a numbered list on hairlines, not a row of cards */
-  .principles {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 40px;
-    border-top: 1px solid var(--line-faint);
-  }
-
-  .principle {
-    display: grid;
-    grid-template-columns: 32px 1fr;
-    gap: 12px;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--line-faint);
-  }
-
-  .principle__num { font-size: 12px; color: var(--text-3); padding-top: 3px; }
-
-  .principle__title {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text-1);
-    margin: 0 0 6px;
-    letter-spacing: -.01em;
-  }
-
-  .principle__body {
-    font-size: 14px;
-    line-height: 1.55;
-    color: var(--text-2);
-    margin: 0;
   }
 
   /* Item rows */
@@ -758,7 +679,6 @@ const youtube = [
   @media (max-width: 768px) {
     .hero { grid-template-columns: 1fr; }
     .hero__img-col { display: none; }
-    .principles { grid-template-columns: 1fr; }
     .hero__h1 { font-size: 52px; }
     .work-row { grid-template-columns: 36px 1fr 30px; }
     .work-row__stack { display: none; }
