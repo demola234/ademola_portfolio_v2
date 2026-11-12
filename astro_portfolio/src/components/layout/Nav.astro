@@ -42,10 +42,6 @@ const rightLinks = [
       {label}
     </a>
   ))}
-  <button type="button" class="sound-toggle" data-sound-toggle aria-pressed="true" aria-label="Click sounds on — mute">
-    <svg class="sound-toggle__on" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 6h2l3-2.5v9L5 10H3z" fill="currentColor" /><path d="M10.5 5.5a3.5 3.5 0 0 1 0 5M12 4a5.5 5.5 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" /></svg>
-    <svg class="sound-toggle__off" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 6h2l3-2.5v9L5 10H3z" fill="currentColor" /><path d="M10.5 6.5l3 3M13.5 6.5l-3 3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" /></svg>
-  </button>
 </nav>
 
 <style>
@@ -90,26 +86,7 @@ const rightLinks = [
     color: var(--text-1);
   }
 
-  /* Click-sound mute toggle — a ghost icon button */
-  .sound-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--control);
-    height: var(--control);
-    border: 0;
-    border-radius: var(--radius-pill);
-    background: transparent;
-    color: var(--text-2);
-    cursor: pointer;
-    transition: background-color var(--dur-state) var(--ease-out), color var(--dur-state) var(--ease-out);
-  }
-  .sound-toggle:hover { background: var(--hover); color: var(--text-1); }
-  .sound-toggle[data-state="off"] .sound-toggle__on,
-  .sound-toggle:not([data-state="off"]) .sound-toggle__off { display: none; }
-
   @media (max-width: 600px) {
-    .sound-toggle { margin-left: auto; }
     .nav-spacer { display: none; }
     .navchip--right { display: none; }
   }

@@ -1,29 +1,10 @@
 // UI click sounds, synthesised with the Web Audio API (no audio files).
 // A short tick plays when a link or button is pressed; the glass lead
-// action gets a lower one. Visitors can mute it with the nav toggle
-// ([data-sound-toggle]); the choice is remembered per browser.
+// action gets a lower one.
 
-const STORAGE_KEY = 'ui-sound';
 const PRESSABLE = 'a[href], button, [role="button"], .seg, summary';
 
 let ctx: AudioContext | null = null;
-let enabled = readEnabled();
-
-function readEnabled(): boolean {
-  try {
-    return localStorage.getItem(STORAGE_KEY) !== 'off';
-  } catch {
-    return true; // storage blocked: default on
-  }
-}
-
-function saveEnabled(on: boolean) {
-  try {
-    localStorage.setItem(STORAGE_KEY, on ? 'on' : 'off');
-  } catch {
-    /* not persisted */
-  }
-}
 
 /** A ~40ms tick: a sine blip with a fast exponential decay. */
 function tick(frequency: number) {
@@ -45,13 +26,12 @@ function tick(frequency: number) {
 }
 
 function play(target: Element) {
-  if (!enabled) return;
   tick(target.closest('.glass') ? 520 : 1250);
 }
 
 function pressableFrom(event: Event): Element | null {
   const el = (event.target as Element | null)?.closest?.(PRESSABLE);
-  if (!el || el.matches(':disabled, [aria-disabled="true"], [data-sound-toggle]')) return null;
+  if (!el || el.matches(':disabled, [aria-disabled="true"]')) return null;
   return el;
 }
 
@@ -68,23 +48,3 @@ document.addEventListener('click', (event) => {
   const el = pressableFrom(event);
   if (el) play(el);
 }, { capture: true });
-
-// Mute toggle
-function renderToggles() {
-  document.querySelectorAll<HTMLButtonElement>('[data-sound-toggle]').forEach((btn) => {
-    btn.setAttribute('aria-pressed', String(enabled));
-    btn.setAttribute('aria-label', enabled ? 'Click sounds on — mute' : 'Click sounds off — unmute');
-    btn.dataset.state = enabled ? 'on' : 'off';
-  });
-}
-
-document.addEventListener('click', (event) => {
-  const btn = (event.target as Element | null)?.closest?.('[data-sound-toggle]');
-  if (!btn) return;
-  enabled = !enabled;
-  saveEnabled(enabled);
-  renderToggles();
-  if (enabled) tick(1250); // confirm that sound is back on
-});
-
-renderToggles();
