@@ -24,17 +24,17 @@ const stats = [
 
   <div class="exp-page">
     <header class="exp-head">
-      <p class="mono" style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.14em;margin-bottom:10px">~/experience</p>
+      <p class="exp-path mono">~/experience</p>
       <h1 class="exp-h1">Where I've built.</h1>
       <p class="exp-sub text-secondary">5+ years of mobile-first engineering across fintech, identity, and payments. Here's the full timeline.</p>
-      <div class="stat-chips">
+      <dl class="stats">
         {stats.map(({ value, label }) => (
-          <div class="stat-chip">
-            <span class="stat-chip__val text-accent mono">{value}</span>
-            <span class="stat-chip__label mono">{label}</span>
+          <div class="stat">
+            <dt class="stat__label">{label}</dt>
+            <dd class="stat__val">{value}</dd>
           </div>
         ))}
-      </div>
+      </dl>
     </header>
 
     <!-- Timeline -->
@@ -45,13 +45,13 @@ const stats = [
             <span class="tl-date mono">{exp.dateRange}</span>
           </div>
           <div class="tl-spine">
-            <div class="tl-dot" />
+            <div class={`tl-dot ${i === 0 ? 'tl-dot--now' : ''}`} />
             {i < experience.length - 1 && <div class="tl-line" />}
           </div>
           <div class="tl-content">
             <div class="tl-header">
               <h2 class="tl-role">{exp.role}</h2>
-              <span class="tl-company text-accent">{exp.company}</span>
+              <span class="tl-company">{exp.company}</span>
               <span class="tl-loc mono text-secondary">{exp.location}</span>
               <span class="tl-date-inline mono">{exp.dateRange}</span>
             </div>
@@ -62,7 +62,7 @@ const stats = [
             </ul>
             <div class="tl-stack">
               {exp.stack.map((t) => (
-                <span class="tl-tag mono">{t}</span>
+                <span class="badge">{t}</span>
               ))}
             </div>
           </div>
@@ -80,7 +80,7 @@ const stats = [
         <div class="tl-content">
           <div class="tl-header">
             <h2 class="tl-role">{education.degree}</h2>
-            <span class="tl-company" style="color:rgba(255,255,255,.6)">{education.school}</span>
+            <span class="tl-company">{education.school}</span>
             <span class="tl-loc mono text-secondary">{education.location}</span>
           </div>
         </div>
@@ -101,52 +101,61 @@ const stats = [
     margin-bottom: 56px;
   }
 
+  .exp-path {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+
   .exp-h1 {
     font-size: clamp(36px, 5vw, 64px);
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: -.03em;
+    font-weight: 500;
+    color: var(--text-1);
+    letter-spacing: -.035em;
     margin: 0 0 14px;
   }
 
   .exp-sub {
-    font-size: 15px;
-    line-height: 1.65;
+    font-size: 16px;
+    line-height: 1.6;
     max-width: 540px;
     margin: 0 0 28px;
   }
 
-  .stat-chips {
+  /* Figures in a row, split by hairlines — not a row of stat cards */
+  .stats {
     display: flex;
-    gap: 12px;
     flex-wrap: wrap;
+    margin: 0;
   }
 
-  .stat-chip {
+  .stat {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12px 22px;
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 10px;
-    background: rgba(255,255,255,.02);
-    gap: 3px;
+    flex-direction: column-reverse;
+    gap: 2px;
+    padding: 0 24px;
+    border-left: 1px solid var(--line-faint);
   }
+  .stat:first-child { padding-left: 0; border-left: 0; }
 
-  .stat-chip__val { font-size: 24px; font-weight: 700; }
-  .stat-chip__label { font-size: 10px; color: rgba(255,255,255,.5); letter-spacing: .1em; }
+  .stat__val {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-1);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat__label { font-size: 12px; color: var(--text-2); }
 
   .timeline {
     display: flex;
     flex-direction: column;
-    gap: 0;
   }
 
   .tl-row {
     display: grid;
     grid-template-columns: 170px 28px 1fr;
     gap: 0 16px;
-    min-height: 0;
   }
 
   .tl-date-col {
@@ -156,8 +165,8 @@ const stats = [
   }
 
   .tl-date {
-    font-size: 11px;
-    color: rgba(255,255,255,.35);
+    font-size: 11.2px;
+    color: var(--text-2);
     text-align: right;
     line-height: 1.4;
   }
@@ -169,24 +178,19 @@ const stats = [
   }
 
   .tl-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px rgba(90,252,254,.6);
+    background: var(--ink-32);
     flex-shrink: 0;
-    margin-top: 7px;
+    margin-top: 8px;
   }
-
-  .tl-dot--edu {
-    background: rgba(255,255,255,.3);
-    box-shadow: none;
-  }
+  .tl-dot--now { background: var(--text-1); }
 
   .tl-line {
     flex: 1;
     width: 1px;
-    background: rgba(255,255,255,.1);
+    background: var(--line);
     margin-top: 6px;
   }
 
@@ -198,25 +202,26 @@ const stats = [
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 6px 14px;
-    margin-bottom: 14px;
+    gap: 6px 12px;
+    margin-bottom: 12px;
   }
 
   .tl-role {
     font-size: 20px;
-    font-weight: 600;
-    color: #fff;
+    font-weight: 500;
+    color: var(--text-1);
+    letter-spacing: -.01em;
     margin: 0;
   }
 
-  .tl-company { font-size: 15px; font-weight: 500; }
+  .tl-company { font-size: 14px; font-weight: 500; color: var(--text-1); }
 
-  .tl-loc { font-size: 11px; }
+  .tl-loc { font-size: 11.2px; }
 
   .tl-date-inline {
     display: none;
-    font-size: 11px;
-    color: rgba(255,255,255,.35);
+    font-size: 11.2px;
+    color: var(--text-2);
     width: 100%;
   }
 
@@ -232,7 +237,7 @@ const stats = [
   .tl-bullet {
     font-size: 14px;
     line-height: 1.6;
-    color: rgba(255,255,255,.72);
+    color: var(--text-2);
     padding-left: 14px;
     position: relative;
   }
@@ -241,21 +246,13 @@ const stats = [
     content: '–';
     position: absolute;
     left: 0;
-    color: rgba(90,252,254,.5);
+    color: var(--text-3);
   }
 
   .tl-stack {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-  }
-
-  .tl-tag {
-    font-size: 11px;
-    padding: 3px 10px;
-    border: 1px solid rgba(90,252,254,.25);
-    border-radius: 999px;
-    color: rgba(90,252,254,.7);
   }
 
   @media (max-width: 700px) {
@@ -267,8 +264,6 @@ const stats = [
     .tl-date-inline { display: block; }
     .tl-content { padding-bottom: 36px; }
 
-    .stat-chips { gap: 8px; }
-    .stat-chip { padding: 10px 16px; }
-    .stat-chip__val { font-size: 20px; }
+    .stat { padding: 0 16px; }
   }
 </style>
