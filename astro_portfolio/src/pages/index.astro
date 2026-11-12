@@ -258,7 +258,8 @@ const youtube = [
     const lines = [...nameEl.querySelectorAll<HTMLElement>('.scr')];
     const texts = lines.map((l) => l.textContent ?? '');
     let busy = false;
-    nameEl.addEventListener('pointerenter', async () => {
+    // Listen on the letters, not the heading box, so empty space beside the name does not trigger it.
+    const run = async () => {
       if (busy) return;
       busy = true;
       // Hold each line's width so the heading does not jitter while glyphs swap.
@@ -268,7 +269,8 @@ const youtube = [
       })));
       lines.forEach((l) => { l.style.width = ''; });
       busy = false;
-    });
+    };
+    lines.forEach((l) => l.addEventListener('pointerenter', run));
   }
 
   // ── Languages: cycle Dart → Kotlin → Swift → Go → Rust with the same scramble ─
