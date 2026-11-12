@@ -65,9 +65,9 @@ const youtube = [
   <section class="hero">
     <div class="hero__text">
       <div class="hero__label mono">Product engineer · Mobile &amp; platform</div>
-      <h1 class="hero__h1">Ademola<br><span class="hero__h1-dim">Kolawole</span></h1>
+      <h1 class="hero__h1" id="hero-name" aria-label="Ademola Kolawole"><span class="scr" aria-hidden="true">Ademola</span><br><span class="hero__h1-dim scr" aria-hidden="true">Kolawole</span></h1>
       <p class="hero__body">
-        I turn hard product problems into mobile software people trust with their <strong>money and identity</strong>: fraud-resistant payments, face-verified onboarding, and analytics that survive bad networks. I design the system, ship it on <strong>Flutter, Android &amp; iOS</strong>, and back it with <strong>Go, Kotlin &amp; Rust</strong>, for products serving <strong>50M+ users</strong>.
+        I turn hard product problems into mobile software people trust with their <strong>money and identity</strong>: fraud-resistant payments, face-verified onboarding, and analytics that survive bad networks. I design the system and build it in <strong class="lang-cycle" data-words="Dart,Kotlin,Swift,Go,Rust"><span class="sr-only">Dart, Kotlin, Swift, Go and Rust</span><span class="lang-cycle__word" aria-hidden="true">Dart</span></strong>, shipping on <strong>Flutter, Android &amp; iOS</strong> for products serving <strong>50M+ users</strong>.
       </p>
     </div>
     <div class="hero__img-col" aria-hidden="true">
@@ -248,6 +248,46 @@ const youtube = [
 </BaseLayout>
 
 <script>
+  import { scramble } from '../scripts/scramble';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Name: churns through asterisks on hover, then settles ────────────────────
+  const nameEl = document.getElementById('hero-name');
+  if (nameEl && !reduceMotion) {
+    const lines = [...nameEl.querySelectorAll<HTMLElement>('.scr')];
+    const texts = lines.map((l) => l.textContent ?? '');
+    let busy = false;
+    nameEl.addEventListener('pointerenter', async () => {
+      if (busy) return;
+      busy = true;
+      // Hold each line's width so the heading does not jitter while glyphs swap.
+      lines.forEach((l) => { l.style.width = `${l.getBoundingClientRect().width}px`; });
+      await Promise.all(lines.map((l, i) => new Promise<void>((done) => {
+        setTimeout(() => scramble(l, texts[i], { stagger: 55, churn: 260 }).then(done), i * 120);
+      })));
+      lines.forEach((l) => { l.style.width = ''; });
+      busy = false;
+    });
+  }
+
+  // ── Languages: cycle Dart → Kotlin → Swift → Go → Rust with the same scramble ─
+  const cycle = document.querySelector<HTMLElement>('.lang-cycle');
+  const wordEl = cycle?.querySelector<HTMLElement>('.lang-cycle__word');
+  if (cycle && wordEl) {
+    const words = (cycle.dataset.words ?? '').split(',');
+    if (reduceMotion) {
+      wordEl.textContent = 'Dart, Kotlin, Swift, Go & Rust';
+    } else {
+      let i = 0;
+      setInterval(() => {
+        if (document.hidden) return;
+        i = (i + 1) % words.length;
+        scramble(wordEl, words[i], { stagger: 50, churn: 180 });
+      }, 2400);
+    }
+  }
+
   // ── YouTube modal ────────────────────────────────────────────────────────────
   const modal    = document.getElementById('yt-modal') as HTMLElement;
   // Move modal to <body> so position:fixed is never trapped inside a transformed parent
@@ -322,6 +362,14 @@ const youtube = [
   }
 
   .hero__h1-dim { color: var(--text-3); }
+
+  .scr {
+    display: inline-block;
+    white-space: nowrap;
+    cursor: default;
+  }
+
+  .lang-cycle__word { white-space: nowrap; }
 
   .hero__body {
     font-size: 16px;
