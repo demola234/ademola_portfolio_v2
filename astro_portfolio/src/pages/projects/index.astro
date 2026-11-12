@@ -14,7 +14,7 @@ const projects = (await getCollection('projects'))
   <div class="proj-page">
     <header class="proj-head">
       <p class="proj-path mono">~/projects</p>
-      <h1 class="proj-h1">Things I've shipped.</h1>
+      <h1 class="proj-h1" data-scramble aria-label="Things I've shipped."><span class="scr" aria-hidden="true">Things I've shipped.</span></h1>
       <p class="proj-sub text-secondary">Just some personal projects.</p>
     </header>
 
@@ -38,6 +38,11 @@ const projects = (await getCollection('projects'))
 
   <Footer />
 </BaseLayout>
+
+<script>
+  import { scrambleHeadings } from '../../scripts/scramble';
+  scrambleHeadings();
+</script>
 
 <style>
   .proj-page {

@@ -66,3 +66,32 @@ export function cycleWords(el: HTMLElement, words: string[], staticText: string,
     scramble(el, words[i], { stagger: 50, churn: 180 });
   }, intervalMs);
 }
+
+/**
+ * Scramble a heading's `.scr` spans when the pointer enters any of them, then
+ * settle back. Listens on the letters, not the heading box, so empty space
+ * beside the text does not trigger it. No-op with reduced motion.
+ */
+export function scrambleOnHover(heading: HTMLElement) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const lines = [...heading.querySelectorAll<HTMLElement>('.scr')];
+  const texts = lines.map((l) => l.textContent ?? '');
+  let busy = false;
+  const run = async () => {
+    if (busy) return;
+    busy = true;
+    // Hold each line's width so the heading does not jitter while glyphs swap.
+    lines.forEach((l) => { l.style.width = `${l.getBoundingClientRect().width}px`; });
+    await Promise.all(lines.map((l, i) => new Promise<void>((done) => {
+      setTimeout(() => scramble(l, texts[i], { stagger: 55, churn: 260 }).then(done), i * 120);
+    })));
+    lines.forEach((l) => { l.style.width = ''; });
+    busy = false;
+  };
+  lines.forEach((l) => l.addEventListener('pointerenter', run));
+}
+
+/** Wire every `[data-scramble]` heading on the page. */
+export function scrambleHeadings() {
+  document.querySelectorAll<HTMLElement>('[data-scramble]').forEach(scrambleOnHover);
+}

@@ -16,7 +16,7 @@ const allTags = [...new Set(notes.flatMap((n) => n.data.tags ?? []))].sort();
   <div class="notes-page">
     <header class="notes-head">
       <p class="notes-path mono">~/notes</p>
-      <h1 class="notes-h1">Notes.</h1>
+      <h1 class="notes-h1" data-scramble aria-label="Notes."><span class="scr" aria-hidden="true">Notes.</span></h1>
       <p class="notes-sub text-secondary">Quick thoughts, TILs, and observations from building mobile & backend systems.</p>
     </header>
 
@@ -73,6 +73,9 @@ const allTags = [...new Set(notes.flatMap((n) => n.data.tags ?? []))].sort();
 </BaseLayout>
 
 <script>
+  import { scrambleHeadings } from '../../scripts/scramble';
+  scrambleHeadings();
+
   const bar = document.getElementById('tag-bar');
   const grid = document.getElementById('notes-grid');
   if (bar && grid) {

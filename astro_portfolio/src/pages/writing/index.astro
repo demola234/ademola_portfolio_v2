@@ -16,7 +16,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
   <div class="write-page">
     <header class="write-head">
       <p class="write-path mono">~/writing</p>
-      <h1 class="write-h1">Writing.</h1>
+      <h1 class="write-h1" data-scramble aria-label="Writing."><span class="scr" aria-hidden="true">Writing.</span></h1>
       <p class="write-sub text-secondary">Deep-dives on <strong class="topic-cycle" data-words="systems,mobile internals,Go,Rust,software craft"><span class="sr-only">systems, mobile internals, Go, Rust and software craft</span><span class="topic-cycle__word" aria-hidden="true">systems</span></strong>. Plus some emotional shit.</p>
     </header>
 
@@ -61,7 +61,8 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 </BaseLayout>
 
 <script>
-  import { cycleWords } from '../../scripts/scramble';
+  import { cycleWords, scrambleHeadings } from '../../scripts/scramble';
+  scrambleHeadings();
 
   const topic = document.querySelector<HTMLElement>('.topic-cycle');
   const topicWord = topic?.querySelector<HTMLElement>('.topic-cycle__word');
