@@ -39,22 +39,6 @@ const principles = [
       <p class="exp-sub text-secondary">5+ years of mobile-first engineering across fintech, identity, and payments. Here's the full timeline.</p>
     </header>
 
-    <!-- Principles -->
-    <section class="principles-wrap" aria-labelledby="principles-h">
-      <h2 id="principles-h" class="principles-h">How I work</h2>
-      <ol class="principles">
-        {principles.map(({ title, body }, i) => (
-          <li class="principle">
-            <span class="principle__num mono">{String(i + 1).padStart(2, '0')}</span>
-            <div>
-              <h3 class="principle__title">{title}</h3>
-              <p class="principle__body">{body}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </section>
-
     <!-- Timeline -->
     <div class="timeline">
       {experience.map((exp, i) => (
@@ -87,6 +71,22 @@ const principles = [
         </div>
       ))}
     </div>
+
+    <!-- Principles -->
+    <section class="principles-wrap" aria-labelledby="principles-h">
+      <h2 id="principles-h" class="principles-h">How I work</h2>
+      <ol class="principles">
+        {principles.map(({ title, body }, i) => (
+          <li class="principle">
+            <span class="principle__num mono">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3 class="principle__title">{title}</h3>
+              <p class="principle__body">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
   </div>
 
   <Footer />
@@ -160,7 +160,11 @@ const principles = [
     margin: 0;
   }
 
-  .principles-wrap { margin-bottom: 56px; }
+  .principles-wrap {
+    margin-top: 16px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line-faint);
+  }
 
   .principles-h {
     font-size: 20px;
