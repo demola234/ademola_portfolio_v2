@@ -9,8 +9,8 @@ interface Props {
 }
 
 const {
-  title = 'Ademola Kolawole — Software Engineer',
-  description = 'Mobile-first software engineer specialising in Flutter, iOS, Android, and Go.',
+  title = 'Ademola Kolawole — Product Engineer',
+  description = 'Product engineer building mobile software people trust with their money and identity, on Flutter, iOS and Android, backed by Go, Kotlin and Rust.',
   ogImage = 'https://demola.dev/og-default.png',
   ogType = 'website',
 } = Astro.props;
@@ -26,7 +26,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://demola.d
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Ademola Kolawole" />
     <meta name="description" content={description} />
-    <meta name="keywords" content="Ademola Kolawole, Software Engineer, Mobile Developer, Flutter, iOS, Android, Go, Portfolio" />
+    <meta name="keywords" content="Ademola Kolawole, Product Engineer, Platform Engineer, Software Engineer, Mobile Developer, Flutter, iOS, Android, Go, Portfolio" />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
@@ -61,7 +61,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://demola.d
         "@type": "Person",
         "name": "Ademola Kolawole",
         "url": "https://demola.dev",
-        "jobTitle": "Software Engineer",
+        "jobTitle": "Product Engineer",
         "knowsAbout": ["Flutter", "iOS", "Android", "Go", "Mobile Development"],
         "sameAs": [
           "https://github.com/demola234",
