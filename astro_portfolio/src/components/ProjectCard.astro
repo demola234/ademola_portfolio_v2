@@ -14,7 +14,7 @@ interface Props {
 const { slug, title, subtitle, description, tags, image_url, github, play_store, app_store } = Astro.props;
 ---
 
-<a href={`/projects/${slug}`} class="project-card card glow-on-hover">
+<a href={`/projects/${slug}`} class="project-card card">
   {image_url && (
     <div class="project-card__img-wrap">
       <img
@@ -38,7 +38,7 @@ const { slug, title, subtitle, description, tags, image_url, github, play_store,
 
     <div class="project-card__footer">
       <div class="project-card__tags">
-        {tags.slice(0, 4).map((t) => <span class="tag">{t}</span>)}
+        {tags.slice(0, 4).map((t) => <span class="badge">{t}</span>)}
       </div>
 
       <div class="project-card__links" role="group" aria-label={`Links for ${title}`}>
@@ -47,7 +47,7 @@ const { slug, title, subtitle, description, tags, image_url, github, play_store,
             href={github}
             target="_blank"
             rel="noopener noreferrer"
-            class="project-card__link mono-to-brand"
+            class="project-card__link btn-ghost btn-sm"
             aria-label="GitHub"
             onclick="event.stopPropagation()"
           >
@@ -59,7 +59,7 @@ const { slug, title, subtitle, description, tags, image_url, github, play_store,
             href={play_store}
             target="_blank"
             rel="noopener noreferrer"
-            class="project-card__link mono-to-brand"
+            class="project-card__link btn-ghost btn-sm"
             aria-label="Play Store"
             onclick="event.stopPropagation()"
           >
@@ -71,7 +71,7 @@ const { slug, title, subtitle, description, tags, image_url, github, play_store,
             href={app_store}
             target="_blank"
             rel="noopener noreferrer"
-            class="project-card__link mono-to-brand"
+            class="project-card__link btn-ghost btn-sm"
             aria-label="App Store"
             onclick="event.stopPropagation()"
           >
@@ -88,31 +88,21 @@ const { slug, title, subtitle, description, tags, image_url, github, play_store,
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    border-radius: 10px;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  }
-
-  .project-card:hover {
-    transform: translateY(-3px);
   }
 
   .project-card__img-wrap {
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    background: var(--card-fill);
+    background: var(--page);
+    border-bottom: 1px solid var(--line-faint);
   }
 
   .project-card__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
-  }
-
-  .project-card:hover .project-card__img {
-    transform: scale(1.03);
   }
 
   .project-card__body {
@@ -127,21 +117,19 @@ const { slug, title, subtitle, description, tags, image_url, github, play_store,
   .project-card__top {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
 
   .project-card__title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: -0.01em;
-    margin-top: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-1);
   }
 
   .project-card__desc {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.5;
   }
 
   .project-card__footer {
@@ -150,8 +138,8 @@ const { slug, title, subtitle, description, tags, image_url, github, play_store,
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px;
-    border-top: 1px solid var(--border);
-    padding-top: 16px;
+    border-top: 1px solid var(--line-faint);
+    padding-top: 14px;
   }
 
   .project-card__tags {
@@ -162,12 +150,7 @@ const { slug, title, subtitle, description, tags, image_url, github, play_store,
 
   .project-card__links {
     display: flex;
-    gap: 12px;
+    gap: 2px;
     flex-shrink: 0;
-  }
-
-  .project-card__link {
-    font-size: 0.72rem;
-    text-decoration: none;
   }
 </style>
