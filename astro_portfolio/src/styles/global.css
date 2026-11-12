@@ -149,6 +149,13 @@ body {
   color: var(--text-2);
 }
 
+/* Scrambling heading text (src/scripts/scramble.ts) */
+.scr {
+  display: inline-block;
+  white-space: nowrap;
+  cursor: default;
+}
+
 /* ─── Glass button: the one action you press next ───────────────────────── */
 .glass {
   --gl-sheen-now: var(--glass-sheen);

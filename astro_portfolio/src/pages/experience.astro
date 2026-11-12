@@ -35,7 +35,7 @@ const principles = [
   <div class="exp-page">
     <header class="exp-head">
       <p class="exp-path mono">~/experience</p>
-      <h1 class="exp-h1">Where I've built.</h1>
+      <h1 class="exp-h1" data-scramble aria-label="Where I've built."><span class="scr" aria-hidden="true">Where I've built.</span></h1>
       <p class="exp-sub text-secondary">5+ years of mobile-first engineering across fintech, identity, and payments. Here's the full timeline.</p>
     </header>
 
@@ -91,6 +91,11 @@ const principles = [
 
   <Footer />
 </BaseLayout>
+
+<script>
+  import { scrambleHeadings } from '../scripts/scramble';
+  scrambleHeadings();
+</script>
 
 <style>
   .exp-page {

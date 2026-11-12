@@ -65,7 +65,7 @@ const youtube = [
   <section class="hero">
     <div class="hero__text">
       <div class="hero__label mono">Product Engineer · Mobile &amp; Platform</div>
-      <h1 class="hero__h1" id="hero-name" aria-label="Ademola Kolawole"><span class="scr" aria-hidden="true">Ademola</span><br><span class="hero__h1-dim scr" aria-hidden="true">Kolawole</span></h1>
+      <h1 class="hero__h1" id="hero-name" data-scramble aria-label="Ademola Kolawole"><span class="scr" aria-hidden="true">Ademola</span><br><span class="hero__h1-dim scr" aria-hidden="true">Kolawole</span></h1>
       <p class="hero__body">
         I turn hard product problems into mobile software people trust with their <strong>money and identity</strong>: fraud-resistant payments, face-verified onboarding, and analytics that survive bad networks. I design the system and build it in <strong class="lang-cycle" data-words="Dart,Kotlin,Swift,Go,Rust"><span class="sr-only">Dart, Kotlin, Swift, Go and Rust</span><span class="lang-cycle__word" aria-hidden="true">Dart</span></strong>, shipping on <strong>Flutter, Android &amp; iOS</strong> for products serving <strong>25M+ users</strong>.
       </p>
@@ -248,30 +248,11 @@ const youtube = [
 </BaseLayout>
 
 <script>
-  import { scramble, cycleWords } from '../scripts/scramble';
+  import { cycleWords, scrambleHeadings } from '../scripts/scramble';
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ── Name: churns through asterisks on hover, then settles ────────────────────
-  const nameEl = document.getElementById('hero-name');
-  if (nameEl && !reduceMotion) {
-    const lines = [...nameEl.querySelectorAll<HTMLElement>('.scr')];
-    const texts = lines.map((l) => l.textContent ?? '');
-    let busy = false;
-    // Listen on the letters, not the heading box, so empty space beside the name does not trigger it.
-    const run = async () => {
-      if (busy) return;
-      busy = true;
-      // Hold each line's width so the heading does not jitter while glyphs swap.
-      lines.forEach((l) => { l.style.width = `${l.getBoundingClientRect().width}px`; });
-      await Promise.all(lines.map((l, i) => new Promise<void>((done) => {
-        setTimeout(() => scramble(l, texts[i], { stagger: 55, churn: 260 }).then(done), i * 120);
-      })));
-      lines.forEach((l) => { l.style.width = ''; });
-      busy = false;
-    };
-    lines.forEach((l) => l.addEventListener('pointerenter', run));
-  }
+  scrambleHeadings();
 
   // ── Languages: cycle Dart → Kotlin → Swift → Go → Rust with the same scramble ─
   const cycle = document.querySelector<HTMLElement>('.lang-cycle');
@@ -354,12 +335,6 @@ const youtube = [
   }
 
   .hero__h1-dim { color: var(--text-3); }
-
-  .scr {
-    display: inline-block;
-    white-space: nowrap;
-    cursor: default;
-  }
 
   .lang-cycle__word { white-space: nowrap; }
 
