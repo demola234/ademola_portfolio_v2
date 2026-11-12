@@ -49,3 +49,20 @@ export function scramble(el: HTMLElement, to: string, { stagger = 45, churn = 22
     running.set(el, id);
   });
 }
+
+/**
+ * Rotate `el` through `words`, scrambling between each. Pauses while the tab is hidden.
+ * With reduced motion it shows `staticText` instead and does not animate.
+ */
+export function cycleWords(el: HTMLElement, words: string[], staticText: string, intervalMs = 2400) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    el.textContent = staticText;
+    return;
+  }
+  let i = 0;
+  setInterval(() => {
+    if (document.hidden) return;
+    i = (i + 1) % words.length;
+    scramble(el, words[i], { stagger: 50, churn: 180 });
+  }, intervalMs);
+}

@@ -10,14 +10,14 @@ const posts = (await getCollection('writing'))
 const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 ---
 
-<BaseLayout title="Writing — Ademola Kolawole" description="Deep-dives on systems, mobile internals, Go and software craft, plus personal essays.">
+<BaseLayout title="Writing — Ademola Kolawole" description="Deep-dives on systems, mobile internals, Go, Rust and software craft, plus personal essays.">
   <Nav />
 
   <div class="write-page">
     <header class="write-head">
       <p class="write-path mono">~/writing</p>
       <h1 class="write-h1">Writing.</h1>
-      <p class="write-sub text-secondary">Deep-dives on systems, mobile internals, Go, software craft, and some emotional shit.</p>
+      <p class="write-sub text-secondary">Deep-dives on <strong class="topic-cycle" data-words="systems,mobile internals,Go,Rust,software craft"><span class="sr-only">systems, mobile internals, Go, Rust and software craft</span><span class="topic-cycle__word" aria-hidden="true">systems</span></strong>. Plus some emotional shit.</p>
     </header>
 
     <!-- Tag filter chips -->
@@ -61,6 +61,14 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 </BaseLayout>
 
 <script>
+  import { cycleWords } from '../../scripts/scramble';
+
+  const topic = document.querySelector<HTMLElement>('.topic-cycle');
+  const topicWord = topic?.querySelector<HTMLElement>('.topic-cycle__word');
+  if (topic && topicWord) {
+    cycleWords(topicWord, (topic.dataset.words ?? '').split(','), 'systems, mobile internals, Go, Rust and software craft');
+  }
+
   const bar = document.getElementById('tag-bar');
   const list = document.getElementById('post-list');
   if (bar && list) {
@@ -98,6 +106,9 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
     letter-spacing: -.035em;
     margin: 0 0 14px;
   }
+
+  .topic-cycle { font-weight: 500; color: var(--text-1); }
+  .topic-cycle__word { white-space: nowrap; }
 
   .write-sub {
     font-size: 16px;

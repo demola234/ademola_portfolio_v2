@@ -248,7 +248,7 @@ const youtube = [
 </BaseLayout>
 
 <script>
-  import { scramble } from '../scripts/scramble';
+  import { scramble, cycleWords } from '../scripts/scramble';
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -277,17 +277,7 @@ const youtube = [
   const cycle = document.querySelector<HTMLElement>('.lang-cycle');
   const wordEl = cycle?.querySelector<HTMLElement>('.lang-cycle__word');
   if (cycle && wordEl) {
-    const words = (cycle.dataset.words ?? '').split(',');
-    if (reduceMotion) {
-      wordEl.textContent = 'Dart, Kotlin, Swift, Go & Rust';
-    } else {
-      let i = 0;
-      setInterval(() => {
-        if (document.hidden) return;
-        i = (i + 1) % words.length;
-        scramble(wordEl, words[i], { stagger: 50, churn: 180 });
-      }, 2400);
-    }
+    cycleWords(wordEl, (cycle.dataset.words ?? '').split(','), 'Dart, Kotlin, Swift, Go & Rust');
   }
 
   // ── YouTube modal ────────────────────────────────────────────────────────────
