@@ -273,6 +273,50 @@ const youtube = [
     lines.forEach((l) => l.addEventListener('pointerenter', run));
   }
 
+  // ── Stack icons: pixelate on hover ────────────────────────────────────────────
+  // The icon is drawn at a tiny size, then scaled back up with smoothing off.
+  // Cross-origin SVGs can be drawn to a canvas; we never read pixels back, so that is fine.
+  const PIXEL_STEPS = [18, 12, 9, 7]; // grid sizes, fine → chunky
+  document.querySelectorAll<HTMLElement>('.stackicon__box').forEach((box) => {
+    const img = box.querySelector('img');
+    if (!img) return;
+    const cssSize = 30;
+    const dpr = window.devicePixelRatio || 1;
+    const canvas = document.createElement('canvas');
+    canvas.className = 'stackicon__pixels';
+    canvas.width = cssSize * dpr;
+    canvas.height = cssSize * dpr;
+    canvas.setAttribute('aria-hidden', 'true');
+    box.appendChild(canvas);
+    const ctx = canvas.getContext('2d')!;
+    const tiny = document.createElement('canvas');
+    const tinyCtx = tiny.getContext('2d')!;
+    let timers: number[] = [];
+
+    const draw = (grid: number) => {
+      tiny.width = grid;
+      tiny.height = grid;
+      tinyCtx.clearRect(0, 0, grid, grid);
+      tinyCtx.drawImage(img, 0, 0, grid, grid);
+      ctx.imageSmoothingEnabled = false;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(tiny, 0, 0, canvas.width, canvas.height);
+    };
+    const clear = () => { timers.forEach(clearTimeout); timers = []; };
+
+    box.addEventListener('pointerenter', () => {
+      if (!img.complete || !img.naturalWidth) return;
+      clear();
+      box.classList.add('is-pixel');
+      const steps = reduceMotion ? PIXEL_STEPS.slice(-1) : PIXEL_STEPS;
+      steps.forEach((grid, i) => timers.push(window.setTimeout(() => draw(grid), i * 45)));
+    });
+    box.addEventListener('pointerleave', () => {
+      clear();
+      box.classList.remove('is-pixel');
+    });
+  });
+
   // ── Languages: cycle Dart → Kotlin → Swift → Go → Rust with the same scramble ─
   const cycle = document.querySelector<HTMLElement>('.lang-cycle');
   const wordEl = cycle?.querySelector<HTMLElement>('.lang-cycle__word');
@@ -477,13 +521,30 @@ const youtube = [
   }
   .stackicon:hover .stackicon__box { background: var(--flat-hover); }
 
-  .stackicon__box img {
+  .stackicon__box { position: relative; }
+
+  .stackicon__box img,
+  .stackicon__box :global(.stackicon__pixels) {
     width: 30px;
     height: 30px;
     filter: grayscale(1) brightness(1.6);
     opacity: .85;
   }
-  .stackicon--mono .stackicon__box img { filter: grayscale(1) brightness(1.9); }
+  .stackicon--mono .stackicon__box img,
+  .stackicon--mono .stackicon__box :global(.stackicon__pixels) { filter: grayscale(1) brightness(1.9); }
+
+  /* Pixel layer sits on the icon; hover swaps them */
+  .stackicon__box :global(.stackicon__pixels) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    opacity: 0;
+    image-rendering: pixelated;
+    pointer-events: none;
+  }
+  .stackicon__box:global(.is-pixel) img { opacity: 0; }
+  .stackicon__box:global(.is-pixel) :global(.stackicon__pixels) { opacity: .95; }
 
   .stackicon__label {
     font-size: 12px;
@@ -734,7 +795,8 @@ const youtube = [
     .home-footer__links { margin-left: -10px; }
     .stack-row { grid-template-columns: repeat(4, 1fr); gap: 20px 10px; }
     .stackicon__box { width: 52px; height: 52px; }
-    .stackicon__box img { width: 26px; height: 26px; }
+    .stackicon__box img,
+    .stackicon__box :global(.stackicon__pixels) { width: 26px; height: 26px; }
     .post-row { flex-direction: column; gap: 4px; }
 
     .yt-modal { padding: 0; }
