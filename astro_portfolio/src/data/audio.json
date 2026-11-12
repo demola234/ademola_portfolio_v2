@@ -1,0 +1,62 @@
+{
+  "burnout-doesnt-always-look-like-giving-up": {
+    "file": "/audio/burnout-doesnt-always-look-like-giving-up.mp3",
+    "timings": "/audio/burnout-doesnt-always-look-like-giving-up.json",
+    "hash": "25efce3779aeb3eb",
+    "durationSec": 270
+  },
+  "dependency-injection-go-uber-fx": {
+    "file": "/audio/dependency-injection-go-uber-fx.mp3",
+    "timings": "/audio/dependency-injection-go-uber-fx.json",
+    "hash": "ac7d44868327abe7",
+    "durationSec": 96
+  },
+  "designing-microservice-golang-python-clean-architecture": {
+    "file": "/audio/designing-microservice-golang-python-clean-architecture.mp3",
+    "timings": "/audio/designing-microservice-golang-python-clean-architecture.json",
+    "hash": "f21ea4e61a60c9a1",
+    "durationSec": 103
+  },
+  "effortless-concurrency-asynq-go": {
+    "file": "/audio/effortless-concurrency-asynq-go.mp3",
+    "timings": "/audio/effortless-concurrency-asynq-go.json",
+    "hash": "3f5510f937e06acf",
+    "durationSec": 130
+  },
+  "embracing-boredom": {
+    "file": "/audio/embracing-boredom.mp3",
+    "timings": "/audio/embracing-boredom.json",
+    "hash": "e9640700459f4de2",
+    "durationSec": 251
+  },
+  "exploring-grpc-flutter-modern-app-development": {
+    "file": "/audio/exploring-grpc-flutter-modern-app-development.mp3",
+    "timings": "/audio/exploring-grpc-flutter-modern-app-development.json",
+    "hash": "1d1b54037a2749ec",
+    "durationSec": 109
+  },
+  "getting-started-jetpack-compose-flutter-perspective": {
+    "file": "/audio/getting-started-jetpack-compose-flutter-perspective.mp3",
+    "timings": "/audio/getting-started-jetpack-compose-flutter-perspective.json",
+    "hash": "93f5f371606abe82",
+    "durationSec": 360
+  },
+  "implementing-unit-tests-for-riverpod": {
+    "file": "/audio/implementing-unit-tests-for-riverpod.mp3",
+    "timings": "/audio/implementing-unit-tests-for-riverpod.json",
+    "hash": "f64fed232167f9c7",
+    "durationSec": 73
+  },
+  "the-hidden-cost-of-ai": {
+    "file": "/audio/the-hidden-cost-of-ai.mp3",
+    "timings": "/audio/the-hidden-cost-of-ai.json",
+    "hash": "9eb1e32a520157be",
+    "durationSec": 257
+  },
+  "the-illusion-of-working-hard": {
+    "file": "/audio/the-illusion-of-working-hard.mp3",
+    "timings": "/audio/the-illusion-of-working-hard.json",
+    "hash": "b24ab37f0462951a",
+    "durationSec": 266
+  }
+}
