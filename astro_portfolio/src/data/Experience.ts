@@ -14,7 +14,7 @@ export const experience: ExperienceEntry[] = [
     dateRange: 'Aug 2025 — Oct 2026',
     location: 'Lagos, Nigeria',
     bullets: [
-      'Owned mobile analytics & customer-engagement across Personal, Business and MonieWorld apps — 50M+ users.',
+      'Owned mobile analytics & customer-engagement across Personal, Business and MonieWorld apps — 25M+ users.',
       'Architected an analytics SDK event dispatcher with queuing, retries and circuit breakers for unstable networks.',
       'Drove SDK test coverage from 4% to 76%; led Braze integration (push, in-app, SDUI surveys).',
     ],
