@@ -75,7 +75,7 @@ const youtube = [
       </p>
       <h1 class="hero__h1" id="hero-name" data-scramble aria-label="Ademola Kolawole"><span class="scr" aria-hidden="true">Ademola</span><br><span class="hero__h1-dim scr" aria-hidden="true">Kolawole</span></h1>
       <p class="hero__body">
-        I turn hard product problems into software people trust with their <strong>money and identity</strong>: fraud-resistant payments, face-verified onboarding, and analytics that survive bad networks. I design the system and build it in <strong class="lang-cycle" data-words="Dart,Kotlin,Swift,Go,Rust"><span class="sr-only">Dart, Kotlin, Swift, Go and Rust</span><span class="lang-cycle__word" aria-hidden="true">Dart</span></strong>, shipping on <strong>Flutter, Android &amp; iOS</strong> for products serving <strong>25M+ users</strong>.
+        I turn hard product problems into software people trust with their <strong>money and identity</strong>: fraud-resistant payments, face-verified onboarding, and analytics that survive bad networks. I design the system and ship it on <strong>Flutter, Android &amp; iOS</strong> for products serving <strong>25M+ users</strong>, built in <strong class="lang-cycle" data-words="Dart,Kotlin,Swift,Go,Rust"><span class="sr-only">Dart, Kotlin, Swift, Go and Rust</span><span class="lang-cycle__word" aria-hidden="true">Dart</span></strong>.
       </p>
     </div>
     <div class="hero__img-col" aria-hidden="true">
@@ -109,6 +109,41 @@ const youtube = [
       ))}
     </div>
   </section>
+
+  <!-- Currently reading (hidden when there are no book notes) -->
+  {(reading || recentlyRead.length > 0) && (
+    <section class="section">
+      <div class="section-row" style="margin-bottom:14px">
+        <span class="path-label mono">~/currently-reading</span>
+        <a href="/notes?tag=Books" class="btn-ghost btn-sm">bookshelf →</a>
+      </div>
+      <div class:list={['reading', { 'reading--solo': !reading }]}>
+        {reading && (
+          <a href={`/notes/${reading.slug}`} class="reading__main card">
+            <Image src={reading.data.book!.cover} alt="" width={200} class="book-cover reading__cover" />
+            <div>
+              <span class="badge badge--reading">reading</span>
+              <div class="reading__title">{reading.data.book!.title}</div>
+              <div class="reading__author">{reading.data.book!.author}</div>
+              <span class="reading__link">read my notes →</span>
+            </div>
+          </a>
+        )}
+        {recentlyRead.length > 0 && (
+          <div class="reading__side card">
+            <div class="reading__label mono">recently read</div>
+            <div class="reading__covers">
+              {recentlyRead.map((b) => (
+                <a href={`/notes/${b.slug}`} class="reading__thumb" title={`${b.data.book!.title} by ${b.data.book!.author}`}>
+                  <Image src={b.data.book!.cover} alt={`${b.data.book!.title} by ${b.data.book!.author}`} width={120} class="book-cover" />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
 
   <!-- Writing preview -->
   <section class="section">
@@ -171,41 +206,6 @@ const youtube = [
       })}
     </div>
   </section>
-
-  <!-- Currently reading (hidden when there are no book notes) -->
-  {(reading || recentlyRead.length > 0) && (
-    <section class="section">
-      <div class="section-row" style="margin-bottom:14px">
-        <span class="path-label mono">~/currently-reading</span>
-        <a href="/notes?tag=Books" class="btn-ghost btn-sm">bookshelf →</a>
-      </div>
-      <div class:list={['reading', { 'reading--solo': !reading }]}>
-        {reading && (
-          <a href={`/notes/${reading.slug}`} class="reading__main card">
-            <Image src={reading.data.book!.cover} alt="" width={200} class="book-cover reading__cover" />
-            <div>
-              <span class="badge badge--reading">reading</span>
-              <div class="reading__title">{reading.data.book!.title}</div>
-              <div class="reading__author">{reading.data.book!.author}</div>
-              <span class="reading__link">read my notes →</span>
-            </div>
-          </a>
-        )}
-        {recentlyRead.length > 0 && (
-          <div class="reading__side card">
-            <div class="reading__label mono">recently read</div>
-            <div class="reading__covers">
-              {recentlyRead.map((b) => (
-                <a href={`/notes/${b.slug}`} class="reading__thumb" title={`${b.data.book!.title} by ${b.data.book!.author}`}>
-                  <Image src={b.data.book!.cover} alt={`${b.data.book!.title} by ${b.data.book!.author}`} width={120} class="book-cover" />
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </section>
-  )}
 
   <!-- YouTube -->
   <section class="section">
