@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="index, follow"><meta name="author" content="Ademola Kolawole"><meta name="description" content="A high-performance, synchronous key-value store for Flutter apps with the storage engine written in Rust and bridged via flutter_rust_bridge. Provides zero-async-overhead reads and writes, TTL expiry, AES-256-GCM encryption with AAD binding, crash-safe WAL persistence, and reactive event streams."><meta name="keywords" content="Ademola Kolawole, Product Engineer, Platform Engineer, Software Engineer, Mobile Developer, Flutter, iOS, Android, Go, Portfolio"><!-- Open Graph --><meta property="og:title" content="Rodinia — Ademola Kolawole"><meta property="og:description" content="A high-performance, synchronous key-value store for Flutter apps with the storage engine written in Rust and bridged via flutter_rust_bridge. Provides zero-async-overhead reads and writes, TTL expiry, AES-256-GCM encryption with AAD binding, crash-safe WAL persistence, and reactive event streams."><meta property="og:url" content="https://demola.dev/projects/rodinia/"><meta property="og:type" content="website"><meta property="og:image" content="https://demola.dev/og-default.png"><meta property="og:image:type" content="image/jpeg"><meta property="og:locale" content="en_US"><meta property="og:site_name" content="Ademola Kolawole"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Rodinia — Ademola Kolawole"><meta name="twitter:description" content="A high-performance, synchronous key-value store for Flutter apps with the storage engine written in Rust and bridged via flutter_rust_bridge. Provides zero-async-overhead reads and writes, TTL expiry, AES-256-GCM encryption with AAD binding, crash-safe WAL persistence, and reactive event streams."><meta name="twitter:image" content="https://demola.dev/og-default.png"><meta name="twitter:creator" content="@demola234"><meta name="theme-color" content="#0c0c0c"><link rel="canonical" href="https://demola.dev/projects/rodinia/"><!-- Favicon --><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png"><link rel="icon" href="/favicon/favicon.ico" sizes="48x48"><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><!-- Structured data --><script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Ademola Kolawole",
+        "url": "https://demola.dev",
+        "jobTitle": "Product Engineer",
+        "knowsAbout": ["Flutter", "iOS", "Android", "Go", "Mobile Development"],
+        "sameAs": [
+          "https://github.com/demola234",
+          "https://twitter.com/demola234",
+          "https://linkedin.com/in/ademola-kolawole"
+        ]
+      }
+    </script><meta name="generator" content="Astro v5.16.11"><title>Rodinia — Ademola Kolawole</title><link rel="stylesheet" href="/_astro/experience.CoumVku1.css">
+<style>.nav-chips[data-astro-cid-afdttjsk]{display:flex;align-items:center;gap:2px;padding:16px 0;flex-wrap:wrap;border-bottom:1px solid var(--line-faint)}.nav-spacer[data-astro-cid-afdttjsk]{flex:1}.navchip[data-astro-cid-afdttjsk]{display:inline-flex;align-items:center;height:var(--control);padding:0 12px;border-radius:var(--radius-pill);font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--text-2);text-decoration:none;white-space:nowrap;transition:background-color var(--dur-state) var(--ease-out),color var(--dur-state) var(--ease-out)}.navchip[data-astro-cid-afdttjsk]:hover{background:var(--hover);color:var(--text-1)}.navchip--active[data-astro-cid-afdttjsk],.navchip--active[data-astro-cid-afdttjsk]:hover{background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);color:var(--text-1)}@media(max-width:600px){.nav-spacer[data-astro-cid-afdttjsk],.navchip--right[data-astro-cid-afdttjsk]{display:none}}
+.footer[data-astro-cid-35ed7um5]{border-top:1px solid var(--line-faint);margin-top:80px;padding-block:40px}.footer__inner[data-astro-cid-35ed7um5]{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}.footer__left[data-astro-cid-35ed7um5]{display:flex;flex-direction:column;gap:6px}.footer__name[data-astro-cid-35ed7um5]{font-size:13px;font-weight:500;color:var(--text-1)}.footer__dot[data-astro-cid-35ed7um5]{color:var(--text-3)}.footer__copy[data-astro-cid-35ed7um5]{font-size:12px;color:var(--text-2)}.footer__socials[data-astro-cid-35ed7um5]{display:flex;gap:2px;flex-wrap:wrap}@media(max-width:480px){.footer__inner[data-astro-cid-35ed7um5]{flex-direction:column;align-items:flex-start}.footer__socials[data-astro-cid-35ed7um5]{margin-left:-10px}}
+.proj-detail[data-astro-cid-ovxcmftc]{padding-block:32px 0;max-width:800px}.back-link[data-astro-cid-ovxcmftc]{margin:0 0 32px -10px}.proj-header[data-astro-cid-ovxcmftc]{margin-bottom:40px}.proj-title[data-astro-cid-ovxcmftc]{font-size:clamp(32px,5vw,52px);font-weight:500;letter-spacing:-.03em;color:var(--text-1);margin-block:10px 14px}.proj-desc[data-astro-cid-ovxcmftc]{font-size:16px;line-height:1.6;margin-bottom:24px}.proj-meta[data-astro-cid-ovxcmftc]{display:flex;align-items:center;gap:16px 20px;flex-wrap:wrap}.proj-tags[data-astro-cid-ovxcmftc]{display:flex;flex-wrap:wrap;gap:6px}.proj-links[data-astro-cid-ovxcmftc]{display:flex;gap:8px;flex-wrap:wrap}.proj-img-wrap[data-astro-cid-ovxcmftc]{margin-bottom:48px;border-radius:var(--radius-shell);overflow:hidden;box-shadow:inset 0 0 0 1px var(--line-faint)}.proj-img[data-astro-cid-ovxcmftc]{width:100%;height:auto;aspect-ratio:16 / 9;-o-object-fit:cover;object-fit:cover;display:block}.proj-body[data-astro-cid-ovxcmftc]{max-width:100%}
+</style></head> <body> <div class="site-wrapper">  <nav class="nav-chips" data-astro-cid-afdttjsk> <a href="/" class="navchip " data-astro-cid-afdttjsk> home </a><a href="/writing" class="navchip " data-astro-cid-afdttjsk> writing </a><a href="/projects" class="navchip navchip--active" aria-current="page" data-astro-cid-afdttjsk> projects </a><a href="/experience" class="navchip " data-astro-cid-afdttjsk> experience </a><a href="/notes" class="navchip " data-astro-cid-afdttjsk> notes </a> <span class="nav-spacer" aria-hidden="true" data-astro-cid-afdttjsk></span> <a href="https://github.com/demola234" class="navchip navchip--right" target="_blank" rel="noopener noreferrer" data-astro-cid-afdttjsk> github </a><a href="https://medium.com/@ademolakolawole" class="navchip navchip--right" target="_blank" rel="noopener noreferrer" data-astro-cid-afdttjsk> medium </a><a href="https://docs.google.com/document/d/1_f1ufm9wkCCEWFMyIKFfso7bRFG-mB3YnMMTPIogMkw/edit?usp=sharing" class="navchip navchip--right" target="_blank" rel="noopener noreferrer" data-astro-cid-afdttjsk> resume ↗ </a><a href="https://youtube.com/@CodeWithDemola" class="navchip navchip--right" target="_blank" rel="noopener noreferrer" data-astro-cid-afdttjsk> youtube </a> </nav>  <div class="proj-detail" data-astro-cid-ovxcmftc> <a href="/projects" class="back-link btn-ghost btn-sm" data-astro-cid-ovxcmftc>← Projects</a> <header class="proj-header" data-astro-cid-ovxcmftc> <p class="section-label" data-astro-cid-ovxcmftc>Fast, synchronous, optionally-encrypted key-value store for Flutter powered by Rust</p> <h1 class="proj-title" data-astro-cid-ovxcmftc>Rodinia</h1> <p class="proj-desc text-secondary" data-astro-cid-ovxcmftc>A high-performance, synchronous key-value store for Flutter apps with the storage engine written in Rust and bridged via flutter_rust_bridge. Provides zero-async-overhead reads and writes, TTL expiry, AES-256-GCM encryption with AAD binding, crash-safe WAL persistence, and reactive event streams.</p> <div class="proj-meta" data-astro-cid-ovxcmftc> <div class="proj-tags" data-astro-cid-ovxcmftc> <span class="badge" data-astro-cid-ovxcmftc>Flutter</span><span class="badge" data-astro-cid-ovxcmftc>Rust</span><span class="badge" data-astro-cid-ovxcmftc>Dart</span><span class="badge" data-astro-cid-ovxcmftc>FFI</span><span class="badge" data-astro-cid-ovxcmftc>Cryptography</span><span class="badge" data-astro-cid-ovxcmftc>Storage Engine</span><span class="badge" data-astro-cid-ovxcmftc>Open Source</span> </div> <div class="proj-links" data-astro-cid-ovxcmftc> <a href="https://github.com/demola234/tiny-tools/tree/main/rodinia" target="_blank" rel="noopener noreferrer" class="glass" data-astro-cid-ovxcmftc> GitHub ↗
+</a> </div> </div> </header>  <div class="proj-body prose" data-astro-cid-ovxcmftc> <h2 id="what-it-is">What It Is</h2>
+<p><strong>Rodinia</strong> is a fast, synchronous, optionally-encrypted key-value store designed for Flutter applications. The core storage engine is built in <strong>Rust</strong> for maximum speed, memory safety, and deterministic performance, exposed seamlessly to <strong>Dart</strong> via <code>flutter_rust_bridge</code>.</p>
+<p>Think of it as a local key-value cache and persistent store featuring TTLs, AES-256-GCM authenticated encryption, and a live reactive event stream — completely eliminating <code>Future</code> and asynchronous overhead for everyday reads and writes.</p>
+<hr>
+<h2 id="3-layer-architecture">3-Layer Architecture</h2>
+<p>Rodinia is designed with clear layer separation, from the high-level ergonomic Dart API down to the low-level Rust storage engine:</p>
+<pre class="astro-code glaze-ink" style="background-color:#161616;color:#e9e9e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Dart app</span></span>
+<span class="line"><span>   │</span></span>
+<span class="line"><span>   ▼</span></span>
+<span class="line"><span>RodiniaStore (rodinia_flutter/lib/rodinia_store.dart)   ← ergonomic Dart API (set/get/watch/...)</span></span>
+<span class="line"><span>   │  calls generated bindings in lib/src/rust/api/store.dart</span></span>
+<span class="line"><span>   ▼</span></span>
+<span class="line"><span>api::store (rodinia_ffi/src/api/store.rs)               ← #[frb] wire functions, the FFI surface</span></span>
+<span class="line"><span>   │  holds a process-wide `static STORE: OnceLock&#x3C;Store>`</span></span>
+<span class="line"><span>   ▼</span></span>
+<span class="line"><span>Store (rodinia_ffi/src/store.rs)                        ← the actual engine</span></span>
+<span class="line"><span>   ├── cache: RwLock&#x3C;HashMap&#x3C;String, Entry>>             in-memory index</span></span>
+<span class="line"><span>   ├── wal: Mutex&#x3C;Wal>                                    on-disk append-only log (crash recovery)</span></span>
+<span class="line"><span>   ├── encryption_key: RwLock&#x3C;Option&#x3C;EncryptionKey>>      AES-256-GCM, set at runtime</span></span>
+<span class="line"><span>   └── events: EventBus                                   pub/sub → StreamSink&#x3C;StorageEvent> to Dart</span></span></code></pre>
+<hr>
+<h2 id="core-features--engine-internals">Core Features &#x26; Engine Internals</h2>
+<h3 id="1-synchronous-crud-operations">1. Synchronous CRUD Operations</h3>
+<ul>
+<li>Direct, synchronous API for <code>set</code>, <code>get</code>, <code>contains</code>, <code>delete</code>, <code>clear</code>, <code>keys</code>, and <code>len</code>.</li>
+<li>Avoids <code>Future</code> allocations and microtask queuing on the common execution path, enabling instant state access in Flutter widget build methods and controllers.</li>
+</ul>
+<h3 id="2-ttl-time-to-live-expiry">2. TTL (Time-To-Live) Expiry</h3>
+<ul>
+<li>Set expirations per key (<code>ttl</code> duration on <code>set</code>).</li>
+<li><strong>Lazy evaluation</strong>: Expired keys are automatically checked and discarded on read attempts.</li>
+<li><strong>Eager cleanup</strong>: Active background sweeps via <code>purgeExpired()</code> reclaim memory for stale entries without blocking foreground operations.</li>
+</ul>
+<h3 id="3-authenticated-aes-256-gcm-encryption">3. Authenticated AES-256-GCM Encryption</h3>
+<ul>
+<li><code>setEncryptionKey()</code> installs an in-memory AES-256-GCM encryption key at runtime.</li>
+<li>Setting <code>encrypted: true</code> on <code>set</code> encrypts values before writing to the log or memory.</li>
+<li><strong>AAD Key-Binding</strong>: Ciphertexts use Authenticated Additional Data (AAD) bound to the specific key name (<code>crypto.rs</code>), preventing ciphertext swapping attacks between different keys.</li>
+</ul>
+<h3 id="4-crash-safe-persistence-via-write-ahead-log-wal">4. Crash-Safe Persistence via Write-Ahead Log (WAL)</h3>
+<ul>
+<li>Every mutation is appended to an on-disk Write-Ahead Log (<code>wal.rs</code>) before updating the in-memory cache.</li>
+<li><code>Store::open</code> automatically replays the WAL on initialization to rebuild state after app termination or crash.</li>
+<li><code>compact()</code> defragments and rewrites the log file to retain only active, unexpired entries.</li>
+</ul>
+<h3 id="5-reactive-event-streams">5. Reactive Event Streams</h3>
+<ul>
+<li><code>watch(pattern)</code> returns a typed <code>Stream&#x3C;StorageEvent></code> emitting events (<code>KeyCreated</code>, <code>KeyUpdated</code>, <code>KeyDeleted</code>, <code>KeyExpired</code>, <code>StorageCleared</code>).</li>
+<li>Pattern matching support for wildcard (<code>'*'</code>), scoped prefixes (<code>'auth.*'</code>), and exact key subscriptions.</li>
+</ul>
+<h3 id="6-atomic-counters">6. Atomic Counters</h3>
+<ul>
+<li>Native <code>increment(key, delta: ...)</code> operation executed directly in Rust.</li>
+<li>Fully integrated with the same WAL logging and TTL machinery for thread-safe counters.</li>
+</ul>
+<hr>
+<h2 id="package-layout">Package Layout</h2>
+<p>The project is structured as a modular mono-repository:</p>
+<pre class="astro-code glaze-ink" style="background-color:#161616;color:#e9e9e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>rodinia/</span></span>
+<span class="line"><span>├── rodinia_ffi/                         # Standalone Rust crate (cargo test, no Flutter required)</span></span>
+<span class="line"><span>│   ├── src/</span></span>
+<span class="line"><span>│   │   ├── api/store.rs                 # #[frb] wire functions &#x26; FFI surface</span></span>
+<span class="line"><span>│   │   ├── store.rs                     # In-memory index &#x26; store coordinator</span></span>
+<span class="line"><span>│   │   ├── wal.rs                       # On-disk append-only Write-Ahead Log</span></span>
+<span class="line"><span>│   │   ├── crypto.rs                    # AES-256-GCM encryption &#x26; AAD binding</span></span>
+<span class="line"><span>│   │   └── events.rs                    # EventBus &#x26; pub/sub implementation</span></span>
+<span class="line"><span>├── rodinia_flutter/                     # Flutter plugin package</span></span>
+<span class="line"><span>│   ├── lib/</span></span>
+<span class="line"><span>│   │   ├── rodinia_store.dart           # Ergonomic Dart public API</span></span>
+<span class="line"><span>│   │   └── src/rust/                    # Generated flutter_rust_bridge bindings</span></span>
+<span class="line"><span>│   └── justfile                         # Generation scripts (just gen)</span></span>
+<span class="line"><span>└── examples/</span></span>
+<span class="line"><span>    └── rodinia_flutter_example/         # Demo app showcasing CRUD, TTL, &#x26; reactive UI</span></span></code></pre>
+<hr>
+<h2 id="key-technical-decisions">Key Technical Decisions</h2>
+<ul>
+<li><strong><code>flutter_rust_bridge</code> Integration</strong>: Generates zero-copy, type-safe Dart-Rust bindings with support for synchronous wire functions and asynchronous streams.</li>
+<li><strong>Fine-Grained Concurrency</strong>: Uses <code>RwLock</code> for concurrent multi-reader access to in-memory entries and <code>Mutex</code> on the WAL to serialize disk writes without blocking reads.</li>
+<li><strong>Standalone Testability</strong>: The core engine in <code>rodinia_ffi</code> can be compiled, benchmarked, and tested with standard <code>cargo test</code> independently of the Flutter toolchain.</li>
+</ul> </div> </div> <footer class="footer" data-astro-cid-35ed7um5> <div class="footer__inner" data-astro-cid-35ed7um5> <div class="footer__left" data-astro-cid-35ed7um5> <span class="footer__name mono" data-astro-cid-35ed7um5>ademola<span class="footer__dot" data-astro-cid-35ed7um5>.</span></span> <p class="footer__copy text-secondary" data-astro-cid-35ed7um5>
+&copy; 2026 Ademola Kolawole.
+</p> </div> <nav class="footer__socials" aria-label="Social links" data-astro-cid-35ed7um5> <a href="https://github.com/demola234" target="_blank" rel="noopener noreferrer" class="footer__social-link btn-ghost btn-sm" data-astro-cid-35ed7um5> GitHub </a><a href="https://linkedin.com/in/ademola-kolawole" target="_blank" rel="noopener noreferrer" class="footer__social-link btn-ghost btn-sm" data-astro-cid-35ed7um5> LinkedIn </a><a href="https://twitter.com/demola234" target="_blank" rel="noopener noreferrer" class="footer__social-link btn-ghost btn-sm" data-astro-cid-35ed7um5> Twitter </a><a href="https://medium.com/@ademolakolawole" target="_blank" rel="noopener noreferrer" class="footer__social-link btn-ghost btn-sm" data-astro-cid-35ed7um5> Medium </a> </nav> </div> </footer>   </div> <script type="module">const r='a[href], button, [role="button"], .seg, summary';let n=null;function c(t){n??=new AudioContext,n.state==="suspended"&&n.resume();const e=n.currentTime,a=n.createOscillator(),i=n.createGain();a.type="sine",a.frequency.setValueAtTime(t,e),a.frequency.exponentialRampToValueAtTime(t*.55,e+.04),i.gain.setValueAtTime(1e-4,e),i.gain.exponentialRampToValueAtTime(.06,e+.004),i.gain.exponentialRampToValueAtTime(1e-4,e+.045),a.connect(i).connect(n.destination),a.start(e),a.stop(e+.05)}function o(t){c(t.closest(".glass")?520:1250)}function s(t){const e=t.target?.closest?.(r);return!e||e.matches(':disabled, [aria-disabled="true"]')?null:e}document.addEventListener("pointerdown",t=>{if(t.button!==0)return;const e=s(t);e&&o(e)},{capture:!0,passive:!0});document.addEventListener("click",t=>{if(t.detail!==0)return;const e=s(t);e&&o(e)},{capture:!0});</script> </body> </html> 

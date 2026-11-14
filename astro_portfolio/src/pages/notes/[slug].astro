@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/layout/Nav.astro';
 import Footer from '../../components/layout/Footer.astro';
@@ -14,10 +15,14 @@ const { Content, headings } = await note.render();
 const dateLabel = note.data.date.toLocaleDateString('en-US', {
   weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
 });
+const { book } = note.data;
+const pageTitle = book
+  ? `${book.title} by ${book.author}`
+  : note.data.excerpt?.split('—')[0]?.trim() ?? note.slug;
 ---
 
 <BaseLayout
-  title={`${note.data.excerpt?.split('—')[0]?.trim() ?? note.slug} — Notes`}
+  title={`${pageTitle} — Notes`}
   description={note.data.excerpt}
 >
   <Nav />
@@ -25,7 +30,18 @@ const dateLabel = note.data.date.toLocaleDateString('en-US', {
   <div class="note-page">
     <a href="/notes" class="back btn-ghost btn-sm">← notes</a>
 
-    <header class="note-head">
+    <header class:list={['note-head', { 'note-head--book': book }]}>
+      {book && (
+        <Image src={book.cover} alt={`Cover of ${book.title}`} width={320} class="book-cover note-book__cover" />
+      )}
+      <div class="note-head__text">
+      {book && (
+        <>
+          <span class:list={['badge', { 'badge--reading': book.status === 'reading' }]}>{book.status}</span>
+          <h1 class="note-book__title">{book.title}</h1>
+          <p class="note-book__author">{book.author}</p>
+        </>
+      )}
       <div class="note-meta">
         <span class="note-date mono">{dateLabel}</span>
         {(note.data.tags ?? []).map((t) => (
@@ -35,6 +51,7 @@ const dateLabel = note.data.date.toLocaleDateString('en-US', {
       {note.data.excerpt && (
         <p class="note-excerpt text-secondary">{note.data.excerpt}</p>
       )}
+      </div>
     </header>
 
     <div class="note-layout">
@@ -67,6 +84,25 @@ const dateLabel = note.data.date.toLocaleDateString('en-US', {
   .back { margin: 0 0 28px -10px; }
 
   .note-head { margin-bottom: 36px; }
+  .note-head--book {
+    display: flex;
+    gap: 32px;
+    align-items: flex-end;
+  }
+  .note-book__cover { width: 160px; flex-shrink: 0; }
+  .note-book__title {
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 500;
+    letter-spacing: -.03em;
+    line-height: 1.1;
+    color: var(--text-1);
+    margin: 12px 0 4px;
+  }
+  .note-book__author { font-size: 15px; color: var(--text-3); margin: 0 0 14px; }
+  @media (max-width: 600px) {
+    .note-head--book { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .note-book__cover { width: 120px; }
+  }
 
   .note-meta {
     display: flex;

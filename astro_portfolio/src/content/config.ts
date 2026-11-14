@@ -46,11 +46,27 @@ const projectsCollection = defineCollection({
 
 const notesCollection = defineCollection({
   type: 'content',
-  schema: z.object({
-    date: z.string().transform((str) => new Date(str)),
-    tags: z.array(z.string()).optional(),
-    excerpt: z.string().optional(),
-  }),
+  schema: ({ image }) =>
+    z
+      .object({
+        date: z.string().transform((str) => new Date(str)),
+        tags: z.array(z.string()).optional(),
+        excerpt: z.string().optional(),
+        // A note about a book. Cover path is relative to the note, e.g.
+        // "../../assets/books/database-internals.jpg"
+        book: z
+          .object({
+            title: z.string(),
+            author: z.string(),
+            cover: image(),
+            status: z.enum(['reading', 'read']),
+          })
+          .optional(),
+      })
+      // Every book note is filterable under "Books" without tagging it by hand
+      .transform((d) =>
+        d.book ? { ...d, tags: [...new Set([...(d.tags ?? []), 'Books'])] } : d,
+      ),
 });
 
 export const collections = {

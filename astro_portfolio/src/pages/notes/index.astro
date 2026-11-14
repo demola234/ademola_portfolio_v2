@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/layout/Nav.astro';
 import Footer from '../../components/layout/Footer.astro';
@@ -43,6 +44,24 @@ const allTags = [...new Set(notes.flatMap((n) => n.data.tags ?? []))].sort();
         const { Content } = isLong ? { Content: null } : await note.render();
         const dateLabel = note.data.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
         const tagStr = (note.data.tags ?? []).join(',');
+        const { book } = note.data;
+        if (book) return (
+          <a href={`/notes/${note.slug}`} class="note-card card note-card--linked book-card" data-tags={tagStr}>
+            <div class="book-card__shelf">
+              <Image src={book.cover} alt="" width={240} class="book-cover book-card__cover" />
+            </div>
+            <div class="book-card__inner">
+              <div class="note-card__header">
+                <span class="note-card__date mono">{dateLabel}</span>
+                <span class:list={['badge', { 'badge--reading': book.status === 'reading' }]}>{book.status}</span>
+              </div>
+              <h2 class="book-card__title">{book.title}</h2>
+              <p class="book-card__author">{book.author}</p>
+              {note.data.excerpt && <p class="note-preview">{note.data.excerpt}</p>}
+              <span class="note-read">read note →</span>
+            </div>
+          </a>
+        );
         return (
           <div class="note-card card" class:list={[{ 'note-card--linked': isLong }]} data-tags={tagStr}>
             <div class="note-card__header">
@@ -79,16 +98,22 @@ const allTags = [...new Set(notes.flatMap((n) => n.data.tags ?? []))].sort();
   const bar = document.getElementById('tag-bar');
   const grid = document.getElementById('notes-grid');
   if (bar && grid) {
-    bar.addEventListener('click', (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-tag]');
-      if (!btn) return;
+    const select = (btn: HTMLElement) => {
       bar.querySelectorAll('[data-tag]').forEach((c) => c.setAttribute('aria-pressed', String(c === btn)));
       const tag = btn.dataset.tag ?? 'all';
       grid.querySelectorAll<HTMLElement>('.note-card').forEach((card) => {
         const tags = card.dataset.tags?.split(',') ?? [];
-        card.style.display = tag === 'all' || tags.includes(tag) ? '' : 'none';
+        card.hidden = !(tag === 'all' || tags.includes(tag));
       });
+    };
+    bar.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-tag]');
+      if (btn) select(btn);
     });
+    // Deep link: /notes?tag=Books (the home page's "bookshelf →")
+    const initial = new URLSearchParams(location.search).get('tag');
+    const initialBtn = initial && [...bar.querySelectorAll<HTMLElement>('[data-tag]')].find((b) => b.dataset.tag === initial);
+    if (initialBtn) select(initialBtn);
   }
 </script>
 
@@ -174,6 +199,37 @@ const allTags = [...new Set(notes.flatMap((n) => n.data.tags ?? []))].sort();
   }
 
   .note-link-body:hover .note-read { color: var(--text-1); }
+
+  /* Book notes — cover-forward card */
+  .note-card[hidden] { display: none; }
+  .book-card {
+    padding: 0;
+    overflow: hidden;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .book-card__shelf {
+    display: flex;
+    justify-content: center;
+    padding: 24px 0 20px;
+    background: linear-gradient(180deg, var(--field), transparent);
+  }
+  .book-card__cover { width: 120px; }
+  .book-card__inner { padding: 16px 22px 20px; }
+  .book-card__title {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--text-1);
+    margin: 0;
+  }
+  .book-card__author {
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin: 2px 0 10px;
+  }
+  .book-card:hover .note-read { color: var(--text-1); }
 
   /* Prose for notes — plain body text, inline code only */
   :global(.prose-note p) {
