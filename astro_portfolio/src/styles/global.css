@@ -296,6 +296,21 @@ a.card:hover,
   color: var(--text-2);
   white-space: nowrap;
 }
+/* Colour means status: a book in progress */
+.badge--reading {
+  background: var(--ok-tint);
+  color: var(--ok-text);
+}
+
+/* ─── Book cover: a printed object, so it gets a lift the UI doesn't ────── */
+.book-cover {
+  display: block;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 8px 22px #000a, 0 0 0 1px #ffffff14;
+}
 
 /* ─── Chip: a filter that can be on (pill; on = pressed wash + darker line) */
 .chip {

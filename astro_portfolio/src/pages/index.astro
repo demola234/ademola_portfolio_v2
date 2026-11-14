@@ -1,5 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/layout/Nav.astro';
 import Footer from '../components/layout/Footer.astro';
@@ -40,7 +41,11 @@ const stack = [
 
 const allNotes = (await getCollection('notes'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const notes = allNotes.slice(0, 4);
+// Books get their own section, so keep them out of the notes preview
+const notes = allNotes.filter((n) => !n.data.book).slice(0, 4);
+const bookNotes = allNotes.filter((n) => n.data.book);
+const reading = bookNotes.find((n) => n.data.book!.status === 'reading'); // newest first
+const recentlyRead = bookNotes.filter((n) => n.data.book!.status === 'read').slice(0, 3);
 
 const youtube = [
   { title: 'Flutter Bunny: Generate Flutter Models from JSON in Seconds', views: '31 views', ago: '10 months ago', duration: '1:05',
@@ -64,10 +69,13 @@ const youtube = [
   <!-- Hero -->
   <section class="hero">
     <div class="hero__text">
-      <div class="hero__label mono">Product Engineer · Mobile &amp; Platform</div>
+      <p class="hero__label mono">
+        <span class="sr-only">I'm a Senior Product Engineer and a Builder at heart.</span>
+        <span aria-hidden="true">I'm a Senior <s class="hero__strike">Software</s> Product Engineer and a Builder at heart.</span>
+      </p>
       <h1 class="hero__h1" id="hero-name" data-scramble aria-label="Ademola Kolawole"><span class="scr" aria-hidden="true">Ademola</span><br><span class="hero__h1-dim scr" aria-hidden="true">Kolawole</span></h1>
       <p class="hero__body">
-        I turn hard product problems into mobile software people trust with their <strong>money and identity</strong>: fraud-resistant payments, face-verified onboarding, and analytics that survive bad networks. I design the system and build it in <strong class="lang-cycle" data-words="Dart,Kotlin,Swift,Go,Rust"><span class="sr-only">Dart, Kotlin, Swift, Go and Rust</span><span class="lang-cycle__word" aria-hidden="true">Dart</span></strong>, shipping on <strong>Flutter, Android &amp; iOS</strong> for products serving <strong>25M+ users</strong>.
+        I turn hard product problems into software people trust with their <strong>money and identity</strong>: fraud-resistant payments, face-verified onboarding, and analytics that survive bad networks. I design the system and build it in <strong class="lang-cycle" data-words="Dart,Kotlin,Swift,Go,Rust"><span class="sr-only">Dart, Kotlin, Swift, Go and Rust</span><span class="lang-cycle__word" aria-hidden="true">Dart</span></strong>, shipping on <strong>Flutter, Android &amp; iOS</strong> for products serving <strong>25M+ users</strong>.
       </p>
     </div>
     <div class="hero__img-col" aria-hidden="true">
@@ -163,6 +171,41 @@ const youtube = [
       })}
     </div>
   </section>
+
+  <!-- Currently reading (hidden when there are no book notes) -->
+  {(reading || recentlyRead.length > 0) && (
+    <section class="section">
+      <div class="section-row" style="margin-bottom:14px">
+        <span class="path-label mono">~/currently-reading</span>
+        <a href="/notes?tag=Books" class="btn-ghost btn-sm">bookshelf →</a>
+      </div>
+      <div class:list={['reading', { 'reading--solo': !reading }]}>
+        {reading && (
+          <a href={`/notes/${reading.slug}`} class="reading__main card">
+            <Image src={reading.data.book!.cover} alt="" width={200} class="book-cover reading__cover" />
+            <div>
+              <span class="badge badge--reading">reading</span>
+              <div class="reading__title">{reading.data.book!.title}</div>
+              <div class="reading__author">{reading.data.book!.author}</div>
+              <span class="reading__link">read my notes →</span>
+            </div>
+          </a>
+        )}
+        {recentlyRead.length > 0 && (
+          <div class="reading__side card">
+            <div class="reading__label mono">recently read</div>
+            <div class="reading__covers">
+              {recentlyRead.map((b) => (
+                <a href={`/notes/${b.slug}`} class="reading__thumb" title={`${b.data.book!.title} by ${b.data.book!.author}`}>
+                  <Image src={b.data.book!.cover} alt={`${b.data.book!.title} by ${b.data.book!.author}`} width={120} class="book-cover" />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
 
   <!-- YouTube -->
   <section class="section">
@@ -322,7 +365,32 @@ const youtube = [
   .hero__label {
     font-size: 12px;
     color: var(--text-2);
-    margin-bottom: 18px;
+    margin: 0 0 18px;
+  }
+
+  /* "Software" gets crossed out — line draws in once on load */
+  .hero__strike {
+    position: relative;
+    text-decoration: none;
+    color: var(--text-3);
+  }
+  .hero__strike::after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    right: -2px;
+    top: 52%;
+    height: 1.5px;
+    background: currentColor;
+    transform-origin: left center;
+    animation: hero-strike .5s cubic-bezier(.65, 0, .35, 1) .6s both;
+  }
+  @keyframes hero-strike {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__strike::after { animation: none; }
   }
 
   .hero__h1 {
@@ -493,6 +561,50 @@ const youtube = [
     color: var(--text-1);
     padding: 1px 6px;
     border-radius: var(--radius-tag);
+  }
+
+  /* Currently reading */
+  .reading {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 12px;
+  }
+  .reading--solo { grid-template-columns: 1fr; }
+  .reading__main {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    padding: 20px;
+    text-decoration: none;
+  }
+  .reading__main:hover { background: var(--flat-hover); }
+  .reading__cover { width: 92px; flex-shrink: 0; }
+  .reading__title {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -.01em;
+    color: var(--text-1);
+    margin-top: 10px;
+  }
+  .reading__author { font-size: 13px; color: var(--text-3); margin-bottom: 12px; }
+  .reading__link {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-2);
+    transition: color var(--dur-state) var(--ease-out);
+  }
+  .reading__main:hover .reading__link { color: var(--text-1); }
+  .reading__side { padding: 18px 20px; }
+  .reading__label { font-size: 11.2px; color: var(--text-3); margin-bottom: 14px; }
+  .reading__covers { display: flex; gap: 12px; flex-wrap: wrap; }
+  .reading__thumb {
+    width: 60px;
+    transition: transform var(--dur-state) var(--ease-out);
+  }
+  .reading__thumb:hover { transform: translateY(-3px); }
+  @media (prefers-reduced-motion: reduce) {
+    .reading__thumb:hover { transform: none; }
   }
 
   /* YouTube */
@@ -704,7 +816,7 @@ const youtube = [
     .hero__h1 { font-size: 52px; }
     .work-row { grid-template-columns: 36px 1fr 30px; }
     .work-row__stack { display: none; }
-    .notes-grid, .yt-grid { grid-template-columns: 1fr; }
+    .notes-grid, .yt-grid, .reading { grid-template-columns: 1fr; }
     .home-footer { flex-direction: column; align-items: flex-start; }
     .home-footer__links { margin-left: -10px; }
     .stack-row { grid-template-columns: repeat(4, 1fr); gap: 20px 10px; }
