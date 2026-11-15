@@ -145,6 +145,29 @@ function chunk(pieces) {
 
 const chunkText = (pieces) => pieces.map((p) => p.text).join('\n\n');
 
+/**
+ * How the narrator should say text that reads fine but speaks badly: units, symbols
+ * and code identifiers. Only the text sent to ElevenLabs changes; word timings are
+ * still matched back to the article's own words by alignWords.
+ */
+function spoken(text) {
+  return text
+    .replace(/(\d)\s*µs\b/g, '$1 microseconds')
+    .replace(/(\d)\s*ns\b/g, '$1 nanoseconds')
+    .replace(/(\d)\s*ms\b/g, '$1 milliseconds')
+    .replace(/(\d)\s*MiB\b/g, '$1 mebibytes')
+    .replace(/(\d)\s*KiB\b/g, '$1 kibibytes')
+    .replace(/(\d)\s*B\b/g, '$1 bytes')
+    .replace(/µs\b/g, 'microseconds')
+    .replace(/\bMiB\b/g, 'mebibyte')
+    .replace(/\bKiB\b/g, 'kibibyte')
+    .replace(/\s*×\s*/g, ' times ')
+    .replace(/([A-Za-z])<(?=[A-Za-z])/g, '$1 of ') // Vec<Vec<u8>> → "Vec of Vec of u8"
+    .replace(/([A-Za-z0-9])>+/g, '$1')
+    .replace(/(^|[\s(])_(?=[A-Za-z])/g, '$1') // _seen → "seen"
+    .replace(/([A-Za-z0-9])_(?=[A-Za-z0-9])/g, '$1 '); // shared_preferences → "shared preferences"
+}
+
 // ── word alignment ───────────────────────────────────────────────────────────
 
 /** Same normalisation as the page script, so words match on both sides. */
@@ -310,7 +333,7 @@ async function main() {
       ...narrationPieces(body),
     ];
     const chunks = chunk(pieces);
-    const texts = chunks.map(chunkText);
+    const texts = chunks.map((c) => spoken(chunkText(c)));
     const text = texts.join('\n\n');
     const hash = createHash('sha256')
       .update(`${FORMAT_VERSION}\0${voiceId}\0${MODEL_ID}\0${text}`)
