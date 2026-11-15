@@ -634,6 +634,30 @@ const pageUrl = encodeURIComponent(`https://demola.dev/writing/${post.slug}`);
     margin: 0 0 28px;
   }
 
+  /* Wide tables scroll inside themselves instead of widening the page. */
+  :global(.prose table) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin: 0 0 28px;
+    font-size: 14px;
+  }
+  :global(.prose th, .prose td) {
+    padding: 10px 14px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line-faint);
+  }
+  :global(.prose th) {
+    color: var(--text-1);
+    font-weight: 600;
+    white-space: nowrap;
+    border-bottom-color: var(--line);
+  }
+  :global(.prose td) { color: var(--text-2); }
+  :global(.prose td code) { white-space: nowrap; }
+
   :global(.prose hr) {
     border: none;
     border-top: 1px solid var(--line-faint);
